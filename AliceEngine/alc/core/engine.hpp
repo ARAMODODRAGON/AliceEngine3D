@@ -1,17 +1,24 @@
 #ifndef ALC_CORE_ENGINE_HPP
 #define ALC_CORE_ENGINE_HPP
-#include "../common.hpp"
+#include "debug.hpp"
 #include "scene_manager.hpp"
+#include "game.hpp"
+#include "window.hpp"
 
 namespace alc {
 
 	// data struct to hold the settings for the engine 
 	struct engine_settings final {
 
+		// basic initialization
+		struct {
+			uint32 targetFramerate = 0; // if 0 then the framerate becomes uncapped
+		} general;
+
 		// window initialization
 		struct {
-			glm::uvec2 size = glm::uvec2(0, 0);
 			std::string titlebar = "";
+			glm::uvec2 size = glm::uvec2(0, 0);
 		} window;
 
 		// setup scenebindings -- optional
@@ -19,12 +26,12 @@ namespace alc {
 		struct {
 			std::vector<scene_binding> sceneBindings;
 
-			uint32 initialSceneVal = -1; // optional (priority)
-			std::string initialSceneStr = nullptr; // optional
+			uint32 initialSceneIndex = -1; // optional (priority)
+			std::string initialSceneStr = ""; // optional
 		} scenemanager;
 
 		// game class setup -- optional
-		//game_binding gameBinding = nullptr;
+		game_binding gameBinding = nullptr;
 
 		// setup jobsystem -- optional
 		struct {
@@ -40,17 +47,35 @@ namespace alc {
 
 		// starts the engine using the given settings
 		// engine will hold a pointer to the settings and read from it, must not modify the settings while the engine runs
-		static void start(const engine_settings* engineSettings);
+		static void start(const engine_settings* set);
 
 		// quits the current instance of the engine
 		static void quit();
 
+		// returns the engine_settings 
+		static const engine_settings* get_engine_settings();
+
+		// returns the window  
+		static window* get_window();
+
+		// returns the game  
+		static game* get_game();
+
+		// gets the target framerate
+		static uint32 get_target_framerate();
+
+		// sets the target framerate
+		// uncapped if set to 0
+		static void set_target_framerate(uint32 framerate);
+
 	private:
-
-		static inline const engine_settings* m_engineSettings = nullptr;
-
-	public:
-		static const engine_settings* __get_engine_settings();
+		static inline const engine_settings* s_engineSettings = nullptr;
+		static inline bool s_isRunning = false;
+		static inline bool s_shouldQuit = false;
+		static inline uint32 s_targetFramerate = 0;
+		static inline double s_frameLength = 0.0;
+		static inline window* s_window = nullptr;
+		static inline game* s_game = nullptr;
 	};
 
 }

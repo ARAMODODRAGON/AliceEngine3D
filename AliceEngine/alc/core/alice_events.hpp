@@ -2,6 +2,7 @@
 #define ALC_CORE_ALICE_EVENTS_HPP
 #include "../common.hpp"
 #include "../datatypes/function.hpp"
+#include "../datatypes/timestep.hpp"
 
 namespace alc {
 
@@ -11,7 +12,7 @@ namespace alc {
 	public:
 
 		// basic update callback
-		static inline event<void, float> onUpdate;
+		static inline event<void, timestep> onUpdate;
 
 	};
 

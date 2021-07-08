@@ -1,19 +1,42 @@
 #include <iostream>
 #include <alc\alc.hpp>
+#include <alc\core\alice_events.hpp>
 
-class Scene0 : public alc::iscene {
+class Playground : public alc::game {
+public:
 
-	void init(const std::string& args) override {
-
+	void init() override {
+		ALC_DEBUG_LOG("Created Playground");
+		alc::scene_manager::load_scene_additive("level 2");
+		alc::scene_manager::load_scene_additive("level 3");
 	}
 
 	void exit() override {
+		ALC_DEBUG_LOG("Destroyed Playground");
+	}
+
+	void update(alc::timestep ts) override {
+		
+	}
+
+	virtual void draw() override {
 
 	}
 
-	void update(float delta) override {
+};
 
+class Level : public alc::scene {
+public:
+
+	void init(const std::string& args) override { 
+		if (args == "quit") {
+			alc::engine::quit();
+		}
 	}
+
+	void exit() override { }
+
+	void update(alc::timestep ts) override { }
 
 };
 
@@ -21,13 +44,16 @@ int main(int argc, char* argv[]) {
 
 	alc::engine_settings set;
 
-	set.window.titlebar = "suck my cornk";
+	set.window.titlebar = "Playground";
 	set.window.size = glm::uvec2(1280u, 720u);
 
+	set.gameBinding = alc::bind_game<Playground>();
+
 	set.scenemanager.sceneBindings = {
-		alc::bind_scene<Scene0>("Scene0")
+		alc::bind_scene<Level>("level 1"),
+		alc::bind_scene<Level>("level 2"),
+		alc::bind_scene<Level>("level 3", "quit")
 	};
-	set.scenemanager.initialSceneVal = 0;
 
 	alc::engine::start(&set);
 

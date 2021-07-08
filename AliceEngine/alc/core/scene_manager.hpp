@@ -1,29 +1,46 @@
 #ifndef ALC_CORE_SCENE_MANAGER_HPP
 #define ALC_CORE_SCENE_MANAGER_HPP
 #include "../common.hpp"
+#include "../datatypes/timestep.hpp"
 
 namespace alc {
 
 	// interface for scenes
-	class iscene {
+	class scene {
 	public:
-		virtual ~iscene() = 0 { }
+		virtual ~scene() = 0;
 		// events
 		virtual void init(const std::string& args) { }
 		virtual void exit() { }
-		virtual void update(float delta) { }
+		virtual void update(timestep ts) { }
+		virtual void draw() { }
+
+		// returns the index of this scene in the scene_manager
+		size_t get_index() const;
+
+		// returns the name of this instance of this scene
+		std::string get_name() const;
+
+	private:
+		size_t m_index;
+		std::string m_name;
+	public:
+		void __set_index(size_t index);
+		void __set_name(const std::string& name);
 	};
 
 	// binding for loading scenes
 	struct scene_binding final {
-		std::string name = nullptr;
-		iscene* (*create)() = nullptr;
-		std::string args = nullptr;
+		std::string name = "";
+		scene* (*create)() = nullptr;
+		std::string args = "";
 	};
 
 	// create a binding for a scene
-	template<typename sceneTy>
+	template<typename Ty>
 	scene_binding bind_scene(const std::string& name, const std::string& args = "");
+
+	struct engine_settings;
 
 	// static scene manager to hold the active scene, load new scenes, and manages multiple scenes at the same time
 	class scene_manager final {
@@ -46,37 +63,50 @@ namespace alc {
 		static bool unload_scene(size_t activeSceneIndex);
 
 		// returns the main scene
-		static iscene* get_primary_scene();
+		static scene* get_primary_scene();
 
 		// returns the number of scenes
 		static size_t active_scenes_size();
 
 		// returns the scene at index, where 0 is the primary scene
-		static iscene get_active_scene(size_t index);
+		static scene* get_active_scene(size_t index);
 
 		// returns the name of the scene at the index, where 0 is the primary scene
-		static iscene get_active_scene_name(size_t index);
+		static std::string get_active_scene_name(size_t index);
 
 	private:
 
-		using scene_pair = std::pair<std::unique_ptr<iscene>, scene_binding*>;
-		using load_pair = std::pair<bool, scene_binding*>;
-		static inline std::vector<scene_pair> m_activeScenes;
-		static inline std::vector<load_pair> m_scenesToLoad;
+		struct active_scene {
+			std::unique_ptr<scene> scene;
+			bool shouldDestroy;
+			const scene_binding* binding;
+			active_scene() = default;
+			active_scene(alc::scene* scene, const scene_binding* binding);
+		};
+		static inline std::vector<active_scene> s_activeScenes;
+		static inline const scene_binding* s_primarySceneToLoad = nullptr;
+		static inline std::vector<const scene_binding*> s_scenesToLoad;
+		static inline const engine_settings* s_eSettings = nullptr;
+		static inline bool s_checkForSceneChanges = false;
+
+		static void handle_scenes();
 
 	public:
-		static void __update(float delta);
-		static void __endframe();
+		static void __set_settings(const engine_settings* set);
+		static void __init();
+		static void __exit();
+		static void __update(timestep ts);
+		static void __draw();
 	};
 
 
 	// implementations
 
-	template<typename sceneTy>
+	template<typename Ty>
 	inline scene_binding bind_scene(const std::string& name, const std::string& args) {
 		scene_binding sb;
 		sb.name = name;
-		sb.create = []()-> iscene* { return new sceneTy(); };
+		sb.create = []()-> scene* { return new Ty(); };
 		sb.args = args;
 		return sb;
 
