@@ -1,21 +1,35 @@
-#include <ALC/ALC.hpp>
-#include "PlaygroundGame.hpp"
-#include "Scenes\Scene0.hpp"
+#include <iostream>
+#include <alc\alc.hpp>
+
+class Scene0 : public alc::iscene {
+
+	void init(const std::string& args) override {
+
+	}
+
+	void exit() override {
+
+	}
+
+	void update(float delta) override {
+
+	}
+
+};
 
 int main(int argc, char* argv[]) {
 
-	ALC::EngineSettings set;
+	alc::engine_settings set;
 
-	set.window.size = ALC::uvec2(1280, 720);
-	set.window.title = "AliceEngine3D";
+	set.window.titlebar = "suck my cornk";
+	set.window.size = glm::uvec2(1280u, 720u);
 
-	set.scenes.bindings = {
-		ALC_BIND_SCENE(Scene0)
+	set.scenemanager.sceneBindings = {
+		alc::bind_scene<Scene0>("Scene0")
 	};
+	set.scenemanager.initialSceneVal = 0;
 
-	set.jobsystem.enable = false;
-
-	ALC::SceneManager::Start<PlaygroundGame>(set);
+	alc::engine::start(&set);
 
 	return 0;
 }

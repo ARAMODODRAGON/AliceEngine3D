@@ -19,69 +19,17 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ALC\ALC.hpp" />
-    <ClInclude Include="ALC\Content\Content.hpp" />
-    <ClInclude Include="ALC\Content\ContentManager.hpp" />
-    <ClInclude Include="ALC\Content\detail\stb_image.h" />
-    <ClInclude Include="ALC\Content\Font.hpp" />
-    <ClInclude Include="ALC\Content\Shader.hpp" />
-    <ClInclude Include="ALC\Content\Sound\SoundSystem.hpp" />
-    <ClInclude Include="ALC\Content\Texture.hpp" />
-    <ClInclude Include="ALC\Core\Debugger.hpp" />
-    <ClInclude Include="ALC\Core\Game.hpp" />
-    <ClInclude Include="ALC\Core\SceneManager.hpp" />
-    <ClInclude Include="ALC\Core\Timer.hpp" />
-    <ClInclude Include="ALC\Core\Window.hpp" />
-    <ClInclude Include="ALC\DataTypes\Bounds.hpp" />
-    <ClInclude Include="ALC\DataTypes\Function.hpp" />
-    <ClInclude Include="ALC\DataTypes\Layermask.hpp" />
-    <ClInclude Include="ALC\DataTypes\Rect.hpp" />
-    <ClInclude Include="ALC\DataTypes\StateMachine.hpp" />
-    <ClInclude Include="ALC\General.hpp" />
-    <ClInclude Include="ALC\Input\Button.hpp" />
-    <ClInclude Include="ALC\Input\detail\SystemEvents.hpp" />
-    <ClInclude Include="ALC\Input\Input.hpp" />
-    <ClInclude Include="ALC\Input\Keyboard.hpp" />
-    <ClInclude Include="ALC\Input\Mouse.hpp" />
-    <ClInclude Include="ALC\Jobs\cjs\cjs.hpp" />
-    <ClInclude Include="ALC\Jobs\cjs\context.hpp" />
-    <ClInclude Include="ALC\Jobs\cjs\detail\work.hpp" />
-    <ClInclude Include="ALC\Jobs\cjs\handle.hpp" />
-    <ClInclude Include="ALC\Jobs\cjs\ijob.hpp" />
-    <ClInclude Include="ALC\Jobs\JobQueue.hpp" />
-    <ClInclude Include="ALC\Jobs\Jobs.hpp" />
-    <ClInclude Include="ALC\Objects\GameObject.hpp" />
-    <ClInclude Include="ALC\Objects\ObjectFactory.hpp" />
-    <ClInclude Include="ALC\Objects\Transform.hpp" />
-    <ClInclude Include="ALC\Reflection\TypeID.hpp" />
-    <ClInclude Include="ALC\Rendering\Camera2D.hpp" />
-    <ClInclude Include="ALC\Rendering\detail\SpriteShaderSource.hpp" />
-    <ClInclude Include="ALC\Rendering\Rendering.hpp" />
-    <ClInclude Include="ALC\Rendering\SpriteBatch.hpp" />
+    <ClInclude Include="alc\alc.hpp" />
+    <ClInclude Include="alc\common.hpp" />
+    <ClInclude Include="alc\core\engine.hpp" />
+    <ClInclude Include="ALC\Core\alice_events.hpp" />
+    <ClInclude Include="alc\core\scene_manager.hpp" />
+    <ClInclude Include="alc\datatypes\function.hpp" />
+    <ClInclude Include="alc\reflection\typehash.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="ALC\Content\ContentManager.cpp" />
-    <ClCompile Include="ALC\Content\Font.cpp" />
-    <ClCompile Include="ALC\Content\Shader.cpp" />
-    <ClCompile Include="ALC\Content\Sound\SoundSystem.cpp" />
-    <ClCompile Include="ALC\Content\Texture.cpp" />
-    <ClCompile Include="ALC\Core\Debugger.cpp" />
-    <ClCompile Include="ALC\Core\Game.cpp" />
-    <ClCompile Include="ALC\Core\SceneManager.cpp" />
-    <ClCompile Include="ALC\Core\Timer.cpp" />
-    <ClCompile Include="ALC\Core\Window.cpp" />
-    <ClCompile Include="ALC\Input\detail\SystemEvents.cpp" />
-    <ClCompile Include="ALC\Input\Keyboard.cpp" />
-    <ClCompile Include="ALC\Input\Mouse.cpp" />
-    <ClCompile Include="ALC\Jobs\JobQueue.cpp" />
-    <ClCompile Include="ALC\Objects\ObjectFactory.cpp" />
-    <ClCompile Include="ALC\Rendering\Camera2D.cpp" />
-    <ClCompile Include="ALC\Rendering\detail\SpriteShaderSource.cpp" />
-    <ClCompile Include="ALC\Rendering\SpriteBatch.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="ALC\Jobs\cjs\common.inl" />
-    <None Include="ALC\Objects\GameObject.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>16.0</VCProjectVersion>
