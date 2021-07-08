@@ -7,8 +7,6 @@ public:
 
 	void init() override {
 		ALC_DEBUG_LOG("Created Playground");
-		alc::scene_manager::load_scene_additive("level 2");
-		alc::scene_manager::load_scene_additive("level 3");
 	}
 
 	void exit() override {
@@ -16,7 +14,7 @@ public:
 	}
 
 	void update(alc::timestep ts) override {
-		
+
 	}
 
 	virtual void draw() override {
@@ -28,11 +26,7 @@ public:
 class Level : public alc::scene {
 public:
 
-	void init(const std::string& args) override { 
-		if (args == "quit") {
-			alc::engine::quit();
-		}
-	}
+	void init(const std::string& args) override { }
 
 	void exit() override { }
 
@@ -50,9 +44,7 @@ int main(int argc, char* argv[]) {
 	set.gameBinding = alc::bind_game<Playground>();
 
 	set.scenemanager.sceneBindings = {
-		alc::bind_scene<Level>("level 1"),
-		alc::bind_scene<Level>("level 2"),
-		alc::bind_scene<Level>("level 3", "quit")
+		alc::bind_scene<Level>("level 1")
 	};
 
 	alc::engine::start(&set);

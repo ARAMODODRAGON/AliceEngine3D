@@ -29,7 +29,10 @@ namespace alc {
 		}
 
 		// check if valid index
-		if (sceneBindingIndex >= s_eSettings->scenemanager.sceneBindings.size()) return false;
+		if (sceneBindingIndex >= s_eSettings->scenemanager.sceneBindings.size()) {
+			ALC_DEBUG_WARNING("No scenebinding at index " + sceneBindingIndex);
+			return false;
+		}
 
 		// set
 		s_primarySceneToLoad = &s_eSettings->scenemanager.sceneBindings[sceneBindingIndex];
@@ -51,6 +54,7 @@ namespace alc {
 		}
 
 		// no scene with name
+		ALC_DEBUG_WARNING("No scenebinding with name " + sceneName);
 		return false;
 	}
 
@@ -61,7 +65,10 @@ namespace alc {
 		}
 
 		// check if valid index
-		if (sceneBindingIndex >= s_eSettings->scenemanager.sceneBindings.size()) return false;
+		if (sceneBindingIndex >= s_eSettings->scenemanager.sceneBindings.size()) {
+			ALC_DEBUG_WARNING("No scenebinding at index " + sceneBindingIndex);
+			return false;
+		}
 
 		// set
 		s_scenesToLoad.push_back(&s_eSettings->scenemanager.sceneBindings[sceneBindingIndex]);
@@ -83,6 +90,7 @@ namespace alc {
 		}
 
 		// no scene with name
+		ALC_DEBUG_WARNING("No scenebinding with name " + sceneName);
 		return false;
 	}
 

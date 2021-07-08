@@ -76,6 +76,7 @@ namespace alc {
 		static inline double s_frameLength = 0.0;
 		static inline window* s_window = nullptr;
 		static inline game* s_game = nullptr;
+		static void handle_events();
 	};
 
 }

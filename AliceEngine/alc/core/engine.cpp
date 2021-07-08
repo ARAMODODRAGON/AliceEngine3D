@@ -1,6 +1,7 @@
 #include "engine.hpp"
 #include "alice_events.hpp"
 #include <chrono>
+#include <SDL.h>
 
 namespace alc {
 
@@ -30,7 +31,7 @@ namespace alc {
 		if (scenes_enabled) scene_manager::__set_settings(set);
 
 		// create game
-		if (set->gameBinding){
+		if (set->gameBinding) {
 			s_game = set->gameBinding();
 			s_game->init();
 		}
@@ -41,6 +42,10 @@ namespace alc {
 		// game loop //////////////////////////////////////////////////
 
 		while (s_isRunning && !s_shouldQuit) {
+
+			// handle events before getting new time
+			handle_events();
+
 			// get begining of frame and timestep
 			lasttime = thistime;
 			thistime = clock::now();
@@ -51,9 +56,13 @@ namespace alc {
 			if (scenes_enabled) scene_manager::__update(ts);
 			alice_events::onUpdate(ts);
 
-			// TODO: render
+			// render
+			s_window->clear_screen(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 			s_game->draw();
 			if (scenes_enabled) scene_manager::__draw();
+
+			// swap buffers
+			s_window->swap_buffers();
 
 			// wait for end of frame
 			if (s_targetFramerate != 0) {
@@ -102,6 +111,23 @@ namespace alc {
 			s_frameLength = 0.0;
 		else
 			s_frameLength = 1.0 / static_cast<double>(s_targetFramerate);
+	}
+
+	void engine::handle_events() {
+		static SDL_Event e;
+		while (SDL_PollEvent(&e)) {
+			switch (e.type) {
+				case SDL_QUIT: quit(); break;
+				case SDL_WINDOWEVENT: break;
+				case SDL_KEYDOWN: break;
+				case SDL_KEYUP: break;
+				case SDL_MOUSEMOTION: break;
+				case SDL_MOUSEBUTTONDOWN: break;
+				case SDL_MOUSEBUTTONUP: break;
+				case SDL_MOUSEWHEEL: break;
+				default: break;
+			}
+		}
 	}
 
 }
