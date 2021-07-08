@@ -25,6 +25,7 @@
     <ClInclude Include="ALC\Core\alice_events.hpp" />
     <ClInclude Include="alc\core\scene_manager.hpp" />
     <ClInclude Include="alc\datatypes\function.hpp" />
+    <ClInclude Include="alc\entities\entity_factory.hpp" />
     <ClInclude Include="alc\reflection\typehash.hpp" />
   </ItemGroup>
   <ItemGroup>

@@ -36,5 +36,8 @@
     <ClInclude Include="ALC\Core\alice_events.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="alc\entities\entity_factory.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
