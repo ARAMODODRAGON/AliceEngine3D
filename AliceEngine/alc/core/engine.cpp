@@ -1,5 +1,7 @@
 #include "engine.hpp"
 #include "alice_events.hpp"
+#include "../input/keyboard.hpp"
+#include "../input/mouse.hpp"
 #include <chrono>
 #include <SDL.h>
 
@@ -114,17 +116,70 @@ namespace alc {
 	}
 
 	void engine::handle_events() {
+		keyboard::__clear_changed_bits();
+		mouse::__clear_changed_bits();
+
 		static SDL_Event e;
 		while (SDL_PollEvent(&e)) {
 			switch (e.type) {
-				case SDL_QUIT: quit(); break;
-				case SDL_WINDOWEVENT: break;
-				case SDL_KEYDOWN: break;
-				case SDL_KEYUP: break;
-				case SDL_MOUSEMOTION: break;
-				case SDL_MOUSEBUTTONDOWN: break;
-				case SDL_MOUSEBUTTONUP: break;
-				case SDL_MOUSEWHEEL: break;
+				case SDL_QUIT: quit(); break;						// close window and quit
+				case SDL_KEYDOWN: case SDL_KEYUP:					// handle key 
+				{
+					// no need to check the key if it's repeating
+					if (e.key.repeat) break;
+
+					// letter on the keyboard
+					if (e.key.keysym.sym > 96 && e.key.keysym.sym < 123)
+						keyboard::__set_key(static_cast<keycode>(e.key.keysym.sym - 97), e.key.state);
+					// number on keyboard
+					else if (e.key.keysym.sym > 47 && e.key.keysym.sym < 58)
+						keyboard::__set_key(static_cast<keycode>(e.key.keysym.sym - 48 + 26), e.key.state);
+					// other
+					else {
+						switch (e.key.keysym.scancode) {
+							case SDL_SCANCODE_TAB:       keyboard::__set_key(keycode::tab, e.key.state);         break;
+							case SDL_SCANCODE_RETURN:	 keyboard::__set_key(keycode::ret, e.key.state);         break;
+							case SDL_SCANCODE_BACKSPACE: keyboard::__set_key(keycode::backspace, e.key.state);   break;
+							case SDL_SCANCODE_SPACE:     keyboard::__set_key(keycode::space, e.key.state);       break;
+							case SDL_SCANCODE_ESCAPE:    keyboard::__set_key(keycode::escape, e.key.state);		 break;
+							case SDL_SCANCODE_UP:        keyboard::__set_key(keycode::arrow_up, e.key.state);    break;
+							case SDL_SCANCODE_DOWN:      keyboard::__set_key(keycode::arrow_down, e.key.state);  break;
+							case SDL_SCANCODE_LEFT:      keyboard::__set_key(keycode::arrow_left, e.key.state);  break;
+							case SDL_SCANCODE_RIGHT:     keyboard::__set_key(keycode::arrow_right, e.key.state); break;
+							default: break;
+						}
+					}
+
+					break; // SDL_KEYDOWN || SDL_KEYUP
+				}
+				case SDL_MOUSEMOTION:								// the mouse position
+				{
+					const glm::vec2 halfscreen(s_window->get_screen_size() * 0.5f);
+					glm::vec2 position(e.motion.x, e.motion.y);
+					position -= halfscreen;
+					position /= halfscreen;
+					position.y = -position.y;
+					mouse::__set_position(position);
+					break;
+				}
+				case SDL_MOUSEBUTTONDOWN: case SDL_MOUSEBUTTONUP:	// mouse buttons
+				{
+					switch (e.button.button) {
+						case SDL_BUTTON_LEFT:	mouse::__set_button(0, e.button.state == SDL_PRESSED); break;
+						case SDL_BUTTON_MIDDLE: mouse::__set_button(1, e.button.state == SDL_PRESSED); break;
+						case SDL_BUTTON_RIGHT:	mouse::__set_button(2, e.button.state == SDL_PRESSED); break;
+						case SDL_BUTTON_X1:		mouse::__set_button(3, e.button.state == SDL_PRESSED); break;
+						case SDL_BUTTON_X2:		mouse::__set_button(4, e.button.state == SDL_PRESSED); break;
+						default:break;
+					}
+					break;
+				}
+				case SDL_MOUSEWHEEL:								// mouse scroll wheel
+				{
+					mouse::__set_scroll(static_cast<float>(e.wheel.y) 
+										* (e.wheel.direction == SDL_MOUSEWHEEL_NORMAL ? 1.0f : -1.0f));
+					break;
+				}
 				default: break;
 			}
 		}

@@ -29,5 +29,7 @@ namespace alc { }
 
 #include "common.hpp"
 #include "core\engine.hpp"
+#include "input\keyboard.hpp"
+#include "input\mouse.hpp"
 
 #endif // !ALC_HPP
