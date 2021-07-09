@@ -18,14 +18,14 @@ namespace alc {
 
 	namespace detail {
 		inline uint32 type_counter() {
-			uint32 counter = 0;
+			static uint32 counter = 0;
 			return counter++;
 		}
 	}
 
 	template<typename T>
 	inline typehash get_typehash() {
-		const typehash tyhash = static_cast<typehash>(detail::type_counter());
+		static const typehash tyhash = static_cast<typehash>(detail::type_counter());
 		return tyhash;
 	}
 
