@@ -10,6 +10,7 @@ namespace alc {
 	class behavior;
 	class game_object;
 	class object_factory;
+	class object_prefab;
 
 	// components hold data in an game_object
 	struct component {

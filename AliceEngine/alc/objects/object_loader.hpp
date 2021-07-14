@@ -4,6 +4,12 @@
 
 namespace alc {
 
+	// represents an object that you can use to load/unload to a file
+	class object_prefab {
+
+	};
+
+	// builder class used to load and save factories into object files
 	class object_loader {
 	public:
 
