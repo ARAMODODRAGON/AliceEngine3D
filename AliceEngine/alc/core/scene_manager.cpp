@@ -249,12 +249,12 @@ namespace alc {
 		}
 	}
 
-	void scene_manager::__draw() {
-		// draw scenes
-		for (size_t i = 0; i < s_activeScenes.size(); i++) {
-			s_activeScenes[i].scene->draw();
-		}
-	}
+	//void scene_manager::__draw() {
+	//	// draw scenes
+	//	for (size_t i = 0; i < s_activeScenes.size(); i++) {
+	//		s_activeScenes[i].scene->draw();
+	//	}
+	//}
 
 	scene_manager::active_scene::active_scene(alc::scene* scene_, const scene_binding* binding_)
 		: scene(scene_), shouldDestroy(false), binding(binding_) { }

@@ -17,7 +17,7 @@ namespace alc {
 
 	// implementations
 
-	template<typename hashTy = hash32_t>
+	template<typename hashTy>
 	inline hashTy hash_string(const std::string& value) {
 		return std::hash<std::string>{}(value);
 	}

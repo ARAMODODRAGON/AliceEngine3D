@@ -13,7 +13,6 @@ namespace alc {
 		virtual void init(const std::string& args) { }
 		virtual void exit() { }
 		virtual void update(timestep ts) { }
-		virtual void draw() { }
 
 		// returns the index of this scene in the scene_manager
 		size_t get_index() const;
@@ -96,7 +95,6 @@ namespace alc {
 		static void __init();
 		static void __exit();
 		static void __update(timestep ts);
-		static void __draw();
 	};
 
 

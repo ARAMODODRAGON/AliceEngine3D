@@ -1,6 +1,7 @@
 #include <iostream>
 #include <alc\alc.hpp>
 #include <alc\core\alice_events.hpp>
+#include <alc\objects\object_factory.hpp>
 
 class Playground : public alc::game {
 public:
@@ -45,11 +46,16 @@ public:
 class Level : public alc::scene {
 public:
 
-	void init(const std::string& args) override { }
+	Level() { }
+	~Level() { }
 
-	void exit() override { }
+private:
 
-	void update(alc::timestep ts) override { }
+	void init(const std::string& args) override {
+
+	}
+
+
 
 };
 
@@ -61,10 +67,6 @@ int main(int argc, char* argv[]) {
 	set.window.size = glm::uvec2(1280u, 720u);
 
 	set.gameBinding = alc::bind_game<Playground>();
-
-	set.scenemanager.sceneBindings = {
-		alc::bind_scene<Level>("level 1")
-	};
 
 	alc::engine::start(&set);
 

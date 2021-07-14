@@ -61,7 +61,6 @@ namespace alc {
 			// render
 			s_window->clear_screen(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 			s_game->draw();
-			if (scenes_enabled) scene_manager::__draw();
 
 			// swap buffers
 			s_window->swap_buffers();

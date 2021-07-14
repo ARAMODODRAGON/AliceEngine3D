@@ -31,7 +31,9 @@
     <ClInclude Include="alc\datatypes\function.hpp" />
     <ClInclude Include="alc\datatypes\hash.hpp" />
     <ClInclude Include="alc\datatypes\timestep.hpp" />
-    <ClInclude Include="alc\entities\entity_factory.hpp" />
+    <ClInclude Include="alc\dependencies\stb_image.h" />
+    <ClInclude Include="alc\dependencies\tiny_obj_loader.h" />
+    <ClInclude Include="alc\objects\object_factory.hpp" />
     <ClInclude Include="alc\input\keyboard.hpp" />
     <ClInclude Include="alc\input\mouse.hpp" />
     <ClInclude Include="alc\reflection\typehash.hpp" />
@@ -41,6 +43,7 @@
     <ClCompile Include="alc\core\engine.cpp" />
     <ClCompile Include="alc\core\scene_manager.cpp" />
     <ClCompile Include="alc\core\window.cpp" />
+    <ClCompile Include="alc\objects\object_factory.cpp" />
     <ClCompile Include="alc\input\keyboard.cpp" />
     <ClCompile Include="alc\input\mouse.cpp" />
   </ItemGroup>
