@@ -15,66 +15,64 @@ namespace alc {
 
 	// behavior ////////////////////////////////////////////////////
 
-	behavior::behavior() : m_gameobject(nullptr) { }
+	behavior::behavior() : component() { }
 
-	behavior::~behavior() { m_gameobject = nullptr; }
-
-	game_object* behavior::get_object() const { return m_gameobject; }
+	behavior::~behavior() { }
 
 	game_object* behavior::create() const {
-		return m_gameobject->create();
+		return get_object()->create();
 	}
 
 	bool behavior::destroy(game_object* go_, bool destroyChildren) {
-		return m_gameobject->destroy(go_, destroyChildren);
+		return get_object()->destroy(go_, destroyChildren);
+	}
+
+	component* behavior::add(type ty) {
+		return get_object()->add(ty);
 	}
 
 	bool behavior::destroy(component* c) {
-		return m_gameobject->destroy(c);
+		return get_object()->destroy(c);
 	}
 
 	bool behavior::destroy(behavior* b) {
-		return m_gameobject->destroy(b);
+		return get_object()->destroy(b);
 	}
 
 	glm::vec3 behavior::get_position() const {
-		return m_gameobject->get_position();
+		return get_object()->get_position();
 	}
 
 	void behavior::set_position(const glm::vec3& position) {
-		m_gameobject->set_position(position);
+		get_object()->set_position(position);
 	}
 
 	glm::vec3 behavior::get_relative_position() const {
-		return m_gameobject->get_relative_position();
+		return get_object()->get_relative_position();
 	}
 
 	void behavior::set_relative_position(const glm::vec3& position) {
-		m_gameobject->set_relative_position(position);
+		get_object()->set_relative_position(position);
 	}
 
 	std::string behavior::get_name() const {
-		return m_gameobject->get_name();
+		return get_object()->get_name();
 	}
 
 	void behavior::set_name(const std::string& name) {
-		m_gameobject->set_name(name);
+		get_object()->set_name(name);
 	}
 
 	object_factory* behavior::get_factory() const {
-		return m_gameobject->get_factory();
+		return get_object()->get_factory();
 	}
 
 	game_object* behavior::get_parent() const {
-		return m_gameobject->get_parent();
+		return get_object()->get_parent();
 	}
 
 	void behavior::set_parent(game_object* parent) {
-		m_gameobject->set_parent(parent);
-	}
-
-	void behavior::__set_object(game_object* _go) {
-		m_gameobject = _go;
+		get_object()->set_parent(parent);
 	}
 
 	// game_object /////////////////////////////////////////////////
@@ -119,6 +117,34 @@ namespace alc {
 
 	bool game_object::destroy(game_object* go_, bool destroyChildren) {
 		return m_factory->destroy(go_, destroyChildren);
+	}
+
+	component* game_object::add(type ty) {
+		if (!ty || ty.parents_size() == 0) {
+			if (ty) ALC_DEBUG_WARNING("Could not instance component of type " + ty.get_name());
+			else ALC_DEBUG_WARNING("Could not instance component of type ");
+			return nullptr;
+		}
+
+		static type _component = type::get<component>();
+		static type _behavior = type::get<behavior>();
+
+		for (size_t i = 0; i < ty.parents_size(); i++) {
+			// new behavior
+			if (ty.parent_get(i) == _behavior) {
+				behavior* b = ty.instance<behavior*>();
+				b->on_create();
+				m_behaviors.emplace_back(b, false);
+			}
+			// new component
+			else if (ty.parent_get(i) == _component) {
+				component* c = ty.instance<component*>();
+				c->on_create();
+				m_components.emplace_back(c, false);
+			}
+		}
+
+		return nullptr;
 	}
 
 	bool game_object::destroy(component* c) {
@@ -368,7 +394,7 @@ namespace alc {
 	}
 
 	void object_factory::__on_update(timestep ts) {
-		
+
 		for (size_t i = 0; i < size(); i++) {
 			if (m_objects[i]->__should_update()) {
 				m_objects[i]->__on_update(ts);

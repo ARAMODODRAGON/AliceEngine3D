@@ -3,6 +3,7 @@
 #include "../common.hpp"
 #include "../datatypes/hash.hpp"
 #include "../core/alice_events.hpp"
+#include "../reflection/type.hpp"
 
 namespace alc {
 
@@ -38,7 +39,7 @@ namespace alc {
 	};
 
 	// behaviors contain logic and data in an game_object
-	class behavior {
+	class behavior : public component {
 		ALC_NO_COPY(behavior);
 		ALC_NO_MOVE(behavior);
 	public:
@@ -61,6 +62,10 @@ namespace alc {
 
 		// adds a component of type Ty
 		template<typename Ty> Ty* add();
+
+		// adds a component of the passed in type
+		// returns as nullptr
+		component* add(type ty);
 
 		// returns a component of type Ty
 		template<typename Ty> Ty* get();
@@ -105,19 +110,10 @@ namespace alc {
 
 	protected:
 
-		// creation event
-		virtual void on_create() { }
-
-		// destruction event
-		virtual void on_destroy() { }
-
 		// step event
 		virtual void on_update(timestep ts) { }
 
-	private:
 		friend game_object;
-		game_object* m_gameobject;
-		void __set_object(game_object* _go);
 	};
 
 	// object that holds components and behaviors
@@ -144,6 +140,10 @@ namespace alc {
 
 		// adds a component of type Ty
 		template<typename Ty> Ty* add();
+
+		// adds a component of the passed in type
+		// returns as nullptr
+		component* add(type ty);
 
 		// returns a component of type Ty
 		template<typename Ty> Ty* get();

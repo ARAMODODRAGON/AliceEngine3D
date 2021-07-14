@@ -89,6 +89,10 @@ namespace alc {
 		// returns the parent type at the given index
 		type parent_get(size_t index) const;
 
+		// creates an instance of this type on the heap
+		template<typename Ty>
+		Ty instance();
+
 		// checks if these are the same types
 		bool operator==(const type& other) const;
 
@@ -195,6 +199,13 @@ namespace alc {
 		type ty = get<Ty>();
 		ty.m_data->m_typeName = type_name;
 		return type_assign(ty.m_data.get());
+	}
+
+	template<typename Ty>
+	inline Ty type::instance() {
+		if (m_data->m_constructor)
+			return reinterpret_cast<Ty>(m_data->m_constructor());
+		return nullptr;
 	}
 
 	template<typename Ty>

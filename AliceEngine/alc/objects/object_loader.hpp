@@ -16,7 +16,7 @@ namespace alc {
 		object_loader();
 		~object_loader();
 
-		// sets the types of components that this object loader can have
+		// adds types of components that this object loader can load
 		template<typename... Ty>
 		void add_component_types();
 
@@ -25,12 +25,7 @@ namespace alc {
 		void load_object_map(object_factory* factory, const std::string& inputfile);
 
 	private:
-		struct loadable_component {
-			component* (*addcomponent)(game_object*);
-		};
-		std::vector<loadable_component> m_componentTypes;
-		template<typename Ty>
-		loadable_component get_loadable_component();
+		std::vector<type> m_componentTypes;
 	};
 
 	template<typename... Ty> 
@@ -40,20 +35,10 @@ namespace alc {
 
 	template<typename ...Ty>
 	inline void object_loader::add_component_types() { 
-		loadable_component loads[] = { get_loadable_component<Ty>()... };
+		type types[] = { type::get<Ty>()... };
 		for (size_t i = 0; i < (sizeof...(Ty)); i++) {
-			m_componentTypes.push_back(loads[i]);
+			m_componentTypes.push_back(types[i]);
 		}
-	}
-
-	template<typename Ty>
-	inline object_loader::loadable_component object_loader::get_loadable_component() {
-		loadable_component load;
-		load.addcomponent = [](game_object* object) {  
-			if (object) return object->add<Ty>();
-			return nullptr;
-		};
-		return loadable_component();
 	}
 
 	template<typename ...Ty>
