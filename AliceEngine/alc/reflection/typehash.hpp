@@ -7,7 +7,8 @@ namespace alc {
 	namespace detail { uint32 type_counter(); }
 
 	// represents a type
-	enum class typehash : uint32 { };
+	// the value of a typehash is not tied to the values indexed in the enum
+	enum class typehash : uint32 { null = static_cast<uint32>(-1) };
 
 	// returns the typehash for the specific type
 	// garunteed unique for every type

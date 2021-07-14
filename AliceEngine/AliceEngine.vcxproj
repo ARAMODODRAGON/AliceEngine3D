@@ -36,6 +36,8 @@
     <ClInclude Include="alc\objects\object_factory.hpp" />
     <ClInclude Include="alc\input\keyboard.hpp" />
     <ClInclude Include="alc\input\mouse.hpp" />
+    <ClInclude Include="alc\objects\object_loader.hpp" />
+    <ClInclude Include="alc\reflection\type.hpp" />
     <ClInclude Include="alc\reflection\typehash.hpp" />
   </ItemGroup>
   <ItemGroup>
@@ -46,6 +48,8 @@
     <ClCompile Include="alc\objects\object_factory.cpp" />
     <ClCompile Include="alc\input\keyboard.cpp" />
     <ClCompile Include="alc\input\mouse.cpp" />
+    <ClCompile Include="alc\objects\object_loader.cpp" />
+    <ClCompile Include="alc\reflection\type.cpp" />
   </ItemGroup>
   <ItemGroup>
   </ItemGroup>

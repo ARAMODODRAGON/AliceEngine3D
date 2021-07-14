@@ -2,6 +2,7 @@
 #include <alc\alc.hpp>
 #include <alc\core\alice_events.hpp>
 #include <alc\objects\object_factory.hpp>
+#include <alc\reflection\type.hpp>
 
 class Playground : public alc::game {
 public:
@@ -56,18 +57,17 @@ private:
 	}
 
 
-
 };
 
 int main(int argc, char* argv[]) {
 
 	alc::engine_settings set;
-
+	
 	set.window.titlebar = "Playground";
 	set.window.size = glm::uvec2(1280u, 720u);
-
+	
 	set.gameBinding = alc::bind_game<Playground>();
-
+	
 	alc::engine::start(&set);
 
 	return 0;
