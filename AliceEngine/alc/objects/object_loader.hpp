@@ -1,6 +1,7 @@
 #ifndef ALC_OBJECT_LOADER_HPP
 #define ALC_OBJECT_LOADER_HPP
 #include "object_factory.hpp"
+#include <unordered_map>
 
 namespace alc {
 
@@ -25,7 +26,7 @@ namespace alc {
 		void load_object_map(object_factory* factory, const std::string& inputfile);
 
 	private:
-		std::vector<type> m_componentTypes;
+		std::unordered_map<std::string, type> m_componentTypes;
 	};
 
 	template<typename... Ty> 
@@ -37,7 +38,7 @@ namespace alc {
 	inline void object_loader::add_component_types() { 
 		type types[] = { type::get<Ty>()... };
 		for (size_t i = 0; i < (sizeof...(Ty)); i++) {
-			m_componentTypes.push_back(types[i]);
+			m_componentTypes.emplace(types[i].get_name(), types[i]);
 		}
 	}
 

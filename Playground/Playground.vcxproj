@@ -154,6 +154,9 @@
       <Project>{b1e12aba-a857-490f-ab20-f6f3710bf9ea}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TypeSystemDemo.hpp" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

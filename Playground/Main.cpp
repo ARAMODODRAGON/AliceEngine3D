@@ -3,6 +3,7 @@
 #include <alc\core\alice_events.hpp>
 #include <alc\objects\object_factory.hpp>
 #include <alc\reflection\type.hpp>
+#include "TypeSystemDemo.hpp"
 
 class Playground : public alc::game {
 public:
