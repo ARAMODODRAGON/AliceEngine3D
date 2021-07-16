@@ -47,9 +47,6 @@ namespace alc {
 		behavior();
 		virtual ~behavior() = 0;
 
-		// returns the game_object that this is attached to
-		game_object* get_object() const;
-
 		// creates a new game_object
 		game_object* create() const;
 
@@ -222,7 +219,8 @@ namespace alc {
 	// a list of game_objects
 	// listens to alice_events::onUpdate to update the game_objects
 	class object_factory final {
-		ALC_STATIC_CLASS(object_factory);
+		ALC_NO_COPY(object_factory);
+		ALC_NO_MOVE(object_factory);
 	public:
 
 		object_factory(size_t reserve = 0);

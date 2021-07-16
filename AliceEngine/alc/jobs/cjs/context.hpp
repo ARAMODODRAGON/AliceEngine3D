@@ -43,8 +43,8 @@ namespace cjs {
 		using handle_t = basic_handle<JobTy>;
 		using thread_t = ThreadTy;
 		using job_t = typename handle_t::job_t;
-		using storage_t = typename HandleTy::storage_t;
-		using mutex_t = typename HandleTy::mutex_t;
+		using storage_t = typename handle_t::storage_t;
+		using mutex_t = typename handle_t::mutex_t;
 		using lock_guard_t = std::lock_guard<mutex_t >;
 
 		basic_context(const basic_context&) = delete;

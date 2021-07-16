@@ -17,7 +17,7 @@ public:
 	}
 
 	void update(alc::timestep ts) override {
-		
+
 	}
 
 	virtual void draw() override {
@@ -37,6 +37,8 @@ private:
 	void init(const std::string& args) override {
 
 	}
+
+	alc::object_factory m_factory;
 
 };
 

@@ -75,6 +75,21 @@
     <ClInclude Include="alc\reflection\type.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="alc\jobs\cjs\cjs.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\jobs\cjs\context.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\jobs\cjs\handle.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\jobs\cjs\ijob.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\jobs\job_queue.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="alc\core\engine.cpp">
@@ -102,6 +117,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="alc\reflection\type.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\jobs\job_queue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

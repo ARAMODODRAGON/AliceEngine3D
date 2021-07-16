@@ -33,6 +33,11 @@
     <ClInclude Include="alc\datatypes\timestep.hpp" />
     <ClInclude Include="alc\dependencies\stb_image.h" />
     <ClInclude Include="alc\dependencies\tiny_obj_loader.h" />
+    <ClInclude Include="alc\jobs\cjs\cjs.hpp" />
+    <ClInclude Include="alc\jobs\cjs\context.hpp" />
+    <ClInclude Include="alc\jobs\cjs\handle.hpp" />
+    <ClInclude Include="alc\jobs\cjs\ijob.hpp" />
+    <ClInclude Include="alc\jobs\job_queue.hpp" />
     <ClInclude Include="alc\objects\object_factory.hpp" />
     <ClInclude Include="alc\input\keyboard.hpp" />
     <ClInclude Include="alc\input\mouse.hpp" />
@@ -45,6 +50,7 @@
     <ClCompile Include="alc\core\engine.cpp" />
     <ClCompile Include="alc\core\scene_manager.cpp" />
     <ClCompile Include="alc\core\window.cpp" />
+    <ClCompile Include="alc\jobs\job_queue.cpp" />
     <ClCompile Include="alc\objects\object_factory.cpp" />
     <ClCompile Include="alc\input\keyboard.cpp" />
     <ClCompile Include="alc\input\mouse.cpp" />
@@ -132,7 +138,6 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>
@@ -151,7 +156,6 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <LanguageStandard>stdcpp17</LanguageStandard>
-      <RuntimeTypeInfo>false</RuntimeTypeInfo>
     </ClCompile>
     <Link>
       <SubSystem>
