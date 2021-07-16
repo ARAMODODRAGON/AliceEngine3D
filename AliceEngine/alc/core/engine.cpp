@@ -63,9 +63,11 @@ namespace alc {
 			if (scenes_enabled) scene_manager::__update(ts);
 			alice_events::onUpdate(ts);
 
-			// render
+			// clear screen
 			s_window->clear_screen(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-			s_game->draw();
+
+			// render
+
 
 			// swap buffers
 			s_window->swap_buffers();
@@ -183,7 +185,7 @@ namespace alc {
 				}
 				case SDL_MOUSEWHEEL:								// mouse scroll wheel
 				{
-					mouse::__set_scroll(static_cast<float>(e.wheel.y) 
+					mouse::__set_scroll(static_cast<float>(e.wheel.y)
 										* (e.wheel.direction == SDL_MOUSEWHEEL_NORMAL ? 1.0f : -1.0f));
 					break;
 				}

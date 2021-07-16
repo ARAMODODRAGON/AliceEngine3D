@@ -12,7 +12,6 @@ namespace alc {
 		virtual void init() = 0;
 		virtual void exit() = 0;
 		virtual void update(timestep ts) = 0;
-		virtual void draw() = 0;
 	};
 
 	using game_binding = game * (*)();

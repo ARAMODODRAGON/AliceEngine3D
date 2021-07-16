@@ -20,10 +20,6 @@ public:
 
 	}
 
-	virtual void draw() override {
-
-	}
-
 };
 
 class Level : public alc::scene {
