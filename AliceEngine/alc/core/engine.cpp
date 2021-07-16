@@ -2,6 +2,7 @@
 #include "alice_events.hpp"
 #include "../input/keyboard.hpp"
 #include "../input/mouse.hpp"
+#include "../jobs/job_queue.hpp"
 #include <chrono>
 #include <SDL.h>
 
@@ -27,6 +28,10 @@ namespace alc {
 
 		// create window
 		s_window = new window(set->window.titlebar, set->window.size);
+
+		// enable job system
+		const bool jobs_enabled = set->jobs.enabled;
+		if (jobs_enabled) job_queue::__init(set->jobs.maxthreads);
 
 		// enable scene_manager
 		const bool scenes_enabled = set->scenemanager.sceneBindings.size() > 0;
@@ -82,6 +87,9 @@ namespace alc {
 			s_game->exit();
 			delete s_game, s_game = nullptr;
 		}
+
+		// close jobs 
+		if (jobs_enabled) job_queue::__exit();
 
 		// close window
 		delete s_window; s_window = nullptr;

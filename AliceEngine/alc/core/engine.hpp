@@ -12,21 +12,28 @@ namespace alc {
 
 		// basic initialization
 		struct {
-			uint32 targetFramerate = 0; // if 0 then the framerate becomes uncapped
+			// set the max frame rate
+			// if 0 then the framerate becomes uncapped
+			uint32 targetFramerate = 0;
 		} general;
 
 		// window initialization
 		struct {
+			// the title of the window
 			std::string titlebar = "";
+			// the size of the window
 			glm::uvec2 size = glm::uvec2(0, 0);
 		} window;
 
 		// setup scenebindings -- optional
 		// when no scenes are bound the scenemanager becomes disabled during the duration of the game's run
 		struct {
+			// the scenes that can be loaded
 			std::vector<scene_binding> sceneBindings;
 
+			// load a scene by its index
 			uint32 initialSceneIndex = -1; // optional (priority)
+			// load a scene by its name
 			std::string initialSceneStr = ""; // optional
 		} scenemanager;
 
@@ -35,7 +42,10 @@ namespace alc {
 
 		// setup jobsystem -- optional
 		struct {
-			bool enabled = false; // must be enabled to use jobsystem
+			// must be enabled to use jobsystem
+			bool enabled = false;
+			// the max number of threads for the jobsystem to allocate
+			size_t maxthreads = -1;
 		} jobs;
 
 	};
