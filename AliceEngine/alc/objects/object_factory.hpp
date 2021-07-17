@@ -13,7 +13,7 @@ namespace alc {
 	class object_factory;
 	class object_prefab;
 
-	// components hold data in an game_object
+	// components hold data in a game_object
 	struct component {
 		ALC_NO_COPY(component);
 		ALC_NO_MOVE(component);
@@ -38,7 +38,7 @@ namespace alc {
 		void __set_object(game_object* _go);
 	};
 
-	// behaviors contain logic and data in an game_object
+	// behaviors contain logic and data in a game_object
 	class behavior : public component {
 		ALC_NO_COPY(behavior);
 		ALC_NO_MOVE(behavior);
@@ -50,10 +50,10 @@ namespace alc {
 		// creates a new game_object
 		game_object* create() const;
 
-		// creates an game_object with the component of type Ty and returns it
+		// creates a game_object with the component of type Ty and returns it
 		template<typename Ty> Ty* create();
 
-		// marks an game_object for destruction
+		// marks a game_object for destruction
 		// if destroyChildren is false then the children become unparented
 		bool destroy(game_object* entity_, bool destroyChildren = true);
 
@@ -128,10 +128,10 @@ namespace alc {
 		// creates a new game_object
 		game_object* create() const;
 
-		// creates an game_object with the component of type Ty and returns it
+		// creates a game_object with the component of type Ty and returns it
 		template<typename Ty> Ty* create();
 
-		// marks an game_object for destruction
+		// marks a game_object for destruction
 		// if destroyChildren is false then the children become unparented
 		bool destroy(game_object* go_, bool destroyChildren = true);
 
@@ -229,7 +229,7 @@ namespace alc {
 		// creates a new game_object
 		game_object* create();
 
-		// creates an game_object with the component of type Ty and returns it
+		// creates a game_object with the component of type Ty and returns it
 		template<typename Ty> Ty* create();
 
 		// creates multiple game objects to fill every index 
@@ -240,7 +240,7 @@ namespace alc {
 		template<typename Ty, typename iter>
 		void create(iter begin_, iter end_);
 
-		// marks an game_object for destruction
+		// marks a game_object for destruction
 		// if destroyChildren is false then the children become unparented
 		bool destroy(game_object* go_, bool destroyChildren = true);
 
