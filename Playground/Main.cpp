@@ -2,8 +2,6 @@
 #include <alc\alc.hpp>
 #include <alc\core\alice_events.hpp>
 #include <alc\objects\object_factory.hpp>
-#include <alc\reflection\type.hpp>
-#include "TypeSystemDemo.hpp"
 
 class Playground : public alc::game {
 public:
@@ -59,10 +57,10 @@ const alc::engine_settings GetSettings() {
 int main(int argc, char* argv[]) {
 
 	// get settings
-	const alc::engine_settings set = GetSettings();
+	//const alc::engine_settings set = GetSettings();
 
 	// start the engine
-	alc::engine::start(&set);
+	//alc::engine::start(&set);
 
 	return 0;
 }

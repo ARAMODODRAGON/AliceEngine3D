@@ -25,6 +25,18 @@ namespace alc {
 			glm::uvec2 size = glm::uvec2(0, 0);
 		} window;
 
+		// 3D rendering
+		struct {
+			// enable the system
+			bool enable = true;
+		} graphics3d;
+
+		// 2D rendering
+		struct {
+			// enable the system
+			bool enable = true;
+		} graphics2d;
+
 		// setup scenebindings -- optional
 		// when no scenes are bound the scenemanager becomes disabled during the duration of the game's run
 		struct {

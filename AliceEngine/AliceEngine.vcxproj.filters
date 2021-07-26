@@ -90,6 +90,18 @@
     <ClInclude Include="alc\jobs\job_queue.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="alc\datatypes\layermask.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\graphics\3D\scenegraph3d.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\content\contentmanager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\content\texture.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="alc\core\engine.cpp">
@@ -120,6 +132,12 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="alc\jobs\job_queue.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\content\contentmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\content\texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
