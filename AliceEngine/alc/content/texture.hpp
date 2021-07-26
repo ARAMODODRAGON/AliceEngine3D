@@ -32,7 +32,7 @@ namespace alc {
 	class texture final {
 	public:
 
-		// loads a texture 
+		// loads a texture using default texture options seen in textureopts struct
 		static texture load(const std::string& filepath);
 
 		// loads a texture 

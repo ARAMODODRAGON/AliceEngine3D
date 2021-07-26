@@ -15,8 +15,8 @@ namespace alc {
 		static inline event<void, timestep> onUpdate;
 
 
-		//// when loading a new scene
-		//// second parameter indicates the index of of this scene (0 would indicate that it is the primary scene)
+		// when loading a new scene
+		// second parameter indicates the index of of this scene (0 would indicate that it is the primary scene)
 		//static inline event<void, class scene*, uint32> onSceneLoad;
 
 	};
