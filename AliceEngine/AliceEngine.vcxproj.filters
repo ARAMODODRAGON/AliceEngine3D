@@ -102,6 +102,9 @@
     <ClInclude Include="alc\content\texture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="alc\content\shader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="alc\core\engine.cpp">
@@ -138,6 +141,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="alc\content\texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\content\shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

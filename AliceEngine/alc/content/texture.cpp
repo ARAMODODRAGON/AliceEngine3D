@@ -119,9 +119,12 @@ namespace alc {
 		return tex;
 	}
 
-	void texture::unload(texture& tex) {
+	bool texture::unload(texture& tex) {
+		if (!tex) return false;
+
 		// delete the texture
 		glDeleteTextures(1, &tex.m_id);
+		return true;
 	}
 
 	texture::texture(std::nullptr_t) 

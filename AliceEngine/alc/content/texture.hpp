@@ -39,7 +39,7 @@ namespace alc {
 		static texture load(const std::string& filepath, const textureopts& options);
 
 		// deletes a texture
-		static void unload(texture& tex);
+		static bool unload(texture& tex);
 
 
 		// null texture object
