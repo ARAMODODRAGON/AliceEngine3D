@@ -108,7 +108,6 @@ namespace alc {
 		sb.create = []()-> scene* { return new Ty(); };
 		sb.args = args;
 		return sb;
-
 	}
 
 }
