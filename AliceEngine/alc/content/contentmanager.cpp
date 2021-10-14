@@ -67,6 +67,19 @@ namespace alc {
 		return true;
 	}
 
+	shader contentcontext::loadshader(const std::string& str) {
+		// return existing
+		auto it = m_shaders.find(str);
+		if (it != m_shaders.end()) return it->second;
+
+		// create and emplace
+		shader shad = shader::load(str);
+		m_shaders.emplace(str, shad);
+
+		// return
+		return shad;
+	}
+
 	contentcontext* contentmanager::def() {
 		return s_default;
 	}
@@ -92,6 +105,11 @@ namespace alc {
 	bool contentmanager::storetexture(const texture& tex, const std::string& str) {
 		if (s_current) return s_current->storetexture(tex, str);
 		else return s_default->storetexture(tex, str);
+	}
+
+	shader contentmanager::loadshader(const std::string& str) {
+		if (s_current) return s_current->loadshader(str);
+		else return s_default->loadshader(str);
 	}
 
 	void contentmanager::__init() {

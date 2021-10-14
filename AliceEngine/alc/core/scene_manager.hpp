@@ -83,16 +83,17 @@ namespace alc {
 			active_scene(alc::scene* scene, const scene_binding* binding);
 		};
 		static inline std::vector<active_scene> s_activeScenes;
-		static inline const scene_binding* s_primarySceneToLoad = nullptr;
-		static inline std::vector<const scene_binding*> s_scenesToLoad;
+		static inline std::list<std::pair<bool, size_t>> s_scenesToLoad;
 		static inline const engine_settings* s_eSettings = nullptr;
 		static inline bool s_checkForSceneChanges = false;
 
 		static void handle_scenes();
+		static void do_load_scene(bool firstslot, size_t sceneBindingIndex = -1);
+		static scene* create_scene(size_t sceneBindingIndex, size_t index);
+		static void delete_scene(size_t index);
 
 	public:
-		static void __set_settings(const engine_settings* set);
-		static void __init();
+		static void __init(const engine_settings* set);
 		static void __exit();
 		static void __update(timestep ts);
 	};

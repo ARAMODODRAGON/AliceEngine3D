@@ -2,6 +2,7 @@
 #define ALC_CONTENT_CONTENTMANAGER_HPP
 #include "../common.hpp"
 #include "texture.hpp"
+#include "shader.hpp"
 #include <unordered_map>
 
 namespace alc {
@@ -34,7 +35,7 @@ namespace alc {
 		bool storetexture(const texture& tex, const std::string& str);
 
 		// loads a shader file and stores it in the internal storage
-		//shader loadshader(const std::string& str);
+		shader loadshader(const std::string& str);
 
 		// loads a shader source and stores it in the internal storage
 		//shader loadshadersource(const std::string& identifier, const std::string& source);
@@ -49,7 +50,7 @@ namespace alc {
 		friend class contentmanager;
 		// TODO: create all types of content
 		std::unordered_map<std::string, texture> m_textures;
-		//std::unordered_map<std::string, shader> m_shaders;
+		std::unordered_map<std::string, shader> m_shaders;
 		//std::unordered_map<std::string, mesh> m_meshes;
 		//std::unordered_map<std::string, font> m_fonts;
 		//std::unordered_map<std::string, sound> m_sounds;
@@ -79,7 +80,7 @@ namespace alc {
 		static bool storetexture(const texture& tex, const std::string& str);
 
 		// loads a shader file and stores it in the current context
-		//static shader loadshader(const std::string& str);
+		static shader loadshader(const std::string& str);
 
 		// loads a shader source and stores it in the current context
 		//static shader loadshadersource(const std::string& identifier, const std::string& source);

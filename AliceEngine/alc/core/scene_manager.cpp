@@ -1,6 +1,7 @@
 #include "scene_manager.hpp"
 #include "debug.hpp"
 #include "engine.hpp"
+#include "alice_events.hpp"
 
 namespace alc {
 
@@ -27,15 +28,17 @@ namespace alc {
 			ALC_DEBUG_WARNING("scene_manager is disabled");
 			return false;
 		}
+		auto& bindings = s_eSettings->scenemanager.sceneBindings;
 
-		// check if valid index
-		if (sceneBindingIndex >= s_eSettings->scenemanager.sceneBindings.size()) {
-			ALC_DEBUG_WARNING("No scenebinding at index " + sceneBindingIndex);
+		// check valid index
+		if (bindings.size() <= sceneBindingIndex) {
+			ALC_DEBUG_ERROR("Cannot load scene with index of " + VTOS(sceneBindingIndex));
 			return false;
 		}
 
-		// set
-		s_primarySceneToLoad = &s_eSettings->scenemanager.sceneBindings[sceneBindingIndex];
+		// add scene to load
+		s_checkForSceneChanges = true;
+		s_scenesToLoad.emplace_back(true, sceneBindingIndex);
 		return true;
 	}
 
@@ -44,18 +47,27 @@ namespace alc {
 			ALC_DEBUG_WARNING("scene_manager is disabled");
 			return false;
 		}
+		auto& bindings = s_eSettings->scenemanager.sceneBindings;
 
-		// find scene with name
-		for (size_t i = 0; i < s_eSettings->scenemanager.sceneBindings.size(); i++) {
-			if (s_eSettings->scenemanager.sceneBindings[i].name == sceneName) {
-				s_primarySceneToLoad = &s_eSettings->scenemanager.sceneBindings[i];
-				return true;
+		// check valid index
+		bool sceneBindingIndex = -1;
+
+		for (size_t i = 0; i < bindings.size(); i++) {
+			if (bindings[i].name == sceneName) {
+				sceneBindingIndex = i;
+				break;
 			}
 		}
 
-		// no scene with name
-		ALC_DEBUG_WARNING("No scenebinding with name " + sceneName);
-		return false;
+		if (bindings.size() <= sceneBindingIndex) {
+			ALC_DEBUG_ERROR("Cannot load scene with name of " + sceneName);
+			return false;
+		}
+
+		// add scene to load
+		s_checkForSceneChanges = true;
+		s_scenesToLoad.emplace_back(true, sceneBindingIndex);
+		return true;
 	}
 
 	bool scene_manager::load_scene_additive(size_t sceneBindingIndex) {
@@ -63,15 +75,17 @@ namespace alc {
 			ALC_DEBUG_WARNING("scene_manager is disabled");
 			return false;
 		}
+		auto& bindings = s_eSettings->scenemanager.sceneBindings;
 
-		// check if valid index
-		if (sceneBindingIndex >= s_eSettings->scenemanager.sceneBindings.size()) {
-			ALC_DEBUG_WARNING("No scenebinding at index " + sceneBindingIndex);
+		// check valid index
+		if (bindings.size() <= sceneBindingIndex) {
+			ALC_DEBUG_ERROR("Cannot load scene with index of " + VTOS(sceneBindingIndex));
 			return false;
 		}
 
-		// set
-		s_scenesToLoad.push_back(&s_eSettings->scenemanager.sceneBindings[sceneBindingIndex]);
+		// add scene to load
+		s_checkForSceneChanges = true;
+		s_scenesToLoad.emplace_back(false, sceneBindingIndex); // false indicates additive scene
 		return true;
 	}
 
@@ -80,18 +94,27 @@ namespace alc {
 			ALC_DEBUG_WARNING("scene_manager is disabled");
 			return false;
 		}
+		auto& bindings = s_eSettings->scenemanager.sceneBindings;
 
-		// find scene with name
-		for (size_t i = 0; i < s_eSettings->scenemanager.sceneBindings.size(); i++) {
-			if (s_eSettings->scenemanager.sceneBindings[i].name == sceneName) {
-				s_scenesToLoad.push_back(&s_eSettings->scenemanager.sceneBindings[i]);
-				return true;
+		// check valid index
+		bool sceneBindingIndex = -1;
+
+		for (size_t i = 0; i < bindings.size(); i++) {
+			if (bindings[i].name == sceneName) {
+				sceneBindingIndex = i;
+				break;
 			}
 		}
 
-		// no scene with name
-		ALC_DEBUG_WARNING("No scenebinding with name " + sceneName);
-		return false;
+		if (bindings.size() <= sceneBindingIndex) {
+			ALC_DEBUG_ERROR("Cannot load scene with name of " + sceneName);
+			return false;
+		}
+
+		// add scene to load
+		s_checkForSceneChanges = true;
+		s_scenesToLoad.emplace_back(false, sceneBindingIndex); // false indicates additive scene
+		return true;
 	}
 
 	bool scene_manager::unload_scene(size_t activeSceneIndex) {
@@ -100,15 +123,21 @@ namespace alc {
 			return false;
 		}
 
-		// check for valid index
-		if (activeSceneIndex == 0 || activeSceneIndex > s_activeScenes.size()) {
-			ALC_DEBUG_WARNING("Could not unload scene because it was not a valid index or the primary scene was selected");
+		// check if valid
+		if (activeSceneIndex >= s_activeScenes.size()) {
+			ALC_DEBUG_ERROR("Could not unload scene, invalid index");
+			return false;
+		}
+		// check if scene exists
+		else if (s_activeScenes[activeSceneIndex].scene.get() == nullptr) {
+			ALC_DEBUG_ERROR("Could not unload scene, scene already unloaded");
 			return false;
 		}
 
-		// mark to unload
+		// find scene and mark to unload
 		s_checkForSceneChanges = true;
 		s_activeScenes[activeSceneIndex].shouldDestroy = true;
+
 		return true;
 	}
 
@@ -141,120 +170,145 @@ namespace alc {
 	}
 
 	void scene_manager::handle_scenes() {
-		// load primary scene
-		if (s_primarySceneToLoad) {
-			// destroy old scene
-			if (s_activeScenes.size() > 0) {
-				s_activeScenes[0].scene->exit();
-				s_activeScenes[0].scene.reset();
-				ALC_DEBUG_LOG("Closed scene " + s_activeScenes[0].binding->name);
+		s_checkForSceneChanges = false;
+
+		// check if any scenes need to be loaded
+		if (s_scenesToLoad.size() > 0) {
+			while (s_scenesToLoad.size() > 0) {
+				// get binding
+				auto [firstslot, binding] = s_scenesToLoad.front();
+
+				// load
+				do_load_scene(firstslot, binding);
+
+				// erase position
+				s_scenesToLoad.erase(s_scenesToLoad.begin());
 			}
-			// no scenes, create empty first spot
-			else {
-				s_activeScenes.emplace_back(nullptr, nullptr);
-			}
-			// create scene
-			scene* firstscene = s_primarySceneToLoad->create();
-			firstscene->__set_index(0);
-			firstscene->__set_name(s_primarySceneToLoad->name);
-			//s_activeScenes[0] = active_scene(firstscene, s_primarySceneToLoad);
-			s_activeScenes[0].scene.reset(firstscene);
-			s_activeScenes[0].binding = s_primarySceneToLoad;
-			s_activeScenes[0].shouldDestroy = false;
-			firstscene->init(s_primarySceneToLoad->args);
-			ALC_DEBUG_LOG("Created scene " + s_activeScenes[0].binding->name);
-			s_primarySceneToLoad = nullptr;
 		}
 
-		// load / unload additive scenes
+		// check if any need to be deleted
+		for (size_t i = 0; i < s_activeScenes.size(); i++) {
+			if (s_activeScenes[i].shouldDestroy) {
+				if (s_activeScenes[i].scene.get()) delete_scene(i);
+				s_activeScenes[i].shouldDestroy = false;
+				s_activeScenes[i].binding = nullptr;
+			}
+		}
+	}
 
-		// unload
-		if (s_checkForSceneChanges) {
-			s_checkForSceneChanges = false;
-			for (auto it = s_activeScenes.begin(); it != s_activeScenes.end(); ++it) {
-				if (it->shouldDestroy) {
-					it->scene->exit();
-					it->scene.reset();
-					ALC_DEBUG_LOG("Closed scene " + it->binding->name);
-					it = s_activeScenes.erase(it);
+	void scene_manager::do_load_scene(bool firstslot, size_t sceneBindingIndex) {
+		if (s_activeScenes.size() == 0) { s_activeScenes.emplace_back(); }
+
+		// create
+		size_t index = (firstslot ? 0 : s_activeScenes.size());
+		scene* scene = create_scene(sceneBindingIndex, index);
+
+		// delete any previously existing scene if first
+		if (firstslot) {
+			if (s_activeScenes[0].scene) delete_scene(0);
+		}
+		// find index / add new index
+		else {
+			for (index = 0; index < s_activeScenes.size(); index++) {
+				if (s_activeScenes[index].scene.get() != nullptr) {
+					break;
 				}
 			}
-		}
-
-		// load
-		if (s_scenesToLoad.size() > 0) {
-			for (size_t i = 0; i < s_scenesToLoad.size(); i++) {
-				scene* scene = s_scenesToLoad[i]->create();
-				scene->__set_index(s_activeScenes.size());
-				scene->__set_name(s_scenesToLoad[i]->name);
-				s_activeScenes.emplace_back(scene, s_scenesToLoad[i]);
-				scene->init(s_scenesToLoad[i]->args);
-				ALC_DEBUG_LOG("Created scene " + s_scenesToLoad[i]->name);
+			if (index == s_activeScenes.size()) {
+				s_activeScenes.emplace_back();
 			}
-			s_scenesToLoad.clear();
 		}
 
+		auto* binding = &(s_eSettings->scenemanager.sceneBindings[sceneBindingIndex]);
+
+		// set new scene 
+		s_activeScenes[index].shouldDestroy = false;
+		s_activeScenes[index].binding = binding;
+		s_activeScenes[index].scene.reset(scene);
+
+		// invoke event and init only after setting it to the index
+		alice_events::onSceneLoad(scene, index);
+		scene->init(binding->args);
 	}
 
-	void scene_manager::__set_settings(const engine_settings* set) {
+	scene* scene_manager::create_scene(size_t sceneBindingIndex, size_t index) {
+		auto& binding = s_eSettings->scenemanager.sceneBindings[sceneBindingIndex];
+		scene* scene = binding.create();
+		scene->__set_name(binding.name);
+		scene->__set_index(index);
+		return scene;
+	}
+
+	void scene_manager::delete_scene(size_t index) {
+		s_activeScenes[index].scene->exit();
+		alice_events::onSceneUnload(s_activeScenes[index].scene.get(), index);
+		s_activeScenes[index].scene.reset();
+	}
+
+	void scene_manager::__init(const engine_settings* set) {
+		if (set->scenemanager.sceneBindings.size() == 0) {
+			ALC_DEBUG_ERROR("No scenes are bound. Cannot initialize scene manager");
+			return;
+		}
+
 		s_eSettings = set;
-	}
 
-	void scene_manager::__init() {
-		const engine_settings* set = s_eSettings;
+		// start listening to update
+		alice_events::onUpdate += scene_manager::__update;
+
+		// initialize
+		s_activeScenes.clear();
+		s_scenesToLoad.clear();
+		s_checkForSceneChanges = false;
+
+		// check if a scene needs to be loaded initially
 
 		// load by index
-		if (s_primarySceneToLoad == nullptr && set->scenemanager.initialSceneIndex != -1 &&
-			set->scenemanager.initialSceneIndex < set->scenemanager.sceneBindings.size()) {
-			s_primarySceneToLoad = &set->scenemanager.sceneBindings[set->scenemanager.initialSceneIndex];
+		if (set->scenemanager.initialSceneIndex != -1) {
+			load_scene(set->scenemanager.initialSceneIndex);
 		}
 		// load by name
-		if (s_primarySceneToLoad == nullptr && set->scenemanager.initialSceneStr != "") {
-			for (size_t i = 0; i < set->scenemanager.sceneBindings.size(); i++) {
-				if (set->scenemanager.sceneBindings[i].name == set->scenemanager.initialSceneStr) {
-					s_primarySceneToLoad = &set->scenemanager.sceneBindings[i];
-				}
-			}
+		else if (set->scenemanager.initialSceneStr != "") {
+			load_scene(set->scenemanager.initialSceneStr);
 		}
-		// load first
-		if (s_primarySceneToLoad == nullptr) s_primarySceneToLoad = &set->scenemanager.sceneBindings[0];
+		// else do not load anything
 
 		// load scene
 		handle_scenes();
 	}
 
 	void scene_manager::__exit() {
-		// destroy all scenes
-		for (size_t i = 0; i < s_activeScenes.size(); i++) {
-			s_activeScenes[i].scene->exit();
-			s_activeScenes[i].scene.reset();
-			ALC_DEBUG_LOG("Closed scene " + s_activeScenes[i].binding->name);
+		// was not initialized correctly, no need to uninitialize
+		if (s_eSettings->scenemanager.sceneBindings.size() == 0) {
+			return;
 		}
+
+		// remove all scenes to load
+		s_scenesToLoad.clear();
+
+		// mark all scenes to be destroyed
+		for (size_t i = 0; i < s_activeScenes.size(); i++) {
+			s_activeScenes[i].shouldDestroy = true;
+		}
+		// will destroy all scenes marked as shouldDestroy
+		handle_scenes();
 		s_activeScenes.clear();
 
-		// remove pointers
-		s_primarySceneToLoad = nullptr;
-		s_scenesToLoad.clear();
-		s_eSettings = nullptr;
-		s_checkForSceneChanges = false;
+		// stop listening to update
+		alice_events::onUpdate -= scene_manager::__update;
+
 	}
 
 	void scene_manager::__update(timestep ts) {
 		// load/unload scenes
-		handle_scenes();
+		if (s_checkForSceneChanges) handle_scenes();
 
 		// update scenes
 		for (size_t i = 0; i < s_activeScenes.size(); i++) {
-			s_activeScenes[i].scene->update(ts);
+			if (s_activeScenes[i].scene.get())
+				s_activeScenes[i].scene->update(ts);
 		}
 	}
-
-	//void scene_manager::__draw() {
-	//	// draw scenes
-	//	for (size_t i = 0; i < s_activeScenes.size(); i++) {
-	//		s_activeScenes[i].scene->draw();
-	//	}
-	//}
 
 	scene_manager::active_scene::active_scene(alc::scene* scene_, const scene_binding* binding_)
 		: scene(scene_), shouldDestroy(false), binding(binding_) { }
