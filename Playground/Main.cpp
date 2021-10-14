@@ -37,7 +37,7 @@ private:
 
 };
 
-static const alc::engine_settings GetSettings(bool debug) {
+static const alc::engine_settings GetSettings() {
 	alc::engine_settings set;
 
 	set.window.titlebar = "Playground";
