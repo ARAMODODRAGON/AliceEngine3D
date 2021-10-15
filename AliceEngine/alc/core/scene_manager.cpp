@@ -50,7 +50,7 @@ namespace alc {
 		auto& bindings = s_eSettings->scenemanager.sceneBindings;
 
 		// check valid index
-		bool sceneBindingIndex = -1;
+		size_t sceneBindingIndex = -1;
 
 		for (size_t i = 0; i < bindings.size(); i++) {
 			if (bindings[i].name == sceneName) {
@@ -97,7 +97,7 @@ namespace alc {
 		auto& bindings = s_eSettings->scenemanager.sceneBindings;
 
 		// check valid index
-		bool sceneBindingIndex = -1;
+		size_t sceneBindingIndex = -1;
 
 		for (size_t i = 0; i < bindings.size(); i++) {
 			if (bindings[i].name == sceneName) {

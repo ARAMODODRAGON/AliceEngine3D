@@ -111,11 +111,12 @@ namespace alc {
 
 		// create texture object and return
 		texture tex;
-		tex.m_id = textureID;
-		tex.m_size = glm::uvec2(width, height);
-		tex.m_format = realformat;
-		tex.m_wrap = options.wrap;
-		tex.m_filter = options.filter;
+		tex.m_data.reset(new data_t());
+		tex.m_data->id = textureID;
+		tex.m_data->size = glm::uvec2(width, height);
+		tex.m_data->format = realformat;
+		tex.m_data->wrap = options.wrap;
+		tex.m_data->filter = options.filter;
 		return tex;
 	}
 
@@ -123,48 +124,58 @@ namespace alc {
 		if (!tex) return false;
 
 		// delete the texture
-		glDeleteTextures(1, &tex.m_id);
+		tex.m_data.reset();
 		return true;
 	}
 
-	texture::texture(std::nullptr_t) 
-		: m_id(-1), m_size(0), m_format(textureformat::any)
-		, m_wrap(texturewrap::clamp_border), m_filter(texturefilter::linear) { }
+	texture::texture(std::nullptr_t)
+		: m_data(nullptr) { }
 
 	bool texture::is_valid() const {
-		return m_format != textureformat::any;
+		return m_data.get() != nullptr;
 	}
 
 	texture::operator bool() const { return is_valid(); }
 
-	texture::operator uint32() const { return m_id; }
+	texture::operator uint32() const {
+		if (!is_valid()) return -1;
+		return m_data->id;
+	}
 
 	uint32 texture::get_id() const {
-		return m_id;
+		if (!is_valid()) return -1;
+		return m_data->id;
 	}
 
 	glm::uvec2 texture::get_size() const {
-		return m_size;
+		if (!is_valid()) return glm::uvec2(0);
+		return m_data->size;
 	}
 
 	textureformat texture::get_format() const {
-		return m_format;
+		if (!is_valid()) return (textureformat)-1;
+		return m_data->format;
 	}
 
 	texturewrap texture::get_wrap() const {
-		return m_wrap;
+		if (!is_valid()) return (texturewrap)-1;
+		return m_data->wrap;
 	}
 
 	texturefilter texture::get_filter() const {
-		return m_filter;
+		if (!is_valid()) return (texturefilter)-1;
+		return m_data->filter;
 	}
 
 	bool texture::operator==(const texture& other) const {
-		return m_id == other.m_id;
+		return m_data == other.m_data;
 	}
 
 	bool texture::operator!=(const texture& other) const {
-		return m_id != other.m_id;
+		return m_data != other.m_data;
 	}
 
+	texture::data_t::~data_t() {
+		glDeleteTextures(1, &id);
+	}
 }

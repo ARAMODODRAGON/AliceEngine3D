@@ -62,10 +62,10 @@ namespace alc {
 
 		// returns the format of the texture
 		textureformat get_format() const;
-		
+
 		// returns the wrap of the texture
 		texturewrap get_wrap() const;
-		
+
 		// returns the filter of the texture
 		texturefilter get_filter() const;
 
@@ -76,11 +76,16 @@ namespace alc {
 		bool operator!=(const texture& other) const;
 
 	private:
-		uint32 m_id;
-		glm::uvec2 m_size;
-		textureformat m_format;
-		texturewrap m_wrap;
-		texturefilter m_filter;
+		struct data_t final {
+			uint32 id;
+			glm::uvec2 size;
+			textureformat format;
+			texturewrap wrap;
+			texturefilter filter;
+			data_t() = default;
+			~data_t();
+		};
+		std::unique_ptr<data_t> m_data;
 	};
 
 }

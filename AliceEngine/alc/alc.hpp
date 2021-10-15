@@ -32,6 +32,6 @@ namespace alc { }
 #include "input\keyboard.hpp"
 #include "input\mouse.hpp"
 #include "objects\object_factory.hpp"
-#include "content\contentmanager.hpp"
+#include "content\content_manager.hpp"
 
 #endif // !ALC_HPP

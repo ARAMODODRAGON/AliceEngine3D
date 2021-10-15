@@ -46,7 +46,12 @@ namespace alc {
 		uint32 get_uniform(const std::string& str) const;
 
 	private:
-		uint32 m_id;
+		struct data_t {
+			data_t(uint32 id) : id(id) { }
+			~data_t();
+			uint32 id;
+		};
+		std::unique_ptr<data_t> m_data;
 	};
 
 }

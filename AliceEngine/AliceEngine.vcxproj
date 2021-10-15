@@ -21,7 +21,8 @@
   <ItemGroup>
     <ClInclude Include="alc\alc.hpp" />
     <ClInclude Include="alc\common.hpp" />
-    <ClInclude Include="alc\content\contentmanager.hpp" />
+    <ClInclude Include="alc\content\content_manager.hpp" />
+    <ClInclude Include="alc\content\detail\content_storage.hpp" />
     <ClInclude Include="alc\content\mesh.hpp" />
     <ClInclude Include="alc\content\shader.hpp" />
     <ClInclude Include="alc\content\texture.hpp" />
@@ -35,10 +36,13 @@
     <ClInclude Include="alc\datatypes\function.hpp" />
     <ClInclude Include="alc\datatypes\hash.hpp" />
     <ClInclude Include="alc\datatypes\layermask.hpp" />
+    <ClInclude Include="alc\datatypes\object_vertex.hpp" />
     <ClInclude Include="alc\datatypes\timestep.hpp" />
     <ClInclude Include="alc\dependencies\stb_image.h" />
     <ClInclude Include="alc\dependencies\tiny_obj_loader.h" />
+    <ClInclude Include="alc\graphics\2D\basic_mesh.hpp" />
     <ClInclude Include="alc\graphics\3D\scenegraph3d.hpp" />
+    <ClInclude Include="alc\graphics\camera.hpp" />
     <ClInclude Include="alc\jobs\cjs\cjs.hpp" />
     <ClInclude Include="alc\jobs\cjs\context.hpp" />
     <ClInclude Include="alc\jobs\cjs\handle.hpp" />
@@ -52,8 +56,6 @@
     <ClInclude Include="alc\reflection\typehash.hpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="alc\content\contentmanager.cpp" />
-    <ClCompile Include="alc\content\mesh.cpp" />
     <ClCompile Include="alc\content\shader.cpp" />
     <ClCompile Include="alc\content\texture.cpp" />
     <ClCompile Include="alc\core\debug.cpp" />

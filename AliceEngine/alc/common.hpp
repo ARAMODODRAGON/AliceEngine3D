@@ -1,12 +1,14 @@
 #ifndef ALC_COMMON_HPP
 #define ALC_COMMON_HPP
 #include <glm\glm.hpp>
+#include <glm\gtc\quaternion.hpp>
 #include <string>
 #include <vector>
 #include <list>
 #include <inttypes.h>
 #include <memory>
 #include <utility>
+#include <unordered_map>
 
 namespace alc {
 

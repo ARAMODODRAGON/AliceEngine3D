@@ -25,17 +25,11 @@ namespace alc {
 			glm::uvec2 size = glm::uvec2(0, 0);
 		} window;
 
-		// 3D rendering
+		// rendering
 		struct {
-			// enable the system
-			bool enable = true;
-		} graphics3d;
-
-		// 2D rendering
-		struct {
-			// enable the system
-			bool enable = true;
-		} graphics2d;
+			// enable the renderer
+			bool enabled = true;
+		} renderer;
 
 		// setup scenebindings -- optional
 		// when no scenes are bound the scenemanager becomes disabled during the duration of the game's run
@@ -68,7 +62,8 @@ namespace alc {
 	public:
 
 		// starts the engine using the given settings
-		// engine will hold a pointer to the settings and read from it, must not modify the settings while the engine runs
+		// engine will hold a pointer to the settings and read from it
+		// editing the settings after starting will cause undefined behaviour
 		static void start(const engine_settings* set);
 
 		// quits the current instance of the engine

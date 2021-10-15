@@ -20,11 +20,6 @@ namespace alc {
 			throw std::runtime_error("Failed to init SDL");
 		}
 
-		//if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 4, 4096) < 0) {
-		//	ALC_DEBUG_FATAL_ERROR("Mixer failed to initialize. Error:\n" + string(Mix_GetError()));
-		//	throw std::runtime_error("Mixer failed to initialize");
-		//}
-
 		// set some attributes
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
 		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, 4);

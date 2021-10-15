@@ -1,21 +1,29 @@
 #ifndef ALC_CONTENT_MESH_HPP
 #define ALC_CONTENT_MESH_HPP
-#include "../common.hpp"
-#include "shader.hpp"
 
 namespace alc {
 
-	class mesh {
+	class mesh final {
 	public:
+		class submesh final {
+			friend class mesh;
+		public:
 
-		// loads a mesh
+			submesh();
+
+		private:
+			uint32 m_vao, m_vbo, m_ebo;
+		public:
+			void __bind();
+		};
+
+		// loads mesh from a file
 		static mesh load(const std::string& filepath);
 
 		// deletes the mesh
 		static bool unload(mesh& m);
 
 
-		// default
 		mesh(std::nullptr_t = nullptr);
 
 		// checks if this is a valid mesh
@@ -31,7 +39,10 @@ namespace alc {
 		bool operator!=(const mesh& other) const;
 
 	private:
-		uint32 m_id;
+		struct mesh_data final {
+			std::vector<submesh> m_submeshes;
+		};
+		std::shared_ptr<mesh_data> m_meshData;
 	};
 
 }

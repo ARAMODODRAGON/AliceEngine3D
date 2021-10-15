@@ -125,21 +125,21 @@ namespace alc {
 
 		// create shader and assign program ID
 		shader shader;
-		shader.m_id = shaderProgram;
+		shader.m_data.reset(new data_t(shaderProgram));
 		return shader;
 	}
 
 	bool shader::unload(shader& shader_) {
 		if (!shader_) return false;
-		glDeleteProgram(shader_.m_id);
+		shader_.m_data.reset();
 		return true;
 	}
 
 
-	shader::shader(std::nullptr_t) : m_id(static_cast<uint32>(-1)) { }
+	shader::shader(std::nullptr_t) : m_data(nullptr) { }
 
 	bool shader::is_valid() const {
-		return m_id != -1;
+		return m_data.get() != nullptr;
 	}
 
 	shader::operator bool() const { return is_valid(); }
@@ -147,19 +147,23 @@ namespace alc {
 	shader::operator uint32() const { return get_id(); }
 
 	uint32 shader::get_id() const {
-		return m_id;
+		return m_data->id;
 	}
 
 	bool shader::operator==(const shader& other) const {
-		return m_id == other.m_id;
+		return get_id() == other.get_id();
 	}
 
 	bool shader::operator!=(const shader& other) const {
-		return m_id != other.m_id;
+		return get_id() != other.get_id();
 	}
 
 	uint32 shader::get_uniform(const std::string& str) const {
-		return glGetUniformLocation(m_id, str.c_str());
+		return glGetUniformLocation(get_id(), str.c_str());
+	}
+
+	shader::data_t::~data_t() {
+		glDeleteProgram(id);
 	}
 
 }

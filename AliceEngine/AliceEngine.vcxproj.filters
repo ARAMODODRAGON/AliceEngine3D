@@ -96,16 +96,28 @@
     <ClInclude Include="alc\graphics\3D\scenegraph3d.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\content\contentmanager.hpp">
+    <ClInclude Include="alc\graphics\2D\basic_mesh.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\content\texture.hpp">
+    <ClInclude Include="alc\content\content_manager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\graphics\camera.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\content\mesh.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\content\detail\content_storage.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\datatypes\object_vertex.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alc\content\shader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\content\mesh.hpp">
+    <ClInclude Include="alc\content\texture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -140,16 +152,10 @@
     <ClCompile Include="alc\jobs\job_queue.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alc\content\contentmanager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="alc\content\texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="alc\content\shader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alc\content\mesh.cpp">
+    <ClCompile Include="alc\content\texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
