@@ -25,7 +25,7 @@ namespace alc {
 			glm::uvec2 size = glm::uvec2(0, 0);
 		} window;
 
-		// rendering
+		// rendering -- optional
 		struct {
 			// enable the renderer
 			bool enabled = true;
