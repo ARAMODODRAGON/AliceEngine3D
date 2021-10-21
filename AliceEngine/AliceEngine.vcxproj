@@ -30,6 +30,7 @@
     <ClInclude Include="alc\core\engine.hpp" />
     <ClInclude Include="ALC\Core\alice_events.hpp" />
     <ClInclude Include="alc\core\game.hpp" />
+    <ClInclude Include="alc\core\scene_manager.hpp" />
     <ClInclude Include="alc\core\window.hpp" />
     <ClInclude Include="alc\datatypes\button.hpp" />
     <ClInclude Include="alc\datatypes\function.hpp" />
@@ -60,6 +61,7 @@
     <ClCompile Include="alc\content\texture.cpp" />
     <ClCompile Include="alc\core\debug.cpp" />
     <ClCompile Include="alc\core\engine.cpp" />
+    <ClCompile Include="alc\core\scene_manager.cpp" />
     <ClCompile Include="alc\core\window.cpp" />
     <ClCompile Include="alc\jobs\job_queue.cpp" />
     <ClCompile Include="alc\input\keyboard.cpp" />

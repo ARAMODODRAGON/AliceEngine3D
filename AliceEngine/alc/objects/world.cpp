@@ -15,6 +15,8 @@ namespace alc {
 	}
 
 	bool world::delete_group(group* g) {
+		if (g == nullptr) return false;
+		if (s_deletingState) return false;
 		if (s_groups.size() == 0) {
 			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
 			return false;
@@ -71,6 +73,10 @@ namespace alc {
 			ALC_DEBUG_ERROR("world is already enabled");
 			return;
 		}
+		s_groupsToDelete.clear();
+		s_behaviorsToDelete.clear();
+		s_objectsToDelete.clear();
+		s_componentsToDelete.clear();
 
 		s_groups.reserve(20);
 		s_groups.push_back(new group("PRIMARY"));
@@ -102,6 +108,7 @@ namespace alc {
 		detail::onWorldComponentUpdate(ts);
 
 		// now, delete stuff
+		s_deletingState = true;
 
 		// delete groups
 		while (s_groupsToDelete.size()) {
@@ -113,6 +120,13 @@ namespace alc {
 				__remove_group(g);
 				delete g;
 			}
+		}
+
+		// delete behaviors
+		while (s_behaviorsToDelete.size()) {
+			auto* b = s_behaviorsToDelete.back();
+			s_behaviorsToDelete.pop_back();
+			b->get_group()->__delete_behavior(b);
 		}
 
 		// delete objects
@@ -129,6 +143,7 @@ namespace alc {
 			c->get_object()->__delete_component(c);
 		}
 
+		s_deletingState = false;
 	}
 
 	void world::__remove_group(group* g) {
@@ -145,6 +160,8 @@ namespace alc {
 	}
 
 	bool world::__delete_behavior(behavior* b) {
+		if (b == nullptr) return false;
+		if (s_deletingState) return false;
 		if (s_groups.size() == 0) {
 			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
 			return false;
@@ -155,6 +172,8 @@ namespace alc {
 	}
 
 	bool world::__delete_object(gameobject* o) {
+		if (o == nullptr) return false;
+		if (s_deletingState) return false;
 		if (s_groups.size() == 0) {
 			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
 			return false;
@@ -165,6 +184,8 @@ namespace alc {
 	}
 
 	bool world::__delete_component(component* c) {
+		if (c == nullptr) return false;
+		if (s_deletingState) return false;
 		if (s_groups.size() == 0) {
 			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
 			return false;
@@ -175,7 +196,7 @@ namespace alc {
 	}
 
 	void world::__remove_delete_group(group* g) {
-		if (s_deletingState == true) return;
+		if (g == nullptr) return;
 		for (size_t i = 0; i < s_groupsToDelete.size(); i++) {
 			if (s_groupsToDelete[i] == g) {
 				s_groupsToDelete.erase(s_groupsToDelete.begin() + i);
@@ -185,7 +206,7 @@ namespace alc {
 	}
 
 	void world::__remove_delete_behavior(behavior* b) {
-		if (s_deletingState == true) return;
+		if (b == nullptr) return;
 		for (size_t i = 0; i < s_behaviorsToDelete.size(); i++) {
 			if (s_behaviorsToDelete[i] == b) {
 				s_behaviorsToDelete.erase(s_behaviorsToDelete.begin() + i);
@@ -195,7 +216,7 @@ namespace alc {
 	}
 
 	void world::__remove_delete_object(gameobject* o) {
-		if (s_deletingState == true) return;
+		if (o == nullptr) return;
 		for (size_t i = 0; i < s_objectsToDelete.size(); i++) {
 			if (s_objectsToDelete[i] == o) {
 				s_objectsToDelete.erase(s_objectsToDelete.begin() + i);
@@ -205,7 +226,7 @@ namespace alc {
 	}
 
 	void world::__remove_delete_component(component* c) {
-		if (s_deletingState == true) return;
+		if (c == nullptr) return;
 		for (size_t i = 0; i < s_componentsToDelete.size(); i++) {
 			if (s_componentsToDelete[i] == c) {
 				s_componentsToDelete.erase(s_componentsToDelete.begin() + i);

@@ -131,6 +131,7 @@ namespace alc {
 	public:
 		void __delete_object(gameobject* object);
 		void __delete_group(group* g);
+		void __delete_behavior(behavior* b);
 		void __remove_object(gameobject* object);
 		void __add_object(gameobject* object);
 	};

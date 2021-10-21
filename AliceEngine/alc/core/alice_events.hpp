@@ -16,10 +16,10 @@ namespace alc {
 
 		// when loading/unloading scenes
 		// second parameter indicates the index of of this scene (0 would indicate that it is the primary scene)
-		static inline event<void, class scene_group*, uint32> onSceneUnload;
+		static inline event<void, class scene*, uint32> onSceneUnload;
 
 		// second parameter indicates the index of of this scene (0 would indicate that it is the primary scene)
-		static inline event<void, class scene_group*, uint32> onSceneLoad;
+		static inline event<void, class scene*, uint32> onSceneLoad;
 
 	};
 

@@ -120,6 +120,9 @@
     <ClInclude Include="alc\objects\component_info.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="alc\core\scene_manager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="alc\core\engine.cpp">
@@ -156,6 +159,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="alc\objects\gameobject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\core\scene_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -7,26 +7,16 @@
 namespace alc {
 
 	// class for scenes
-	class scene_group : public group_behavior {
+	class scene : public behavior {
 	public:
-		virtual ~scene_group() = 0;
-
+		virtual ~scene() = 0;
 		virtual void on_init_scene(const std::string& args) { }
-
-		// returns the index of this scene in the scene_manager
-		size_t get_index() const;
-
-	private:
-		size_t m_index;
-		std::vector<group*> m_groups;
-	public:
-		void __set_index(size_t index);
 	};
 
 	// binding for loading scenes
 	struct scene_binding final {
 		std::string name = "";
-		scene_group* (*create)() = nullptr;
+		scene* (*create)(const std::string&) = nullptr;
 		std::string args = "";
 	};
 
@@ -57,13 +47,13 @@ namespace alc {
 		static bool unload_scene(size_t activeSceneIndex);
 
 		// returns the main scene
-		static scene_group* get_primary_scene();
+		static scene* get_primary_scene();
 
 		// returns the number of scenes
 		static size_t active_scenes_size();
 
 		// returns the scene at index, where 0 is the primary scene
-		static scene_group* get_active_scene(size_t index);
+		static scene* get_active_scene(size_t index);
 
 		// returns the name of the scene at the index, where 0 is the primary scene
 		static std::string get_active_scene_name(size_t index);
@@ -71,11 +61,11 @@ namespace alc {
 	private:
 
 		struct active_scene {
-			scene_group* scene;
+			scene* scene;
 			bool shouldDestroy;
 			const scene_binding* binding;
 			active_scene() = default;
-			active_scene(alc::scene_group* scene, const scene_binding* binding);
+			active_scene(alc::scene* scene, const scene_binding* binding);
 		};
 		static inline std::vector<active_scene> s_activeScenes;
 		static inline std::list<std::pair<bool, size_t>> s_scenesToLoad;
@@ -84,13 +74,14 @@ namespace alc {
 
 		static void handle_scenes();
 		static void do_load_scene(bool firstslot, size_t sceneBindingIndex = -1);
-		static scene_group* create_scene(size_t sceneBindingIndex, size_t index);
+		static scene* create_scene(size_t sceneBindingIndex);
 		static void delete_scene(size_t index);
 
 	public:
 		static void __init(const engine_settings* set);
 		static void __exit();
 		static void __update(timestep ts);
+		static void __remove_scene(scene* s);
 	};
 
 
@@ -100,7 +91,7 @@ namespace alc {
 	inline scene_binding bind_scene(const std::string& name, const std::string& args) {
 		scene_binding sb;
 		sb.name = name;
-		sb.create = []()-> scene_group* { return new Ty(); };
+		sb.create = [](const std::string& name)-> scene* { return world::create_group<Ty>(name); };
 		sb.args = args;
 		return sb;
 	}

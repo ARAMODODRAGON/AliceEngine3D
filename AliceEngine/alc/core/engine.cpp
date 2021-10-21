@@ -39,8 +39,8 @@ namespace alc {
 		if (world_enabled) world::__init();
 
 		// enable scene_manager
-		//const bool scenes_enabled = set->scenemanager.sceneBindings.size() > 0;
-		//if (scenes_enabled) scene_manager::__init(set);
+		const bool scenes_enabled = set->objects.scenemanager.enabled;
+		if (scenes_enabled) scene_manager::__init(set);
 
 		// create game
 		if (set->gameBinding) {
@@ -63,6 +63,7 @@ namespace alc {
 			// update
 			if (s_game) s_game->update(ts);
 			alice_events::onUpdate(ts);
+			if (scenes_enabled) scene_manager::__update(ts);
 			if (world_enabled) world::__update(ts);
 
 			// clear screen
@@ -84,7 +85,7 @@ namespace alc {
 		// destroy ////////////////////////////////////////////////////
 
 		// delete scenes 
-		//if (scenes_enabled) scene_manager::__exit();
+		if (scenes_enabled) scene_manager::__exit();
 
 		if (world_enabled) world::__exit();
 

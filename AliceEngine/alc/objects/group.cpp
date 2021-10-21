@@ -182,6 +182,18 @@ namespace alc {
 		}
 	}
 
+	void group::__delete_behavior(behavior* b) { 
+		// remove from list
+		for (size_t i = 0; i < m_behaviors.size(); i++) {
+			if (m_behaviors[i] == b) {
+				b->on_delete();
+				delete b;
+				m_behaviors.erase(m_behaviors.begin() + i);
+				return;
+			}
+		}
+	}
+
 	void group::__remove_object(gameobject* object) {
 		for (size_t i = 0; i < m_objects.size(); i++) {
 			if (m_objects[i] == object) {
