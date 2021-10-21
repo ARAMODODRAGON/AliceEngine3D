@@ -5,22 +5,14 @@
 
 namespace alc {
 
-	scene::~scene() { }
+	scene_group::~scene_group() { }
 
-	size_t scene::get_index() const {
+	size_t scene_group::get_index() const {
 		return m_index;
 	}
 
-	std::string scene::get_name() const {
-		return m_name;
-	}
-
-	void scene::__set_index(size_t index) {
+	void scene_group::__set_index(size_t index) {
 		m_index = index;
-	}
-
-	void scene::__set_name(const std::string& name) {
-		m_name = name;
 	}
 
 	bool scene_manager::load_scene(size_t sceneBindingIndex) {
@@ -129,7 +121,7 @@ namespace alc {
 			return false;
 		}
 		// check if scene exists
-		else if (s_activeScenes[activeSceneIndex].scene.get() == nullptr) {
+		else if (s_activeScenes[activeSceneIndex].scene == nullptr) {
 			ALC_DEBUG_ERROR("Could not unload scene, scene already unloaded");
 			return false;
 		}
@@ -141,24 +133,24 @@ namespace alc {
 		return true;
 	}
 
-	scene* scene_manager::get_primary_scene() {
+	scene_group* scene_manager::get_primary_scene() {
 		if (!s_eSettings) {
 			ALC_DEBUG_WARNING("scene_manager is disabled");
 			return nullptr;
 		}
-		return s_activeScenes[0].scene.get();
+		return s_activeScenes[0].scene;
 	}
 
 	size_t scene_manager::active_scenes_size() {
 		return s_activeScenes.size();
 	}
 
-	scene* scene_manager::get_active_scene(size_t index) {
+	scene_group* scene_manager::get_active_scene(size_t index) {
 		if (!s_eSettings) {
 			ALC_DEBUG_WARNING("scene_manager is disabled");
 			return nullptr;
 		}
-		return s_activeScenes[index].scene.get();
+		return s_activeScenes[index].scene;
 	}
 
 	std::string scene_manager::get_active_scene_name(size_t index) {
@@ -189,7 +181,7 @@ namespace alc {
 		// check if any need to be deleted
 		for (size_t i = 0; i < s_activeScenes.size(); i++) {
 			if (s_activeScenes[i].shouldDestroy) {
-				if (s_activeScenes[i].scene.get()) delete_scene(i);
+				if (s_activeScenes[i].scene != nullptr) delete_scene(i);
 				s_activeScenes[i].shouldDestroy = false;
 				s_activeScenes[i].binding = nullptr;
 			}
@@ -201,7 +193,7 @@ namespace alc {
 
 		// create
 		size_t index = (firstslot ? 0 : s_activeScenes.size());
-		scene* scene = create_scene(sceneBindingIndex, index);
+		scene_group* scene = create_scene(sceneBindingIndex, index);
 
 		// delete any previously existing scene if first
 		if (firstslot) {
@@ -210,7 +202,7 @@ namespace alc {
 		// find index / add new index
 		else {
 			for (index = 0; index < s_activeScenes.size(); index++) {
-				if (s_activeScenes[index].scene.get() != nullptr) {
+				if (s_activeScenes[index].scene != nullptr) {
 					break;
 				}
 			}
@@ -224,25 +216,27 @@ namespace alc {
 		// set new scene 
 		s_activeScenes[index].shouldDestroy = false;
 		s_activeScenes[index].binding = binding;
-		s_activeScenes[index].scene.reset(scene);
+		delete_scene(index);
+		s_activeScenes[index].scene = scene;
 
 		// invoke event and init only after setting it to the index
 		alice_events::onSceneLoad(scene, index);
-		scene->init(binding->args);
+		scene->init_scene(binding->args);
 	}
 
-	scene* scene_manager::create_scene(size_t sceneBindingIndex, size_t index) {
+	scene_group* scene_manager::create_scene(size_t sceneBindingIndex, size_t index) {
 		auto& binding = s_eSettings->scenemanager.sceneBindings[sceneBindingIndex];
-		scene* scene = binding.create();
-		scene->__set_name(binding.name);
+		scene_group* scene = binding.create();
+		scene->set_name(binding.name);
 		scene->__set_index(index);
+		scene->get_group()->__set_scene_group(scene); // now is treated as a scene group
 		return scene;
 	}
 
 	void scene_manager::delete_scene(size_t index) {
-		s_activeScenes[index].scene->exit();
-		alice_events::onSceneUnload(s_activeScenes[index].scene.get(), index);
-		s_activeScenes[index].scene.reset();
+		alice_events::onSceneUnload(s_activeScenes[index].scene, index);
+		s_activeScenes[index].scene->delete_this();
+		s_activeScenes[index].scene = nullptr;
 	}
 
 	void scene_manager::__init(const engine_settings* set) {
@@ -303,14 +297,15 @@ namespace alc {
 		// load/unload scenes
 		if (s_checkForSceneChanges) handle_scenes();
 
-		// update scenes
-		for (size_t i = 0; i < s_activeScenes.size(); i++) {
-			if (s_activeScenes[i].scene.get())
-				s_activeScenes[i].scene->update(ts);
-		}
+		// no need to update scene_groups since they're updated by the world
+		//// update scenes
+		//for (size_t i = 0; i < s_activeScenes.size(); i++) {
+		//	if (s_activeScenes[i].scene != nullptr)
+		//		s_activeScenes[i].scene->update(ts);
+		//}
 	}
 
-	scene_manager::active_scene::active_scene(alc::scene* scene_, const scene_binding* binding_)
+	scene_manager::active_scene::active_scene(alc::scene_group* scene_, const scene_binding* binding_)
 		: scene(scene_), shouldDestroy(false), binding(binding_) { }
 
 }

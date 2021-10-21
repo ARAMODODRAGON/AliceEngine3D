@@ -1,7 +1,7 @@
 #ifndef ALC_CORE_ENGINE_HPP
 #define ALC_CORE_ENGINE_HPP
 #include "debug.hpp"
-#include "scene_manager.hpp"
+//#include "scene_manager.hpp"
 #include "game.hpp"
 #include "window.hpp"
 
@@ -31,17 +31,23 @@ namespace alc {
 			bool enabled = true;
 		} renderer;
 
+		// world/groups/gameobjects -- optional
+		struct {
+			// enabled the world 
+			bool enabled = true;
+		} objects;
+
 		// setup scenebindings -- optional
 		// when no scenes are bound the scenemanager becomes disabled during the duration of the game's run
-		struct {
-			// the scenes that can be loaded
-			std::vector<scene_binding> sceneBindings;
-
-			// load a scene by its index
-			uint32 initialSceneIndex = -1; // optional (priority)
-			// load a scene by its name
-			std::string initialSceneStr = ""; // optional
-		} scenemanager;
+		//struct {
+		//	// the scenes that can be loaded
+		//	std::vector<scene_binding> sceneBindings;
+		//
+		//	// load a scene by its index
+		//	uint32 initialSceneIndex = -1; // optional (priority)
+		//	// load a scene by its name
+		//	std::string initialSceneStr = ""; // optional
+		//} scenemanager;
 
 		// game class setup -- optional
 		game_binding gameBinding = nullptr;

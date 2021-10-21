@@ -3,6 +3,7 @@
 #include "../input/keyboard.hpp"
 #include "../input/mouse.hpp"
 #include "../jobs/job_queue.hpp"
+#include "../objects/world.hpp"
 #include <chrono>
 #include <SDL.h>
 
@@ -33,9 +34,13 @@ namespace alc {
 		const bool jobs_enabled = set->jobs.enabled;
 		if (jobs_enabled) job_queue::__init(set->jobs.maxthreads);
 
+		// enable world
+		const bool world_enabled = set->objects.enabled;
+		if (world_enabled) world::__init();
+
 		// enable scene_manager
-		const bool scenes_enabled = set->scenemanager.sceneBindings.size() > 0;
-		if (scenes_enabled) scene_manager::__init(set);
+		//const bool scenes_enabled = set->scenemanager.sceneBindings.size() > 0;
+		//if (scenes_enabled) scene_manager::__init(set);
 
 		// create game
 		if (set->gameBinding) {
@@ -58,6 +63,7 @@ namespace alc {
 			// update
 			if (s_game) s_game->update(ts);
 			alice_events::onUpdate(ts);
+			if (world_enabled) world::__update(ts);
 
 			// clear screen
 			s_window->clear_screen(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -78,7 +84,9 @@ namespace alc {
 		// destroy ////////////////////////////////////////////////////
 
 		// delete scenes 
-		if (scenes_enabled) scene_manager::__exit();
+		//if (scenes_enabled) scene_manager::__exit();
+
+		if (world_enabled) world::__exit();
 
 		// delete game
 		if (s_game) {

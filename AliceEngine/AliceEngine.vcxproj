@@ -30,7 +30,6 @@
     <ClInclude Include="alc\core\engine.hpp" />
     <ClInclude Include="ALC\Core\alice_events.hpp" />
     <ClInclude Include="alc\core\game.hpp" />
-    <ClInclude Include="alc\core\scene_manager.hpp" />
     <ClInclude Include="alc\core\window.hpp" />
     <ClInclude Include="alc\datatypes\button.hpp" />
     <ClInclude Include="alc\datatypes\function.hpp" />
@@ -41,17 +40,18 @@
     <ClInclude Include="alc\dependencies\stb_image.h" />
     <ClInclude Include="alc\dependencies\tiny_obj_loader.h" />
     <ClInclude Include="alc\graphics\2D\basic_mesh.hpp" />
-    <ClInclude Include="alc\graphics\3D\scenegraph3d.hpp" />
     <ClInclude Include="alc\graphics\camera.hpp" />
     <ClInclude Include="alc\jobs\cjs\cjs.hpp" />
     <ClInclude Include="alc\jobs\cjs\context.hpp" />
     <ClInclude Include="alc\jobs\cjs\handle.hpp" />
     <ClInclude Include="alc\jobs\cjs\ijob.hpp" />
     <ClInclude Include="alc\jobs\job_queue.hpp" />
-    <ClInclude Include="alc\objects\object_factory.hpp" />
     <ClInclude Include="alc\input\keyboard.hpp" />
     <ClInclude Include="alc\input\mouse.hpp" />
-    <ClInclude Include="alc\objects\object_loader.hpp" />
+    <ClInclude Include="alc\objects\component_info.hpp" />
+    <ClInclude Include="alc\objects\gameobject.hpp" />
+    <ClInclude Include="alc\objects\group.hpp" />
+    <ClInclude Include="alc\objects\world.hpp" />
     <ClInclude Include="alc\reflection\type.hpp" />
     <ClInclude Include="alc\reflection\typehash.hpp" />
   </ItemGroup>
@@ -60,13 +60,13 @@
     <ClCompile Include="alc\content\texture.cpp" />
     <ClCompile Include="alc\core\debug.cpp" />
     <ClCompile Include="alc\core\engine.cpp" />
-    <ClCompile Include="alc\core\scene_manager.cpp" />
     <ClCompile Include="alc\core\window.cpp" />
     <ClCompile Include="alc\jobs\job_queue.cpp" />
-    <ClCompile Include="alc\objects\object_factory.cpp" />
     <ClCompile Include="alc\input\keyboard.cpp" />
     <ClCompile Include="alc\input\mouse.cpp" />
-    <ClCompile Include="alc\objects\object_loader.cpp" />
+    <ClCompile Include="alc\objects\gameobject.cpp" />
+    <ClCompile Include="alc\objects\group.cpp" />
+    <ClCompile Include="alc\objects\world.cpp" />
     <ClCompile Include="alc\reflection\type.cpp" />
   </ItemGroup>
   <ItemGroup>
