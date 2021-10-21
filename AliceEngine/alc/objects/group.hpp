@@ -116,13 +116,6 @@ namespace alc {
 		// gets an object by name
 		gameobject* get_object(const std::string& name);
 
-
-		////// events
-		//
-		//// event invoked when a component change is made and the flags are set for the particular component
-		//event<void, component_alert_flags, component*> componentAlertEvent;
-
-
 	private:
 
 		group* m_parent;

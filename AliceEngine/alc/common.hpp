@@ -36,4 +36,37 @@ Type& operator=(Type&&) = delete;
 ALC_NO_COPY(Type) ALC_NO_MOVE(Type)		\
 Type() = delete;
 
+// allows flag usage for enum class types
+#define ALC_FLAGS_ENUM(Enumclass)															\
+inline Enumclass operator&(Enumclass left, Enumclass right) {								\
+	return static_cast<Enumclass>(static_cast<std::underlying_type_t<Enumclass>>(left) &	\
+								  static_cast<std::underlying_type_t<Enumclass>>(right));	\
+}																							\
+inline Enumclass& operator&=(Enumclass& left, Enumclass right) {							\
+	left = static_cast<Enumclass>(static_cast<std::underlying_type_t<Enumclass>>(left) &	\
+								  static_cast<std::underlying_type_t<Enumclass>>(right));	\
+	return left;																			\
+}																							\
+inline Enumclass operator|(Enumclass left, Enumclass right) {								\
+	return static_cast<Enumclass>(static_cast<std::underlying_type_t<Enumclass>>(left) |	\
+								  static_cast<std::underlying_type_t<Enumclass>>(right));	\
+}																							\
+inline Enumclass& operator|=(Enumclass& left, Enumclass right) {							\
+	left = static_cast<Enumclass>(static_cast<std::underlying_type_t<Enumclass>>(left) |	\
+								  static_cast<std::underlying_type_t<Enumclass>>(right));	\
+	return left;																			\
+}																							\
+inline Enumclass operator^(Enumclass left, Enumclass right) {								\
+	return static_cast<Enumclass>(static_cast<std::underlying_type_t<Enumclass>>(left) ^	\
+								  static_cast<std::underlying_type_t<Enumclass>>(right));	\
+}																							\
+inline Enumclass& operator^=(Enumclass& left, Enumclass right) {							\
+	left = static_cast<Enumclass>(static_cast<std::underlying_type_t<Enumclass>>(left) ^	\
+								  static_cast<std::underlying_type_t<Enumclass>>(right));	\
+	return left;																			\
+}																							\
+inline Enumclass operator~(Enumclass value) {												\
+	return static_cast<Enumclass>(~static_cast<std::underlying_type_t<Enumclass>>(value));	\
+}
+
 #endif // !ALC_COMMON_HPP
