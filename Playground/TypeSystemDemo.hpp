@@ -3,7 +3,7 @@
 #include <iostream>
 #include <alc\alc.hpp>
 #include <alc\core\alice_events.hpp>
-#include <alc\objects\object_factory.hpp>
+//#include <alc\objects\object_factory.hpp>
 #include <alc\reflection\type.hpp>
 
 class Parent { };

@@ -29,6 +29,7 @@ namespace alc {
 		}
 
 		// mark for deletion and return true
+		// TODO: check if already in list
 		s_groupsToDelete.push_back(g);
 		return true;
 	}
@@ -167,6 +168,7 @@ namespace alc {
 			return false;
 		}
 
+		// TODO: check if already in list
 		s_behaviorsToDelete.push_back(b);
 		return true;
 	}
@@ -179,6 +181,7 @@ namespace alc {
 			return false;
 		}
 
+		// TODO: check if already in list
 		s_objectsToDelete.push_back(o);
 		return true;
 	}
@@ -191,6 +194,7 @@ namespace alc {
 			return false;
 		}
 
+		// TODO: check if already in list
 		s_componentsToDelete.push_back(c);
 		return true;
 	}
