@@ -41,8 +41,9 @@
     <ClInclude Include="alc\dependencies\stb_image.h" />
     <ClInclude Include="alc\dependencies\tiny_obj_loader.h" />
     <ClInclude Include="alc\graphics\2D\basic_mesh.hpp" />
+    <ClInclude Include="alc\graphics\2D\camera2d.hpp" />
     <ClInclude Include="alc\graphics\2D\scenegraph2d.hpp" />
-    <ClInclude Include="alc\graphics\camera.hpp" />
+    <ClInclude Include="alc\graphics\2D\spriterenderer.hpp" />
     <ClInclude Include="alc\jobs\cjs\cjs.hpp" />
     <ClInclude Include="alc\jobs\cjs\context.hpp" />
     <ClInclude Include="alc\jobs\cjs\handle.hpp" />

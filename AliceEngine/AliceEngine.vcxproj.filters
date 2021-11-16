@@ -90,9 +90,6 @@
     <ClInclude Include="alc\content\content_manager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\graphics\camera.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="alc\content\mesh.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -127,6 +124,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alc\objects\singleton.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\graphics\2D\camera2d.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\graphics\2D\spriterenderer.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
