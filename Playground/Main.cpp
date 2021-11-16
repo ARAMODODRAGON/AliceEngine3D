@@ -3,31 +3,11 @@
 #include <alc\core\alice_events.hpp>
 #include <alc\objects\singleton.hpp>
 
-class TestSingletonType : public alc::singleton {
-	ALC_SINGLETON_GETTER(TestSingletonType);
-public:
-
-	TestSingletonType() : m_a(10) {
-
-	}
-	~TestSingletonType() {
-
-	}
-
-	int GetA() { return m_a; }
-
-private:
-
-	int m_a;
-};
-
 class Playground : public alc::game {
 public:
 
 	void init() override {
 		alc::scene_manager::load_scene(0);
-		//alc::world::create("Test Object");
-		ALC_DEBUG_LOG("Value is " + VTOS(TestSingletonType::get()->GetA()));
 	}
 
 	void exit() override {
