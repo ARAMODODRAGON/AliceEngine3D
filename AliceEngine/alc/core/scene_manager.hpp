@@ -7,10 +7,11 @@
 namespace alc {
 
 	// class for scenes
-	class scene : public behavior {
+	class scene : public object {
 	public:
 		virtual ~scene() = 0;
 		virtual void on_init_scene(const std::string& args) { }
+		virtual void on_destroy() { }
 	};
 
 	// binding for loading scenes
@@ -91,7 +92,11 @@ namespace alc {
 	inline scene_binding bind_scene(const std::string& name, const std::string& args) {
 		scene_binding sb;
 		sb.name = name;
-		sb.create = [](const std::string& name)-> scene* { return world::create_group<Ty>(name); };
+		sb.create = [](const std::string& name)-> scene* {
+			scene* s = world::create<Ty>();
+			s->set_name(name);
+			return s;
+		};
 		sb.args = args;
 		return sb;
 	}

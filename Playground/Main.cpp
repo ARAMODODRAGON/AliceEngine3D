@@ -7,6 +7,7 @@ public:
 
 	void init() override {
 		alc::scene_manager::load_scene(0);
+		//alc::world::create("Test Object");
 	}
 
 	void exit() override {
@@ -30,7 +31,7 @@ private:
 
 	void on_init_scene(const std::string& args) override { }
 
-	void on_delete() override { }
+	void on_destroy() override { }
 
 
 };

@@ -111,16 +111,16 @@
     <ClInclude Include="alc\objects\world.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\objects\gameobject.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="alc\objects\group.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="alc\objects\component_info.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alc\core\scene_manager.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\objects\object.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\objects\entity.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -155,13 +155,13 @@
     <ClCompile Include="alc\objects\world.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alc\objects\group.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="alc\objects\gameobject.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="alc\core\scene_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\objects\object.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\objects\entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

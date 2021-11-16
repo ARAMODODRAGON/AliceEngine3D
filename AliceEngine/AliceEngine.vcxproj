@@ -50,8 +50,8 @@
     <ClInclude Include="alc\input\keyboard.hpp" />
     <ClInclude Include="alc\input\mouse.hpp" />
     <ClInclude Include="alc\objects\component_info.hpp" />
-    <ClInclude Include="alc\objects\gameobject.hpp" />
-    <ClInclude Include="alc\objects\group.hpp" />
+    <ClInclude Include="alc\objects\entity.hpp" />
+    <ClInclude Include="alc\objects\object.hpp" />
     <ClInclude Include="alc\objects\world.hpp" />
     <ClInclude Include="alc\reflection\type.hpp" />
     <ClInclude Include="alc\reflection\typehash.hpp" />
@@ -66,8 +66,8 @@
     <ClCompile Include="alc\jobs\job_queue.cpp" />
     <ClCompile Include="alc\input\keyboard.cpp" />
     <ClCompile Include="alc\input\mouse.cpp" />
-    <ClCompile Include="alc\objects\gameobject.cpp" />
-    <ClCompile Include="alc\objects\group.cpp" />
+    <ClCompile Include="alc\objects\entity.cpp" />
+    <ClCompile Include="alc\objects\object.cpp" />
     <ClCompile Include="alc\objects\world.cpp" />
     <ClCompile Include="alc\reflection\type.cpp" />
   </ItemGroup>

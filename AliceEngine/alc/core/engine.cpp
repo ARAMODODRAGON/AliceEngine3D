@@ -39,7 +39,9 @@ namespace alc {
 		if (world_enabled) world::__init();
 
 		// enable scene_manager
-		const bool scenes_enabled = set->objects.scenemanager.enabled;
+		const bool scenes_enabled = 
+			set->objects.scenemanager.enabled && 
+			set->objects.scenemanager.scenebindings.size() != 0;
 		if (scenes_enabled) scene_manager::__init(set);
 
 		// create game

@@ -171,12 +171,14 @@ namespace alc {
 		}
 
 		// check if any need to be deleted
-		for (size_t i = 0; i < s_activeScenes.size(); i++) {
+		for (size_t i = 0; i < s_activeScenes.size(); ) {
 			if (s_activeScenes[i].shouldDestroy) {
 				if (s_activeScenes[i].scene != nullptr) delete_scene(i);
 				s_activeScenes[i].shouldDestroy = false;
 				s_activeScenes[i].binding = nullptr;
 			}
+			// only advance when the scene is not deleted
+			else i++;
 		}
 	}
 
@@ -201,7 +203,7 @@ namespace alc {
 		// set new scene 
 		s_activeScenes[index].shouldDestroy = false;
 		s_activeScenes[index].binding = binding;
-		delete_scene(index);
+		if (s_activeScenes[index].scene) delete_scene(index);
 		s_activeScenes[index].scene = scene;
 
 		// invoke event and init only after setting it to the index
@@ -216,14 +218,16 @@ namespace alc {
 	}
 
 	void scene_manager::delete_scene(size_t index) {
+		s_activeScenes[index].scene->on_destroy();
 		alice_events::onSceneUnload(s_activeScenes[index].scene, index);
-		s_activeScenes[index].scene->delete_this();
+		s_activeScenes[index].scene->destroy_this();
 		if (index != 0) s_activeScenes.erase(s_activeScenes.begin() + index);
 	}
 
 	void scene_manager::__init(const engine_settings* set) {
-		if (set->objects.scenemanager.scenebindings.size() == 0) {
-			ALC_DEBUG_ERROR("No scenes are bound. Cannot initialize scene manager");
+		if (set->objects.scenemanager.scenebindings.size() == 0 ||
+			set->objects.scenemanager.enabled == false) {
+			ALC_DEBUG_ERROR("No scenes are bound or scenemanager was not enabled. Cannot initialize scene manager");
 			return;
 		}
 
@@ -256,15 +260,9 @@ namespace alc {
 			return;
 		}
 
-		// remove all scenes to load
+		// remove all scenes to load and active scenes 
+		// active scenes are managed automatically by the world class
 		s_scenesToLoad.clear();
-
-		// mark all scenes to be destroyed
-		for (size_t i = 0; i < s_activeScenes.size(); i++) {
-			s_activeScenes[i].shouldDestroy = true;
-		}
-		// will destroy all scenes marked as shouldDestroy
-		handle_scenes();
 		s_activeScenes.clear();
 
 	}

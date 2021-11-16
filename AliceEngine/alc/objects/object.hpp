@@ -2,15 +2,15 @@
 #define ALC_OBJECTS_GAMEOBJECT_HPP
 #include "../common.hpp"
 #include "../datatypes/timestep.hpp"
+#include "../datatypes/function.hpp"
 #include "component_info.hpp"
 
 namespace alc {
 
-	class group;
-	class gameobject;
+	class object;
 	class component;
 
-	// add custom functionality to gameobjects
+	// add data and logic to gameobjects
 	class component {
 	public:
 
@@ -20,11 +20,11 @@ namespace alc {
 		// virtual functions
 
 		virtual void on_create() { }
-		virtual void on_delete() { }
+		virtual void on_destroy() { }
 		virtual void on_update(timestep ts) { }
 
 		// returns the attached object
-		gameobject* get_object() const;
+		object* get_object() const;
 
 		// returns whether this component should actively update or not
 		bool get_should_update() const;
@@ -33,31 +33,28 @@ namespace alc {
 		void set_should_update(bool shouldUpdate);
 
 		// deletes this component
-		bool delete_this();
+		bool destroy_this();
 
 	private:
-		gameobject* m_object;
+		object* m_object;
 		bool m_shouldUpdate : 1;
 	public:
-		void __set_object(gameobject* object);
+		void __set_object(object* object);
 	};
 
-	// objects that exists in the world with a position, rotation, scale and attached logic
-	class gameobject final {
+	// objects can be anything from a scene to an entity or even a singleton
+	// objects that exists in the world with a name and components and other relative objects
+	class object {
 	public:
 
-		gameobject(const std::string& name = "");
-		~gameobject();
+		object(const std::string& name = "");
+		virtual ~object();
 
-		// returns the parent gameobject
-		gameobject* get_parent() const;
+		// returns the parent object
+		object* get_parent() const;
 
 		// reparents this object, can be set to nullptr to unparent
-		void set_parent(gameobject* parent);
-
-		// returns the group this object is attached to
-		// gameobjects cannot change groups
-		group* get_group() const;
+		void set_parent(object* parent);
 
 		// returns the name of this object
 		std::string get_name() const;
@@ -65,90 +62,61 @@ namespace alc {
 		// sets the name of this object
 		void set_name(const std::string& name);
 
-		// returns the position
-		glm::vec3 get_position() const;
-
-		// sets the position
-		void set_position(const glm::vec3& position);
-
-		// returns the rotation
-		glm::quat get_rotation() const;
-
-		// sets the rotation
-		void set_rotation(const glm::quat& rotation);
-
-		// returns the scale
-		glm::vec3 get_scale() const;
-
-		// sets the scale
-		void set_scale(const glm::vec3& scale);
-
-		// returns the transformation matrix
-		glm::mat4 get_transform() const;
-
 
 		//// gameobjects
 
 		// creates an object attached to this object
-		gameobject* create_object(const std::string& name = "");
+		object* create_object(const std::string& name = "");
 
 		// creates an object attached to this object with component of type
 		template<class T> T* create_object(const std::string& name = "");
 
 		// deletes the object
-		bool delete_object(gameobject* object);
+		bool destroy_object(object* object);
 
 		// deletes this object
-		bool delete_this();
+		bool destroy_this();
 
 
 		//// components
 
-		// creates a component of type attached to this gameobject
+		// creates a component of type attached to this object
 		template<class T> T* create_component();
 
 		// deletes a component
 		bool delete_component(component* c);
 
-		// gets a component of type attached to this gameobject
+		// gets a component of type attached to this object
 		template<class T> T* get_component();
 
-		// gets multiple components of type attached to this gameobject
+		// gets multiple components of type attached to this object
 		template<class T> size_t get_components(std::vector<T*>& outComponents);
 
 	private:
 
-		gameobject* m_parent;
-		group* m_group;
+		object* m_parent;
 
 		std::string m_name;
 
-		glm::vec3 m_position;
-		glm::quat m_rotation;
-		glm::vec3 m_scale;
-
-		mutable glm::mat4 m_transform;
-		mutable bool m_transformIsDirty : 1;
-
 		std::vector<component*> m_components;
-		std::vector<gameobject*> m_subobjects;
+		std::vector<object*> m_subobjects;
 
 	public:
-		void __set_group(group* g);
-		void __remove_subobject(gameobject* o);
+
+		void __remove_subobject(object* o);
 		void __delete_component(component* c);
 	};
 
 	// template definitions
 
 	template<class T>
-	inline T* gameobject::create_object(const std::string& name) {
-		gameobject* object = create_object(name);
+	inline T* object::create_object(const std::string& name) {
+		object* object = create_object(name);
 		return object->create_component<T>();
 	}
 
 	template<class T>
-	inline T* gameobject::create_component() {
+	inline T* object::create_component() {
 		// try to get prexisting one if we can only have one component of this type
 		if (component_only_one_v<T>) {
 			if (T* c = get_component<T>()) return c;
@@ -162,7 +130,7 @@ namespace alc {
 	}
 
 	template<class T>
-	inline T* gameobject::get_component() {
+	inline T* object::get_component() {
 		for (auto* c : m_components) {
 			if (T* t = dynamic_cast<T*>(c)) {
 				return t;
@@ -172,7 +140,7 @@ namespace alc {
 	}
 
 	template<class T>
-	inline size_t gameobject::get_components(std::vector<T*>& outComponents) {
+	inline size_t object::get_components(std::vector<T*>& outComponents) {
 		size_t total = 0;
 		for (auto* c : m_components) {
 			if (T* t = dynamic_cast<T*>(c)) {

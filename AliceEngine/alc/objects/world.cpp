@@ -1,68 +1,55 @@
 #include "world.hpp"
-#include "../core/debug.hpp"
 
 namespace alc {
 
-	group* world::create_group(const std::string& name) {
-		if (s_groups.size() == 0) {
+	object* world::create(const std::string& name) {
+		if (s_objects.size() == 0) {
 			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
 			return nullptr;
 		}
-		// create, add, and return
-		group* g = new group(name);
-		s_groups.push_back(g);
-		return g;
+		object* o = new object(name);
+		s_objects.push_back(o);
+		return o;
 	}
 
-	bool world::delete_group(group* g) {
-		if (g == nullptr) return false;
-		if (s_deletingState) return false;
-		if (s_groups.size() == 0) {
+	bool world::destroy(object* o) {
+		if (s_objects.size() == 0) {
 			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
 			return false;
 		}
-
-		// cannot delete primary group
-		if (s_groups[0] == g) {
-			ALC_DEBUG_WARNING("cannot delete primary group");
-			return false;
-		}
-
-		// mark for deletion and return true
-		// TODO: check if already in list
-		s_groupsToDelete.push_back(g);
+		__delete_object(o);
 		return true;
 	}
 
-	group* world::primary() {
-		if (s_groups.size() == 0) {
+	object* world::global() {
+		if (s_objects.size() == 0) {
 			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
 			return nullptr;
 		}
-		return s_groups[0];
+		return s_objects[0];
 	}
 
-	size_t world::group_size() {
-		return s_groups.size();
+	size_t world::size() {
+		return s_objects.size();
 	}
 
-	group* world::get_group(size_t index) {
-		if (s_groups.size() == 0) {
+	object* world::get(size_t index) {
+		if (s_objects.size() == 0) {
 			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
 			return nullptr;
 		}
-		return s_groups[index];
+		return s_objects[index];
 	}
 
-	group* world::get_group(const std::string& name) {
-		if (s_groups.size() == 0) {
+	object* world::get(const std::string& name) {
+		if (s_objects.size() == 0) {
 			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
 			return nullptr;
 		}
 
-		for (auto* g : s_groups) {
-			if (g->get_name() == name) {
-				return g;
+		for (auto* o : s_objects) {
+			if (o->get_name() == name) {
+				return o;
 			}
 		}
 
@@ -70,35 +57,33 @@ namespace alc {
 	}
 
 	void world::__init() {
-		if (s_groups.size() != 0) {
+		if (s_objects.size() != 0) {
 			ALC_DEBUG_ERROR("world is already enabled");
 			return;
 		}
-		s_groupsToDelete.clear();
-		s_behaviorsToDelete.clear();
 		s_objectsToDelete.clear();
 		s_componentsToDelete.clear();
 
-		s_groups.reserve(20);
-		s_groups.push_back(new group("PRIMARY"));
+		s_objects.reserve(20);
+		s_objects.push_back(new object("GLOBAL"));
 	}
 
 	void world::__exit() {
-		if (s_groups.size() == 0) {
+		if (s_objects.size() == 0) {
 			ALC_DEBUG_ERROR("world is already disabled");
 			return;
 		}
 
 		// clear everything
-		s_groupsToDelete.clear();
-		s_behaviorsToDelete.clear();
 		s_objectsToDelete.clear();
 		s_componentsToDelete.clear();
 
 		// delete all groups
 		s_deletingState = true;
-		for (auto* g : s_groups) delete g;
-		s_groups.clear();
+		for (size_t i = 0; i < s_objects.size(); ++i) {
+			delete s_objects[i];
+		}
+		s_objects.clear();
 		s_deletingState = false;
 	}
 
@@ -111,30 +96,10 @@ namespace alc {
 		// now, delete stuff
 		s_deletingState = true;
 
-		// delete groups
-		while (s_groupsToDelete.size()) {
-			auto* g = s_groupsToDelete.back();
-			s_groupsToDelete.pop_back();
-			if (g->get_parent())
-				g->get_parent()->__delete_group(g);
-			else {
-				__remove_group(g);
-				delete g;
-			}
-		}
-
-		// delete behaviors
-		while (s_behaviorsToDelete.size()) {
-			auto* b = s_behaviorsToDelete.back();
-			s_behaviorsToDelete.pop_back();
-			b->get_group()->__delete_behavior(b);
-		}
-
 		// delete objects
 		while (s_objectsToDelete.size()) {
 			auto* object = s_objectsToDelete.back();
 			s_objectsToDelete.pop_back();
-			object->get_group()->__delete_object(object);
 		}
 
 		// delete components
@@ -147,37 +112,15 @@ namespace alc {
 		s_deletingState = false;
 	}
 
-	void world::__remove_group(group* g) {
-		for (size_t i = 0; i < s_groups.size(); i++) {
-			if (s_groups[i] == g) {
-				s_groups.erase(s_groups.begin() + i);
-				return;
-			}
-		}
-	}
-
-	void world::__add_group(group* g) {
-		s_groups.push_back(g);
-	}
-
-	bool world::__delete_behavior(behavior* b) {
-		if (b == nullptr) return false;
+	bool world::__delete_object(object* o) {
+		if (o == nullptr) return false;
 		if (s_deletingState) return false;
-		if (s_groups.size() == 0) {
+		if (s_objects.size() == 0) {
 			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
 			return false;
 		}
-
-		// TODO: check if already in list
-		s_behaviorsToDelete.push_back(b);
-		return true;
-	}
-
-	bool world::__delete_object(gameobject* o) {
-		if (o == nullptr) return false;
-		if (s_deletingState) return false;
-		if (s_groups.size() == 0) {
-			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
+		if (global() == o) {
+			ALC_DEBUG_WARNING("cannot delete global object");
 			return false;
 		}
 
@@ -189,7 +132,7 @@ namespace alc {
 	bool world::__delete_component(component* c) {
 		if (c == nullptr) return false;
 		if (s_deletingState) return false;
-		if (s_groups.size() == 0) {
+		if (s_objects.size() == 0) {
 			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
 			return false;
 		}
@@ -199,45 +142,25 @@ namespace alc {
 		return true;
 	}
 
-	void world::__remove_delete_group(group* g) {
-		if (g == nullptr) return;
-		for (size_t i = 0; i < s_groupsToDelete.size(); i++) {
-			if (s_groupsToDelete[i] == g) {
-				s_groupsToDelete.erase(s_groupsToDelete.begin() + i);
-				return;
-			}
-		}
-	}
-
-	void world::__remove_delete_behavior(behavior* b) {
-		if (b == nullptr) return;
-		for (size_t i = 0; i < s_behaviorsToDelete.size(); i++) {
-			if (s_behaviorsToDelete[i] == b) {
-				s_behaviorsToDelete.erase(s_behaviorsToDelete.begin() + i);
-				return;
-			}
-		}
-	}
-
-	void world::__remove_delete_object(gameobject* o) {
-		if (o == nullptr) return;
-		for (size_t i = 0; i < s_objectsToDelete.size(); i++) {
-			if (s_objectsToDelete[i] == o) {
-				s_objectsToDelete.erase(s_objectsToDelete.begin() + i);
-				return;
-			}
-		}
-	}
-
-	void world::__remove_delete_component(component* c) {
-		if (c == nullptr) return;
-		for (size_t i = 0; i < s_componentsToDelete.size(); i++) {
-			if (s_componentsToDelete[i] == c) {
-				s_componentsToDelete.erase(s_componentsToDelete.begin() + i);
-				return;
-			}
-		}
-	}
+	//void world::__remove_delete_object(object* o) {
+	//	if (o == nullptr) return;
+	//	for (size_t i = 0; i < s_objectsToDelete.size(); i++) {
+	//		if (s_objectsToDelete[i] == o) {
+	//			s_objectsToDelete.erase(s_objectsToDelete.begin() + i);
+	//			return;
+	//		}
+	//	}
+	//}
+	//
+	//void world::__remove_delete_component(component* c) {
+	//	if (c == nullptr) return;
+	//	for (size_t i = 0; i < s_componentsToDelete.size(); i++) {
+	//		if (s_componentsToDelete[i] == c) {
+	//			s_componentsToDelete.erase(s_componentsToDelete.begin() + i);
+	//			return;
+	//		}
+	//	}
+	//}
 
 
 }
