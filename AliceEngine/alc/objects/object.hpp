@@ -35,6 +35,50 @@ namespace alc {
 		// deletes this component
 		bool destroy_this();
 
+
+		//// from object
+		
+		/// basic properties 
+
+		// returns the parent object
+		object* get_parent() const;
+
+		// reparents this object, can be set to nullptr to unparent
+		void set_parent(object* parent);
+
+		// returns the name of this object
+		std::string get_name() const;
+
+		// sets the name of this object
+		void set_name(const std::string& name);
+
+
+		//// gameobjects
+
+		// creates an object attached to this object
+		object* create_object(const std::string& name = "");
+
+		// creates an object attached to this object with component of type
+		template<class T> T* create_object(const std::string& name = "");
+
+		// deletes the object
+		bool destroy_object(object* object);
+
+
+		//// components
+
+		// creates a component of type attached to this object
+		template<class T> T* create_component();
+
+		// deletes a component
+		bool delete_component(component* c);
+
+		// gets a component of type attached to this object
+		template<class T> T* get_component();
+
+		// gets multiple components of type attached to this object
+		template<class T> size_t get_components(std::vector<T*>& outComponents);
+
 	private:
 		object* m_object;
 		bool m_shouldUpdate : 1;
@@ -150,6 +194,26 @@ namespace alc {
 			}
 		}
 		return total;
+	}
+	
+	template<class T>
+	inline T* component::create_object(const std::string& name) {
+		return m_object->create_object<T>(name);
+	}
+
+	template<class T>
+	inline T* component::create_component() {
+		return m_object->create_component<T>();
+	}
+
+	template<class T>
+	inline T* component::get_component() {
+		return m_object->get_component<T>();
+	}
+
+	template<class T>
+	inline size_t component::get_components(std::vector<T*>& outComponents) {
+		return m_object->get_components<T>(outComponents);
 	}
 
 }

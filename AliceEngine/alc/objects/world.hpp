@@ -6,7 +6,7 @@
 
 namespace alc {
 
-	// contains and manages all objects and subtypes 
+	// contains and manages all objects
 	class world final {
 		ALC_STATIC_CLASS(world);
 	public:
@@ -97,6 +97,7 @@ namespace alc {
 		inline event<void, timestep> onWorldComponentUpdate;
 
 	}
+
 }
 
 #endif // !ALC_OBJECTS_WORLD_HPP

@@ -7,7 +7,8 @@ namespace alc {
 			ALC_DEBUG_ERROR("world was not enabled or engine has not started");
 			return nullptr;
 		}
-		object* o = new object(name);
+		object* o = new object();
+		o->set_name(name);
 		s_objects.push_back(o);
 		return o;
 	}

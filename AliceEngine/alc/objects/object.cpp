@@ -37,6 +37,32 @@ namespace alc {
 		return world::__delete_component(this);
 	}
 
+	object* component::get_parent() const {
+		return m_object->get_parent();
+	}
+
+	void component::set_parent(object* parent) { }
+
+	std::string component::get_name() const {
+		return m_object->get_name();
+	}
+
+	void component::set_name(const std::string& name) { 
+		m_object->set_name(name);
+	}
+
+	object* component::create_object(const std::string& name) {
+		return m_object->create_object();
+	}
+
+	bool component::destroy_object(object* object) {
+		return m_object->destroy_object(object);
+	}
+
+	bool component::delete_component(component* c) {
+		return m_object->delete_component(c);
+	}
+
 	void component::__set_object(object* object) {
 		m_object = object;
 	}
