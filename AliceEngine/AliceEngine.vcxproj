@@ -42,6 +42,9 @@
     <ClInclude Include="alc\datatypes\timestep.hpp" />
     <ClInclude Include="alc\dependencies\stb_image.h" />
     <ClInclude Include="alc\dependencies\tiny_obj_loader.h" />
+    <ClInclude Include="alc\graphics\2D\camera2d.hpp" />
+    <ClInclude Include="alc\graphics\2D\scenegraph2d.hpp" />
+    <ClInclude Include="alc\graphics\2D\spriterenderer.hpp" />
     <ClInclude Include="alc\jobs\cjs\cjs.hpp" />
     <ClInclude Include="alc\jobs\cjs\context.hpp" />
     <ClInclude Include="alc\jobs\cjs\handle.hpp" />
@@ -66,6 +69,8 @@
     <ClCompile Include="alc\core\engine.cpp" />
     <ClCompile Include="alc\core\scene_manager.cpp" />
     <ClCompile Include="alc\core\window.cpp" />
+    <ClCompile Include="alc\graphics\2D\camera2d.cpp" />
+    <ClCompile Include="alc\graphics\2D\spriterenderer.cpp" />
     <ClCompile Include="alc\graphics\3D\scenegraph3d.cpp" />
     <ClCompile Include="alc\jobs\job_queue.cpp" />
     <ClCompile Include="alc\input\keyboard.cpp" />
