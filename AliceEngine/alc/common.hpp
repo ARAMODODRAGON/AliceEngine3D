@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <list>
+#include <set>
 #include <inttypes.h>
 #include <memory>
 #include <utility>
