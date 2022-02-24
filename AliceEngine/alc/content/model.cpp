@@ -94,7 +94,7 @@ namespace alc {
 				ALC_DEBUG_ERROR("No material for associated mesh");
 				continue;
 			}
-			if (!shape.mesh.material_ids.size() > 1) {
+			if (shape.mesh.material_ids.size() > 1) {
 				ALC_DEBUG_ERROR("Mutilple materials associated with mesh. Default to only use the first material");
 				continue;
 			}

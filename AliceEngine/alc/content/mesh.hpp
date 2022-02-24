@@ -4,6 +4,16 @@
 
 namespace alc {
 
+	// TODO: implement a settings struct for creating a mesh
+	//enum class mesh_update_setting : uint8 {
+	//
+	//};
+	//
+	//struct mesh_settings final {
+	//
+	//
+	//};
+
 	// represents a set of 3d points in space
 	class mesh final {
 	public:
@@ -36,7 +46,7 @@ namespace alc {
 
 	private:
 		struct data_t {
-			uint32 vao = -1, vbo = -1, ebo = -1, ibo = -1;
+			uint32 vao = -1, vbo = -1, ebo = -1;
 		};
 		std::shared_ptr<data_t> m_data;
 	};
