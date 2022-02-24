@@ -25,18 +25,40 @@ namespace alc {
 			glm::uvec2 size = glm::uvec2(0, 0);
 		} window;
 
-		// rendering -- optional
+		// 2d rendering -- optional
 		struct {
+			
 			// enable the renderer
 			bool enabled = true;
-		} renderer;
+
+		} renderer2d;
+		
+		// 3d rendering -- optional
+		struct {
+			
+			// enable the renderer
+			bool enabled = true;
+
+		} renderer3d;
+
+		// content management -- optional
+		struct {
+			
+			// enable the content manager
+			bool enableManager = true;
+
+			// the rate at which to check for unreferenced content 
+			// rate is in frames, default will check every 10th frame
+			int removalRate = 10;
+
+		} content;
 
 		// world/groups/gameobjects -- optional
 		struct {
-			// enabled the world 
+			// enable the world 
 			bool enabled = true;
 
-			// use scene manager to handle scenes as groups -- optional
+			// use scene manager to handle scenes as objects -- optional
 			struct {
 				bool enabled = true;
 
@@ -52,19 +74,7 @@ namespace alc {
 			} scenemanager;
 
 		} objects;
-
-		// setup scenebindings -- optional
-		// when no scenes are bound the scenemanager becomes disabled during the duration of the game's run
-		//struct {
-		//	// the scenes that can be loaded
-		//	std::vector<scene_binding> sceneBindings;
-		//
-		//	// load a scene by its index
-		//	uint32 initialSceneIndex = -1; // optional (priority)
-		//	// load a scene by its name
-		//	std::string initialSceneStr = ""; // optional
-		//} scenemanager;
-
+		
 		// game class setup -- optional
 		game_binding gameBinding = nullptr;
 

@@ -45,13 +45,16 @@ namespace alc {
 		// gets the uniform id
 		uint32 get_uniform(const std::string& str) const;
 
+		// gets the number of shared instances of this shader
+		long get_shared_count() const;
+
 	private:
 		struct data_t {
 			data_t(uint32 id) : id(id) { }
 			~data_t();
 			uint32 id;
 		};
-		std::unique_ptr<data_t> m_data;
+		std::shared_ptr<data_t> m_data;
 	};
 
 }

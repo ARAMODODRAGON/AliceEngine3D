@@ -2,6 +2,8 @@
 #include <alc\alc.hpp>
 #include <alc\core\alice_events.hpp>
 #include <alc\objects\singleton.hpp>
+#include <alc\jobs\job_queue.hpp>
+#include <alc\content\model.hpp>
 
 class Playground : public alc::game {
 public:
@@ -26,6 +28,10 @@ public:
 
 	Level() { }
 	~Level() { }
+
+	void on_create() override {
+
+	}
 
 private:
 

@@ -75,6 +75,9 @@ namespace alc {
 		// compare the textures
 		bool operator!=(const texture& other) const;
 
+		// gets the number of shared instances of this texture
+		long get_shared_count() const;
+
 	private:
 		struct data_t final {
 			uint32 id;
@@ -85,7 +88,7 @@ namespace alc {
 			data_t() = default;
 			~data_t();
 		};
-		std::unique_ptr<data_t> m_data;
+		std::shared_ptr<data_t> m_data;
 	};
 
 }

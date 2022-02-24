@@ -24,7 +24,7 @@ namespace alc {
 	template<typename ObjectTy>
 	inline ObjectTy* singleton::get() {
 		if constexpr (std::is_base_of_v<singleton, ObjectTy>) {
-			ObjectTy* instance = nullptr;
+			static ObjectTy* instance = nullptr;
 			if (instance == nullptr) {
 				instance = world::create<ObjectTy>("Singleton");
 			}

@@ -23,7 +23,9 @@
     <ClInclude Include="alc\common.hpp" />
     <ClInclude Include="alc\content\content_manager.hpp" />
     <ClInclude Include="alc\content\detail\content_storage.hpp" />
+    <ClInclude Include="alc\content\material.hpp" />
     <ClInclude Include="alc\content\mesh.hpp" />
+    <ClInclude Include="alc\content\model.hpp" />
     <ClInclude Include="alc\content\shader.hpp" />
     <ClInclude Include="alc\content\texture.hpp" />
     <ClInclude Include="alc\core\debug.hpp" />
@@ -32,18 +34,14 @@
     <ClInclude Include="alc\core\game.hpp" />
     <ClInclude Include="alc\core\scene_manager.hpp" />
     <ClInclude Include="alc\core\window.hpp" />
+    <ClInclude Include="alc\datatypes\bounds3d.hpp" />
     <ClInclude Include="alc\datatypes\button.hpp" />
     <ClInclude Include="alc\datatypes\function.hpp" />
     <ClInclude Include="alc\datatypes\hash.hpp" />
     <ClInclude Include="alc\datatypes\layermask.hpp" />
-    <ClInclude Include="alc\datatypes\object_vertex.hpp" />
     <ClInclude Include="alc\datatypes\timestep.hpp" />
     <ClInclude Include="alc\dependencies\stb_image.h" />
     <ClInclude Include="alc\dependencies\tiny_obj_loader.h" />
-    <ClInclude Include="alc\graphics\2D\basic_mesh.hpp" />
-    <ClInclude Include="alc\graphics\2D\camera2d.hpp" />
-    <ClInclude Include="alc\graphics\2D\scenegraph2d.hpp" />
-    <ClInclude Include="alc\graphics\2D\spriterenderer.hpp" />
     <ClInclude Include="alc\jobs\cjs\cjs.hpp" />
     <ClInclude Include="alc\jobs\cjs\context.hpp" />
     <ClInclude Include="alc\jobs\cjs\handle.hpp" />
@@ -53,19 +51,22 @@
     <ClInclude Include="alc\input\mouse.hpp" />
     <ClInclude Include="alc\objects\component_info.hpp" />
     <ClInclude Include="alc\objects\entity.hpp" />
-    <ClInclude Include="alc\objects\object.hpp" />
     <ClInclude Include="alc\objects\singleton.hpp" />
     <ClInclude Include="alc\objects\world.hpp" />
     <ClInclude Include="alc\reflection\type.hpp" />
     <ClInclude Include="alc\reflection\typehash.hpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="alc\content\content_manager.cpp" />
+    <ClCompile Include="alc\content\mesh.cpp" />
+    <ClCompile Include="alc\content\model.cpp" />
     <ClCompile Include="alc\content\shader.cpp" />
     <ClCompile Include="alc\content\texture.cpp" />
     <ClCompile Include="alc\core\debug.cpp" />
     <ClCompile Include="alc\core\engine.cpp" />
     <ClCompile Include="alc\core\scene_manager.cpp" />
     <ClCompile Include="alc\core\window.cpp" />
+    <ClCompile Include="alc\graphics\3D\scenegraph3d.cpp" />
     <ClCompile Include="alc\jobs\job_queue.cpp" />
     <ClCompile Include="alc\input\keyboard.cpp" />
     <ClCompile Include="alc\input\mouse.cpp" />

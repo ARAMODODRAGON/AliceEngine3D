@@ -14,6 +14,9 @@ namespace alc {
 		// basic update callback
 		static inline event<void, timestep> onUpdate;
 
+		// post update callback
+		static inline event<void, timestep> onPostUpdate;
+
 		// when loading/unloading scenes
 		// second parameter indicates the index of of this scene (0 would indicate that it is the primary scene)
 		static inline event<void, class scene*, uint32> onSceneUnload;

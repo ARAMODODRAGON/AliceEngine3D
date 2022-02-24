@@ -162,6 +162,10 @@ namespace alc {
 		return glGetUniformLocation(get_id(), str.c_str());
 	}
 
+	long shader::get_shared_count() const {
+		return m_data.use_count();
+	}
+
 	shader::data_t::~data_t() {
 		glDeleteProgram(id);
 	}

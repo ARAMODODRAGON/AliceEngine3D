@@ -1,5 +1,5 @@
-#include "object.hpp"
 #include "world.hpp"
+#include "../core/scene_manager.hpp"
 
 namespace alc {
 
@@ -8,7 +8,7 @@ namespace alc {
 	component::~component() {
 		if (m_shouldUpdate) {
 			auto func = make_function<&component::on_update>(this);
-			detail::onWorldComponentUpdate -= func;
+			world::onWorldUpdate -= func;
 		}
 	}
 
@@ -27,9 +27,9 @@ namespace alc {
 			auto func = make_function<&component::on_update>(this);
 
 			if (shouldUpdate)
-				detail::onWorldComponentUpdate += func;
+				world::onWorldUpdate += func;
 			else
-				detail::onWorldComponentUpdate -= func;
+				world::onWorldUpdate -= func;
 		}
 	}
 
@@ -47,7 +47,7 @@ namespace alc {
 		return m_object->get_name();
 	}
 
-	void component::set_name(const std::string& name) { 
+	void component::set_name(const std::string& name) {
 		m_object->set_name(name);
 	}
 
@@ -70,7 +70,7 @@ namespace alc {
 	////////////////////////////////////////////////////
 
 	object::object(const std::string& name)
-		: m_parent(nullptr), m_name(name) { }
+		: m_parent(nullptr), m_name(name), m_shouldUpdate(false) { }
 
 	object::~object() {
 		// delete all subobjects
@@ -85,6 +85,11 @@ namespace alc {
 			delete c;
 		}
 		m_components.clear();
+
+		if (m_shouldUpdate) {
+			auto func = make_function<&object::on_update>(this);
+			world::onWorldUpdate -= func;
+		}
 	}
 
 	object* object::get_parent() const {
@@ -110,6 +115,31 @@ namespace alc {
 
 	void object::set_name(const std::string& name) {
 		m_name = name;
+	}
+
+	// returns whether this component should actively update or not
+	bool object::get_should_update() const {
+		return m_shouldUpdate;
+	}
+
+	// sets if this component should actively update or not
+	void object::set_should_update(bool shouldUpdate) {
+		if (m_shouldUpdate != shouldUpdate) {
+			m_shouldUpdate = shouldUpdate;
+
+			auto func = make_function<&object::on_update>(this);
+
+			if (shouldUpdate)
+				world::onWorldUpdate += func;
+			else
+				world::onWorldUpdate -= func;
+		}
+	}
+
+	scene* object::get_scene() {
+		if (!m_parent) return nullptr;
+		if (scene* s = dynamic_cast<scene*>(m_parent)) return s;
+		return m_parent->get_scene();
 	}
 
 	object* object::create_object(const std::string& name) {
@@ -139,7 +169,7 @@ namespace alc {
 		}
 	}
 
-	void object::__delete_component(component* c) { 
+	void object::__delete_component(component* c) {
 		// remove from list
 		for (size_t i = 0; i < m_components.size(); i++) {
 			if (m_components[i] == c) {

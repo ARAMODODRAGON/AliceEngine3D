@@ -175,6 +175,10 @@ namespace alc {
 		return m_data != other.m_data;
 	}
 
+	long texture::get_shared_count() const {
+		return m_data.use_count();
+	}
+
 	texture::data_t::~data_t() {
 		glDeleteTextures(1, &id);
 	}

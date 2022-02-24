@@ -1,6 +1,6 @@
 #ifndef ALC_OBJECTS_ENTITY_HPP
 #define ALC_OBJECTS_ENTITY_HPP
-#include "object.hpp"
+#include "world.hpp"
 
 namespace alc {
 

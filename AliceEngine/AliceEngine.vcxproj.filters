@@ -84,9 +84,6 @@
     <ClInclude Include="alc\datatypes\layermask.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\graphics\2D\basic_mesh.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="alc\content\content_manager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -94,9 +91,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alc\content\detail\content_storage.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="alc\datatypes\object_vertex.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alc\content\shader.hpp">
@@ -114,22 +108,19 @@
     <ClInclude Include="alc\core\scene_manager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\objects\object.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="alc\objects\entity.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="alc\graphics\2D\scenegraph2d.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alc\objects\singleton.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\graphics\2D\camera2d.hpp">
+    <ClInclude Include="alc\content\model.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\graphics\2D\spriterenderer.hpp">
+    <ClInclude Include="alc\content\material.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\datatypes\bounds3d.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -171,6 +162,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="alc\objects\entity.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\content\content_manager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\graphics\3D\scenegraph3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\content\model.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\content\mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

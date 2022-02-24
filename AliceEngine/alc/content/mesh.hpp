@@ -1,30 +1,29 @@
 #ifndef ALC_CONTENT_MESH_HPP
 #define ALC_CONTENT_MESH_HPP
+#include "../common.hpp"
 
 namespace alc {
 
+	// represents a set of 3d points in space
 	class mesh final {
 	public:
-		class submesh final {
-			friend class mesh;
-		public:
-
-			submesh();
-
-		private:
-			uint32 m_vao, m_vbo, m_ebo;
-		public:
-			void __bind();
+		struct vertex final {
+			glm::vec3 position;
+			glm::vec3 normal;
+			glm::vec2 uv;
 		};
 
-		// loads mesh from a file
-		static mesh load(const std::string& filepath);
+		// loads a mesh from a set of verticies
+		static mesh create(const std::vector<vertex>& verticies);
 
-		// deletes the mesh
+		// loads a mesh from a set of verticies and indicies
+		static mesh create(const std::vector<vertex>& verticies, const std::vector<uint32>& indicies);
+
+		// deletes a mesh
 		static bool unload(mesh& m);
 
 
-		mesh(std::nullptr_t = nullptr);
+		mesh();
 
 		// checks if this is a valid mesh
 		bool is_valid() const;
@@ -32,17 +31,14 @@ namespace alc {
 		// checks if this is a valid mesh
 		operator bool() const;
 
-		// compares this to another mesh
-		bool operator==(const mesh& other) const;
-
-		// compares this to another mesh
-		bool operator!=(const mesh& other) const;
+		// gets the number of shared instances of this mesh
+		long get_shared_count() const;
 
 	private:
-		struct mesh_data final {
-			std::vector<submesh> m_submeshes;
+		struct data_t {
+			uint32 vao = -1, vbo = -1, ebo = -1, ibo = -1;
 		};
-		std::shared_ptr<mesh_data> m_meshData;
+		std::shared_ptr<data_t> m_data;
 	};
 
 }

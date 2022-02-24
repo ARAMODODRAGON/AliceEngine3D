@@ -4,6 +4,7 @@
 #include "../input/mouse.hpp"
 #include "../jobs/job_queue.hpp"
 #include "../objects/world.hpp"
+#include "../content/content_manager.hpp"
 #include <chrono>
 #include <SDL.h>
 
@@ -29,6 +30,10 @@ namespace alc {
 
 		// create window
 		s_window = new window(set->window.titlebar, set->window.size);
+
+		// enable content_manager
+		const bool content_manager_enabled = set->content.enableManager;
+		if (content_manager_enabled) content_manager::__init(set->content.removalRate);
 
 		// enable job system
 		const bool jobs_enabled = set->jobs.enabled;
@@ -67,6 +72,8 @@ namespace alc {
 			alice_events::onUpdate(ts);
 			if (scenes_enabled) scene_manager::__update(ts);
 			if (world_enabled) world::__update(ts);
+			// post update
+			alice_events::onPostUpdate(ts);
 
 			// clear screen
 			s_window->clear_screen(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
@@ -96,6 +103,9 @@ namespace alc {
 			s_game->exit();
 			delete s_game, s_game = nullptr;
 		}
+
+		// remove content
+		if (content_manager_enabled) content_manager::__exit();
 
 		// close jobs 
 		if (jobs_enabled) job_queue::__exit();
