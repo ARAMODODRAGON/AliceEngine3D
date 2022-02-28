@@ -11,7 +11,7 @@ namespace alc {
 	public:
 		virtual ~scene() = 0;
 		virtual void on_init_scene(const std::string& args) { }
-		virtual void on_destroy() { }
+		virtual void on_destroy_scene() { }
 	};
 
 	// binding for loading scenes

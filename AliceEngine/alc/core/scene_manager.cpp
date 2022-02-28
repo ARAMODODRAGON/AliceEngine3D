@@ -218,7 +218,7 @@ namespace alc {
 	}
 
 	void scene_manager::delete_scene(size_t index) {
-		s_activeScenes[index].scene->on_destroy();
+		s_activeScenes[index].scene->on_destroy_scene();
 		alice_events::onSceneUnload(s_activeScenes[index].scene, index);
 		s_activeScenes[index].scene->destroy_this();
 		if (index != 0) s_activeScenes.erase(s_activeScenes.begin() + index);

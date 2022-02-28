@@ -7,9 +7,16 @@ namespace alc {
 
 	class spriterenderer;
 	class camera2d;
+	struct engine_settings;
 
 	namespace gfx2d {
 
+		// info for each layer of the scenegraph
+		struct layerinfo {
+			std::string name;
+			std::string spriteShader;
+			//std::string postProcessingShader;
+		};
 
 		// renders all 2d objects in the scene
 		class scenegraph2d final {
@@ -20,25 +27,36 @@ namespace alc {
 		private:
 
 			struct layer final {
-				std::list<spriterenderer> sprites;
-				shader sh;
+				std::string name;
+				std::list<spriterenderer*> sprites;
+				shader spriteShader;
 				// TODO: add renderer2ds as a seperate thing to render in this layer
 			};
 
 			static inline std::vector<layer> s_layers;
-			static inline std::vector<camera2d*> s_cameras;
+			static inline std::list<camera2d*> s_cameras;
 
+			static inline const engine_settings* s_set = nullptr;
+			static inline shader s_spriteShader;
 			//static inline mesh s_batchMesh;
 
 		public:
-			static void __init(struct engine_settings* set);
+			static void __init(const engine_settings* set);
 			static void __exit();
+			static void __draw();
 			static void __add_camera(camera2d* cam);
 			static void __remove_camera(const camera2d* cam);
-			static void __add_sprite(spriterenderer* spr, uint32 layer, texture tex);
-			static void __remove_sprite(const spriterenderer* spr, uint32 layer, texture tex);
+			static bool __add_sprite(spriterenderer* spr, uint32 layerID, texture tex);
+			static void __remove_sprite(const spriterenderer* spr, uint32 layerID, texture tex);
 		};
 
+	}
+
+	inline gfx2d::layerinfo bind_layer(const std::string& name, const std::string& spriteShader = "") {
+		gfx2d::layerinfo info;
+		info.name = name;
+		info.spriteShader = spriteShader;
+		return info;
 	}
 
 }

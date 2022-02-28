@@ -4,15 +4,27 @@
 
 namespace alc {
 
-	// TODO: implement a settings struct for creating a mesh
-	//enum class mesh_update_setting : uint8 {
-	//
-	//};
-	//
-	//struct mesh_settings final {
-	//
-	//
-	//};
+
+	enum class mesh_update_opt : uint8 {
+		stream_draw,
+		stream_read,
+		stream_copy,
+		static_draw,
+		static_read,
+		static_copy,
+		dynamic_draw,
+		dynamic_read,
+		dynamic_copy
+	};
+
+	enum class mesh_attribute_opt : uint8 {
+
+	};
+
+	struct meshopts final {
+		mesh_update_opt updateOpt;
+		std::vector<mesh_attribute_opt> attributes;
+	};
 
 	// represents a set of 3d points in space
 	class mesh final {
@@ -23,11 +35,13 @@ namespace alc {
 			glm::vec2 uv;
 		};
 
-		// loads a mesh from a set of verticies
-		static mesh create(const std::vector<vertex>& verticies);
-
 		// loads a mesh from a set of verticies and indicies
-		static mesh create(const std::vector<vertex>& verticies, const std::vector<uint32>& indicies);
+		static mesh create(const std::vector<vertex>& verticies,
+						   const std::vector<uint32>& indicies = std::vector<uint32>(),
+						   const mesh_update_opt opt = mesh_update_opt::static_draw);
+
+		// loads a mesh from a set of verticies with custom attributes
+		static mesh create(const void* verticies, std::vector<uint32>& indicies, const meshopts& opts);
 
 		// deletes a mesh
 		static bool unload(mesh& m);

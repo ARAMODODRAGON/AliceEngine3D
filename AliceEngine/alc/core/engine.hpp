@@ -4,6 +4,7 @@
 #include "scene_manager.hpp"
 #include "game.hpp"
 #include "window.hpp"
+#include "../graphics/2D/scenegraph2d.hpp"
 
 namespace alc {
 
@@ -31,15 +32,23 @@ namespace alc {
 			// enable the renderer
 			bool enabled = true;
 
+			// default sprite shader
+			// empty uses the internal shader
+			std::string spriteShader;
+
+			// set the number of layers and what shader to load for each layer
+			// if no layers then one layer will be created and will be unnamed
+			std::vector<gfx2d::layerinfo> layerInfo;
+
 		} renderer2d;
 		
-		// 3d rendering -- optional
-		struct {
-			
-			// enable the renderer
-			bool enabled = true;
-
-		} renderer3d;
+		//// 3d rendering -- optional
+		//struct {
+		//	
+		//	// enable the renderer
+		//	bool enabled = true;
+		//
+		//} renderer3d;
 
 		// content management -- optional
 		struct {

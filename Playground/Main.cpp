@@ -37,7 +37,7 @@ private:
 
 	void on_init_scene(const std::string& args) override { }
 
-	void on_destroy() override { }
+	void on_destroy_scene() override { }
 
 
 };
@@ -52,6 +52,12 @@ static const alc::engine_settings GetSettings() {
 
 	set.objects.scenemanager.scenebindings = {
 		alc::bind_scene<Level>("Level0")
+	};
+
+	set.renderer2d.layerInfo = {
+		alc::bind_layer("Layer 0"),
+		alc::bind_layer("Layer 1"),
+		alc::bind_layer("Layer 2")
 	};
 
 	//set.jobs.enabled = true;

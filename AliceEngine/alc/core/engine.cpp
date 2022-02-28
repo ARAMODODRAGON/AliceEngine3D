@@ -5,6 +5,7 @@
 #include "../jobs/job_queue.hpp"
 #include "../objects/world.hpp"
 #include "../content/content_manager.hpp"
+#include "../graphics/2D/scenegraph2d.hpp"
 #include <chrono>
 #include <SDL.h>
 
@@ -34,6 +35,10 @@ namespace alc {
 		// enable content_manager
 		const bool content_manager_enabled = set->content.enableManager;
 		if (content_manager_enabled) content_manager::__init(set->content.removalRate);
+
+		// enable scenegraph2d
+		const bool scenegraph2d_enabled = set->renderer2d.enabled;
+		if (scenegraph2d_enabled) gfx2d::scenegraph2d::__init(set);
 
 		// enable job system
 		const bool jobs_enabled = set->jobs.enabled;
@@ -79,7 +84,7 @@ namespace alc {
 			s_window->clear_screen(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 			// render
-
+			if (scenegraph2d_enabled) gfx2d::scenegraph2d::__draw();
 
 			// swap buffers
 			s_window->swap_buffers();
@@ -103,6 +108,9 @@ namespace alc {
 			s_game->exit();
 			delete s_game, s_game = nullptr;
 		}
+
+		// remove 2d renderer
+		if (scenegraph2d_enabled) gfx2d::scenegraph2d::__exit();
 
 		// remove content
 		if (content_manager_enabled) content_manager::__exit();
