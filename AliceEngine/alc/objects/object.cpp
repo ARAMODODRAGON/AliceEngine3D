@@ -37,20 +37,6 @@ namespace alc {
 		return world::__delete_component(this);
 	}
 
-	object* component::get_parent() const {
-		return m_object->get_parent();
-	}
-
-	void component::set_parent(object* parent) { }
-
-	std::string component::get_name() const {
-		return m_object->get_name();
-	}
-
-	void component::set_name(const std::string& name) {
-		m_object->set_name(name);
-	}
-
 	object* component::create_object(const std::string& name) {
 		return m_object->create_object();
 	}
@@ -69,8 +55,8 @@ namespace alc {
 
 	////////////////////////////////////////////////////
 
-	object::object(const std::string& name)
-		: m_parent(nullptr), m_name(name), m_shouldUpdate(false) { }
+	object::object()
+		: m_parent(nullptr), m_name(""), m_shouldUpdate(false) { }
 
 	object::~object() {
 		// delete all subobjects

@@ -2,10 +2,14 @@
 #define ALC_COMMON_HPP
 #include <glm\glm.hpp>
 #include <glm\gtc\quaternion.hpp>
+#include <glm/gtc/matrix_transform.hpp>
+#include <glm/gtx/quaternion.hpp>
+#include <math.h>
 #include <string>
 #include <vector>
 #include <list>
 #include <set>
+#include <array>
 #include <inttypes.h>
 #include <memory>
 #include <utility>

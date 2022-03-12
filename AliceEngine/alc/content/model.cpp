@@ -35,8 +35,8 @@ namespace alc {
 		m.m_data->meshes.reserve(shapes.size());
 
 		// create our variables to be used in assembling the meshes
-		mesh::vertex vert;
-		std::vector<mesh::vertex> verticies;
+		mesh::basic_vertex vert;
+		std::vector<mesh::basic_vertex> verticies;
 
 		// NOTE: big memory save could be to also include indicies as an array
 		// requires some smart thinking that I can't do right now because im tired
@@ -81,7 +81,7 @@ namespace alc {
 
 			// finished assembling the verticies
 			// now load as mesh
-			auto mesh_ = mesh::create(verticies);
+			auto mesh_ = mesh::create(verticies.data(), verticies.size(), nullptr, 0, mesh::basic_vertex::basic_info());
 
 			// check if failed
 			if (!mesh_) continue;

@@ -4,7 +4,7 @@
 #include "scene_manager.hpp"
 #include "game.hpp"
 #include "window.hpp"
-#include "../graphics/2D/scenegraph2d.hpp"
+#include "../graphics2d/scenegraph2d.hpp"
 
 namespace alc {
 
@@ -28,7 +28,7 @@ namespace alc {
 
 		// 2d rendering -- optional
 		struct {
-			
+
 			// enable the renderer
 			bool enabled = true;
 
@@ -41,18 +41,22 @@ namespace alc {
 			std::vector<gfx2d::layerinfo> layerInfo;
 
 		} renderer2d;
-		
-		//// 3d rendering -- optional
-		//struct {
-		//	
-		//	// enable the renderer
-		//	bool enabled = true;
-		//
-		//} renderer3d;
+
+		// 3d rendering -- optional
+		struct {
+
+			// enable the renderer
+			bool enabled = true;
+
+			// the default shader to use
+			// if not set then uses an internal shader
+			std::string defaultShader = "";
+
+		} renderer3d;
 
 		// content management -- optional
 		struct {
-			
+
 			// enable the content manager
 			bool enableManager = true;
 
@@ -83,7 +87,7 @@ namespace alc {
 			} scenemanager;
 
 		} objects;
-		
+
 		// game class setup -- optional
 		game_binding gameBinding = nullptr;
 

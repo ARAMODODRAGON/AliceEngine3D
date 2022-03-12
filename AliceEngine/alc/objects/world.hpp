@@ -37,25 +37,7 @@ namespace alc {
 		// deletes this component
 		bool destroy_this();
 
-
-		//// from object
-
-		/// basic properties 
-
-		// returns the parent object
-		object* get_parent() const;
-
-		// reparents this object, can be set to nullptr to unparent
-		void set_parent(object* parent);
-
-		// returns the name of this object
-		std::string get_name() const;
-
-		// sets the name of this object
-		void set_name(const std::string& name);
-
-
-		//// gameobjects
+		//// objects
 
 		// creates an object attached to this object
 		object* create_object(const std::string& name = "");
@@ -88,12 +70,12 @@ namespace alc {
 		void __set_object(object* object);
 	};
 
-	// objects can be anything from a scene to an entity or even a singleton
+	// objects can be anything from a scene to an world_object or even a singleton
 	// objects that exists in the world with a name and components and other relative objects
 	class object {
 	public:
 
-		object(const std::string& name = "");
+		object();
 		virtual ~object();
 
 		virtual void on_create() { }

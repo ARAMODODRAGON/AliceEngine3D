@@ -5,7 +5,8 @@
 #include "../jobs/job_queue.hpp"
 #include "../objects/world.hpp"
 #include "../content/content_manager.hpp"
-#include "../graphics/2D/scenegraph2d.hpp"
+#include "../graphics2d/scenegraph2d.hpp"
+#include "../graphics3d/scenegraph3d.hpp"
 #include <chrono>
 #include <SDL.h>
 
@@ -39,6 +40,10 @@ namespace alc {
 		// enable scenegraph2d
 		const bool scenegraph2d_enabled = set->renderer2d.enabled;
 		if (scenegraph2d_enabled) gfx2d::scenegraph2d::__init(set);
+
+		// enabled scenegraph3d
+		const bool scenegraph3d_enabled = set->renderer3d.enabled;
+		if (scenegraph3d_enabled) gfx3d::scenegraph3d::__init(set);
 
 		// enable job system
 		const bool jobs_enabled = set->jobs.enabled;
@@ -84,6 +89,7 @@ namespace alc {
 			s_window->clear_screen(glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
 
 			// render
+			if (scenegraph3d_enabled) gfx3d::scenegraph3d::__draw();
 			if (scenegraph2d_enabled) gfx2d::scenegraph2d::__draw();
 
 			// swap buffers
@@ -108,6 +114,9 @@ namespace alc {
 			s_game->exit();
 			delete s_game, s_game = nullptr;
 		}
+
+		// remove 3d renderer
+		if (scenegraph3d_enabled) gfx3d::scenegraph3d::__exit();
 
 		// remove 2d renderer
 		if (scenegraph2d_enabled) gfx2d::scenegraph2d::__exit();

@@ -108,9 +108,6 @@
     <ClInclude Include="alc\core\scene_manager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\objects\entity.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="alc\objects\singleton.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -123,16 +120,31 @@
     <ClInclude Include="alc\datatypes\bounds3d.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\graphics\2D\scenegraph2d.hpp">
+    <ClInclude Include="alc\objects\world_object.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\graphics\2D\spriterenderer.hpp">
+    <ClInclude Include="alc\graphics3d\mesh_component.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\graphics\2D\camera2d.hpp">
+    <ClInclude Include="alc\graphics3d\detail\basic_mesh_shader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\graphics\2D\detail\basic_sprite_shader.hpp">
+    <ClInclude Include="alc\graphics2d\detail\basic_sprite_shader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\graphics2d\camera2d.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\graphics2d\scenegraph2d.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\graphics2d\spriterenderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\graphics3d\camera3d.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\graphics3d\scenegraph3d.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -173,13 +185,7 @@
     <ClCompile Include="alc\objects\object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alc\objects\entity.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="alc\content\content_manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="alc\graphics\3D\scenegraph3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="alc\content\model.cpp">
@@ -188,13 +194,25 @@
     <ClCompile Include="alc\content\mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alc\graphics\2D\spriterenderer.cpp">
+    <ClCompile Include="alc\objects\world_object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alc\graphics\2D\camera2d.cpp">
+    <ClCompile Include="alc\graphics3d\mesh_component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alc\graphics\2D\scenegraph2d.cpp">
+    <ClCompile Include="alc\graphics3d\scenegraph3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\graphics2d\camera2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\graphics2d\scenegraph2d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\graphics2d\spriterenderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\graphics3d\camera3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

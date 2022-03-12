@@ -18,6 +18,9 @@ const std::string& alc::debugger::get_log_path() {
 			s_logFilepath = LOG_FILE_PATH + std::to_string(i);
 			file.open(s_logFilepath);
 		}
+		// add text and close
+		file << "Created " << s_logFilepath << std::endl;
+		std::cout << "Created " << s_logFilepath << std::endl;
 		file.close();
 	}
 	return s_logFilepath;

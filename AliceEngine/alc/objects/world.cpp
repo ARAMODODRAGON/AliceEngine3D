@@ -66,7 +66,8 @@ namespace alc {
 		s_componentsToDelete.clear();
 
 		s_objects.reserve(20);
-		s_objects.push_back(new object("GLOBAL"));
+		s_objects.push_back(new object());
+		s_objects.front()->set_name("GLOBAL");
 	}
 
 	void world::__exit() {

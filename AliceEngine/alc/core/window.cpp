@@ -62,6 +62,8 @@ namespace alc {
 		// enable this shit
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glEnable(GL_CULL_FACE);
+		glCullFace(GL_FRONT);
 
 		// print graphics card and opengl version
 		ALC_DEBUG_LOG("Graphics card: " + std::string(reinterpret_cast<const char*>(glGetString(GL_RENDERER))));
