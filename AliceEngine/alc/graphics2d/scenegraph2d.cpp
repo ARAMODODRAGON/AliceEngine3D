@@ -10,7 +10,7 @@ namespace alc {
 			s_set = set;
 
 			// load basic shader
-			s_spriteShader = content_manager::load_shader_source(c_basicSpriteShader);
+			//s_spriteShader = content_manager::load_shader_source("Basic Sprite Shader", c_basicSpriteShader);
 
 			// create layers
 			s_layers.resize(set->renderer2d.layerInfo.size() ? set->renderer2d.layerInfo.size() : 1);
@@ -21,8 +21,8 @@ namespace alc {
 
 				// possibly load shader
 				if (set->renderer2d.layerInfo[i].spriteShader != "") {
-					s_layers[i].spriteShader =
-						content_manager::load_shader(set->renderer2d.layerInfo[i].spriteShader);
+					//s_layers[i].spriteShader =
+					//	content_manager::load_shader(set->renderer2d.layerInfo[i].spriteShader);
 
 					if (!s_layers[i].spriteShader) s_layers[i].spriteShader = s_spriteShader;
 				}
@@ -48,7 +48,7 @@ namespace alc {
 			s_cameras.remove_if([cam](auto other) { return other == cam; });
 		}
 
-		bool scenegraph2d::__add_sprite(spriterenderer* spr, uint32 layerID, texture tex) {
+		bool scenegraph2d::__add_sprite(spriterenderer* spr, uint32 layerID, texture_ref tex) {
 			if (spr == nullptr) return false;
 			if (layerID >= s_layers.size()) {
 				ALC_DEBUG_WARNING("Invalid layer ID: " + VTOS(layerID));
@@ -60,7 +60,7 @@ namespace alc {
 			// add sprite into layer based on the order of the texture
 			for (auto it = layer.sprites.begin(); it != layer.sprites.end(); it++) {
 				// check if should insert next to other sprites with the same texture
-				if ((*it)->get_texture().get_id() == tex.get_id()) {
+				if ((*it)->get_texture()->get_id() == tex->get_id()) {
 					layer.sprites.insert(it, spr);
 					// exit
 					return true;
@@ -72,7 +72,7 @@ namespace alc {
 			return true;
 		}
 
-		void scenegraph2d::__remove_sprite(const spriterenderer* spr, uint32 layerID, texture tex) {
+		void scenegraph2d::__remove_sprite(const spriterenderer* spr, uint32 layerID, texture_ref tex) {
 			// get layer
 			auto& layer = s_layers[layerID];
 			// remove

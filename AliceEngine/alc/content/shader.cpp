@@ -6,11 +6,48 @@
 
 namespace alc {
 
-	shader shader::load(const std::string& filepath) {
+	static uint32 getshadertype(const std::string& shadertype) {
+		if (shadertype == "vertex") return GL_VERTEX_SHADER;
+		if (shadertype == "fragment") return GL_FRAGMENT_SHADER;
+		if (shadertype == "geometry") return  GL_GEOMETRY_SHADER;
+		if (shadertype == "compute") return  GL_COMPUTE_SHADER;
+		return -1;
+	}
+
+	shader::shader(const std::string& str, loadset set) {
+		if (set == IS_FILE)
+			loadfile(str);
+		else if (set == IS_SOURCE)
+			loadsrc(str);
+	}
+
+	shader::~shader() {
+		if (is_valid()) glDeleteProgram(m_id);
+	}
+
+	shader::shader(std::nullptr_t) : m_id(0) { }
+
+	bool shader::is_valid() const {
+		return m_id != 0;
+	}
+
+	shader::operator bool() const { return m_id != 0; }
+
+	shader::operator uint32() const { return m_id; }
+
+	uint32 shader::get_id() const {
+		return m_id;
+	}
+
+	uint32 shader::get_uniform(const std::string& str) const {
+		return glGetUniformLocation(get_id(), str.c_str());
+	}
+
+	void shader::loadfile(const std::string& filepath) {
 		std::ifstream file(filepath);
 		if (!file.is_open()) {
 			ALC_DEBUG_ERROR("Shader path was invalid: " + filepath);
-			return nullptr;
+			return;
 		}
 
 		// read file into string
@@ -21,18 +58,10 @@ namespace alc {
 		file.read(source.data(), source.size());
 		file.close();
 
-		return loadsource(source);
+		loadsrc(source);
 	}
 
-	static uint32 getshadertype(const std::string& shadertype) {
-		if (shadertype == "vertex") return GL_VERTEX_SHADER;
-		if (shadertype == "fragment") return GL_FRAGMENT_SHADER;
-		if (shadertype == "geometry") return  GL_GEOMETRY_SHADER;
-		if (shadertype == "compute") return  GL_COMPUTE_SHADER;
-		return -1;
-	}
-
-	shader shader::loadsource(const std::string& source) {
+	void shader::loadsrc(const std::string& source) {
 		// via "the cherno" https://youtu.be/8wFEzIYRZXg?t=1221
 
 		std::unordered_map<uint32, std::string> sources;
@@ -45,7 +74,7 @@ namespace alc {
 			size_t eol = source.find_first_of("\r\n", pos);
 			if (eol == std::string::npos) {
 				ALC_DEBUG_ERROR("Syntax error");
-				return nullptr;
+				return;
 			}
 			size_t begin = pos + typeTokenLen + 1;
 			uint32 shaderType = getshadertype(source.substr(begin, eol - begin));
@@ -63,7 +92,7 @@ namespace alc {
 
 		if (sources.size() == 0) {
 			ALC_DEBUG_ERROR("Invalid shader source");
-			return nullptr;
+			return;
 		}
 
 		std::vector<uint32> shaders;
@@ -99,7 +128,7 @@ namespace alc {
 		if (shaders.size() == 0) {
 			ALC_DEBUG_ERROR("Could not load any shaders, deleted shader program");
 			glDeleteProgram(shaderProgram);
-			return nullptr;
+			return;
 		}
 
 		// link
@@ -116,58 +145,15 @@ namespace alc {
 			// delete shaders/program
 			for (GLuint id : shaders) glDeleteShader(id);
 			glDeleteProgram(shaderProgram);
-			return nullptr;
+			return;
 		}
 
 		// delete shaders
 		for (GLuint id : shaders) glDeleteShader(id);
 		shaders.clear();
 
-		// create shader and assign program ID
-		shader shader;
-		shader.m_data.reset(new data_t(shaderProgram));
-		return shader;
-	}
-
-	bool shader::unload(shader& shader_) {
-		if (!shader_) return false;
-		shader_.m_data.reset();
-		return true;
-	}
-
-
-	shader::shader(std::nullptr_t) : m_data(nullptr) { }
-
-	bool shader::is_valid() const {
-		return m_data.get() != nullptr;
-	}
-
-	shader::operator bool() const { return is_valid(); }
-
-	shader::operator uint32() const { return get_id(); }
-
-	uint32 shader::get_id() const {
-		return m_data->id;
-	}
-
-	bool shader::operator==(const shader& other) const {
-		return get_id() == other.get_id();
-	}
-
-	bool shader::operator!=(const shader& other) const {
-		return get_id() != other.get_id();
-	}
-
-	uint32 shader::get_uniform(const std::string& str) const {
-		return glGetUniformLocation(get_id(), str.c_str());
-	}
-
-	long shader::get_shared_count() const {
-		return m_data.use_count();
-	}
-
-	shader::data_t::~data_t() {
-		glDeleteProgram(id);
+		// assign program ID and finish
+		m_id = shaderProgram;
 	}
 
 }

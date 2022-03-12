@@ -7,14 +7,10 @@
 
 namespace alc {
 
-	texture texture::load(const std::string& filepath) {
-		// use default options
-		textureopts options;
-		return load(filepath, options);
-	}
+	texture::texture(std::nullptr_t)
+		: m_id(0), m_size(0u) { }
 
-	texture texture::load(const std::string& filepath, const textureopts& options) {
-
+	texture::texture(const std::string& filepath, const textureopts& options) {
 		// set format type
 		int tryformat = STBI_default;
 
@@ -32,7 +28,7 @@ namespace alc {
 
 		if (pixels == nullptr) {
 			ALC_DEBUG_LOG("invalid filepath '" + filepath + "'");
-			return texture();
+			return;
 		}
 
 		// get format type
@@ -110,76 +106,42 @@ namespace alc {
 		stbi_image_free(pixels);
 
 		// create texture object and return
-		texture tex;
-		tex.m_data.reset(new data_t());
-		tex.m_data->id = textureID;
-		tex.m_data->size = glm::uvec2(width, height);
-		tex.m_data->format = realformat;
-		tex.m_data->wrap = options.wrap;
-		tex.m_data->filter = options.filter;
-		return tex;
+		m_id = textureID;
+		m_size = glm::uvec2(width, height);
+		m_format = realformat;
+		m_wrap = options.wrap;
+		m_filter = options.filter;
 	}
 
-	bool texture::unload(texture& tex) {
-		if (!tex) return false;
-
-		// delete the texture
-		tex.m_data.reset();
-		return true;
+	texture::~texture() {
+		if (is_valid())
+			glDeleteTextures(1, &m_id);
 	}
-
-	texture::texture(std::nullptr_t)
-		: m_data(nullptr) { }
 
 	bool texture::is_valid() const {
-		return m_data.get() != nullptr;
+		return m_id != 0;
 	}
 
 	texture::operator bool() const { return is_valid(); }
 
-	texture::operator uint32() const {
-		if (!is_valid()) return -1;
-		return m_data->id;
-	}
-
 	uint32 texture::get_id() const {
-		if (!is_valid()) return -1;
-		return m_data->id;
+		return m_id;
 	}
 
 	glm::uvec2 texture::get_size() const {
-		if (!is_valid()) return glm::uvec2(0);
-		return m_data->size;
+		return m_size;
 	}
 
 	textureformat texture::get_format() const {
-		if (!is_valid()) return (textureformat)-1;
-		return m_data->format;
+		return m_format;
 	}
 
 	texturewrap texture::get_wrap() const {
-		if (!is_valid()) return (texturewrap)-1;
-		return m_data->wrap;
+		return m_wrap;
 	}
 
 	texturefilter texture::get_filter() const {
-		if (!is_valid()) return (texturefilter)-1;
-		return m_data->filter;
+		return m_filter;
 	}
 
-	bool texture::operator==(const texture& other) const {
-		return m_data == other.m_data;
-	}
-
-	bool texture::operator!=(const texture& other) const {
-		return m_data != other.m_data;
-	}
-
-	long texture::get_shared_count() const {
-		return m_data.use_count();
-	}
-
-	texture::data_t::~data_t() {
-		glDeleteTextures(1, &id);
-	}
 }

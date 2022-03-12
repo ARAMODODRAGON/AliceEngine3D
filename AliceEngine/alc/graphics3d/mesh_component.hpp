@@ -33,10 +33,10 @@ namespace alc {
 		//bounds3d get_bounds() const;
 
 		// get the mesh
-		mesh get_mesh() const;
+		mesh_ref get_mesh() const;
 
 		// set the mesh
-		void set_mesh(const mesh& m);
+		void set_mesh(mesh_ref m);
 
 		// get the material
 		material get_material() const;
@@ -45,18 +45,18 @@ namespace alc {
 		void set_material(const material& m);
 
 		// get the shader
-		shader get_shader() const;
+		shader_ref get_shader() const;
 
 		// set the shader
-		void set_shader(const shader& s);
+		void set_shader(shader_ref s);
 
 		// returns the transformation matrix 
 		glm::mat4 get_transform() const;
 
 	private:
-		mesh m_mesh;
+		mesh_ref m_mesh;
 		material m_material;
-		shader m_shader;
+		shader_ref m_shader;
 
 		bool m_isStatic : 1;
 		bool m_isEnabled : 1;

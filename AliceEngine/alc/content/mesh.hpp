@@ -47,6 +47,7 @@ namespace alc {
 
 	// represents a mesh
 	class mesh final {
+		ALC_NO_COPY(mesh) ALC_NO_MOVE(mesh)
 	public:
 		struct basic_vertex final {
 			glm::vec3 position;
@@ -57,15 +58,15 @@ namespace alc {
 		};
 
 		// loads a mesh from a set of verticies and indicies
-		static mesh create(const void* verticies, const size_t verticies_size,
-						   const void* indices, const size_t indices_size,
-						   const mesh_info& info);
+		mesh(const void* verticies, const size_t verticies_size,
+			 const void* indices, const size_t indices_size,
+			 const mesh_info& info);
+
+		// default constructs an invalid mesh
+		mesh();
 
 		// deletes a mesh
-		static bool unload(mesh& m);
-
-
-		mesh(std::nullptr_t = nullptr);
+		~mesh();
 
 		// checks if this is a valid mesh
 		bool is_valid() const;
@@ -79,9 +80,6 @@ namespace alc {
 		// updates the indices data stored within this mesh
 		//bool update_indices_data(void* indices, const size_t indices_size);
 
-		// gets the number of shared instances of this mesh
-		long get_shared_count() const;
-
 		// gets the vao
 		uint32 get_vao() const;
 
@@ -93,17 +91,14 @@ namespace alc {
 
 		// gets the number of stored verticies
 		uint32 get_vertex_size() const;
-		
+
 		// gets the number of stored verticies
 		uint32 get_indicies_size() const;
 
 	private:
-		struct data_t {
-			uint32 vao = -1, vbo = -1, ebo = -1;
-			size_t vboSize = 0, eboSize = 0;
-			mesh_info meshInfo;
-		};
-		std::shared_ptr<data_t> m_data;
+		uint32 m_vao, m_vbo, m_ebo;
+		size_t m_vboSize, m_eboSize;
+		mesh_info m_meshInfo;
 	public:
 	};
 

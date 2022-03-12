@@ -46,8 +46,8 @@ namespace alc {
 			static void __draw();
 			static void __add_camera(camera2d* cam);
 			static void __remove_camera(const camera2d* cam);
-			static bool __add_sprite(spriterenderer* spr, uint32 layerID, texture tex);
-			static void __remove_sprite(const spriterenderer* spr, uint32 layerID, texture tex);
+			static bool __add_sprite(spriterenderer* spr, uint32 layerID, texture_ref tex);
+			static void __remove_sprite(const spriterenderer* spr, uint32 layerID, texture_ref tex);
 		};
 
 	}

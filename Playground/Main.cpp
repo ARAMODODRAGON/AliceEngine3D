@@ -101,8 +101,8 @@ public:
 				indices.emplace_back(topRight);
 			}
 		}
-
-		m_desertMesh = alc::mesh::create(verticies.data(), verticies.size(), indices.data(), indices.size(), info);
+		 
+		m_desertMesh.reset(new alc::mesh(verticies.data(), verticies.size(), indices.data(), indices.size(), info));
 
 		//DesertTerrainVertex vert;
 		//vert.position = glm::vec3(-0.5f, -0.3f, 0.0f);
@@ -127,13 +127,10 @@ public:
 		}
 	}
 
-	void on_destroy() override {
-		if (m_desertMesh) alc::mesh::unload(m_desertMesh);
-		m_desertMesh = nullptr;
-	}
+	void on_destroy() override { }
 
 private:
-	alc::mesh m_desertMesh;
+	alc::mesh_ref m_desertMesh;
 	alc::mesh_component* m_meshComponent;
 };
 

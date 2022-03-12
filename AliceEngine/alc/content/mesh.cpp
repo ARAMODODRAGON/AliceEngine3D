@@ -44,16 +44,11 @@ namespace alc {
 		return info;
 	}
 
-	mesh mesh::create(const void* verticies, const size_t verticies_size,
-					  const void* indices, const size_t indices_size,
-					  const mesh_info& info) {
-		//// TODO: implement indicies as an option
-		//// for now just print an error and exit
-		//if (indicies_size > 0) {
-		//	ALC_DEBUG_ERROR("Cannot use indicies");
-		//	return mesh();
-		//}
-
+	mesh::mesh(
+		const void* verticies, const size_t verticies_size,
+		const void* indices, const size_t indices_size,
+		const mesh_info& info
+	) : mesh() {
 		// create variabls
 		uint32 vao = -1, vbo = -1, ebo = -1;
 
@@ -88,52 +83,50 @@ namespace alc {
 		glBindVertexArray(0);
 
 		// set variables
-		mesh m;
-		m.m_data.reset(new mesh::data_t());
-		m.m_data->vao = vao;
-		m.m_data->vbo = vbo;
-		m.m_data->ebo = ebo;
-		m.m_data->vboSize = verticies_size;
-		m.m_data->eboSize = indices_size;
-		m.m_data->meshInfo = info; // copy this as we may need it later
-		return m;
+		m_vao = vao;
+		m_vbo = vbo;
+		m_ebo = ebo;
+		m_vboSize = verticies_size;
+		m_eboSize = indices_size;
+		m_meshInfo = info; // copy this as we may need it later
 	}
 
-	bool mesh::unload(mesh& m) {
-		if (m.m_data->vao == -1) return false;
+	mesh::mesh()
+		: m_vao(0), m_vbo(0), m_ebo(0)
+		, m_vboSize(0), m_eboSize(0) { }
+
+	mesh::~mesh() {
+		if (m_vao == -1) return;
 		// delete
-		glDeleteVertexArrays(1, &m.m_data->vao);
-		if (m.m_data->vbo != -1) glDeleteBuffers(1, &m.m_data->vbo);
-		if (m.m_data->ebo != -1) glDeleteBuffers(1, &m.m_data->ebo);
-		return true;
+		glDeleteVertexArrays(1, &m_vao);
+		if (m_vbo != -1) glDeleteBuffers(1, &m_vbo);
+		if (m_ebo != -1) glDeleteBuffers(1, &m_ebo);
 	}
-
-	mesh::mesh(std::nullptr_t) : m_data(nullptr) { }
 
 	bool mesh::is_valid() const {
-		return m_data.get();
+		return m_vao;
 	}
 
 	mesh::operator bool() const {
-		return is_valid();
+		return m_vao;
 	}
 
 	bool mesh::update_vertex_data(void* verticies, const size_t verticies_size) {
-		const size_t newSize = m_data->meshInfo.vertexSize * verticies_size;
-		uint32 vboFullSize = m_data->vboSize * m_data->meshInfo.vertexSize;
+		const size_t newSize = m_meshInfo.vertexSize * verticies_size;
+		uint32 vboFullSize = m_vboSize * m_meshInfo.vertexSize;
 
 		// bind
-		glBindVertexArray(m_data->vao);
-		glBindBuffer(GL_ARRAY_BUFFER, m_data->vbo);
+		glBindVertexArray(m_vao);
+		glBindBuffer(GL_ARRAY_BUFFER, m_vbo);
 
 		// resize if needed
 		if (vboFullSize < newSize) {
 			glBufferData(GL_ARRAY_BUFFER, newSize, nullptr, GL_STREAM_DRAW);
-			m_data->vboSize = verticies_size;
+			m_vboSize = verticies_size;
 		}
 
 		// update data
-		glBufferSubData(GL_ARRAY_BUFFER, 0, m_data->vboSize * m_data->meshInfo.vertexSize, verticies);
+		glBufferSubData(GL_ARRAY_BUFFER, 0, m_vboSize * m_meshInfo.vertexSize, verticies);
 
 		// unbind
 		glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -141,33 +134,24 @@ namespace alc {
 		return true;
 	}
 
-	long mesh::get_shared_count() const {
-		return m_data.use_count();
-	}
-
 	uint32 mesh::get_vao() const {
-		if (m_data) return m_data->vao;
-		return 0;
+		return m_vao;
 	}
 
 	uint32 mesh::get_vbo() const {
-		if (m_data) return m_data->vbo;
-		return 0;
+		return m_vbo;
 	}
 
 	uint32 mesh::get_ebo() const {
-		if (m_data) return m_data->ebo;
-		return 0;
+		return m_ebo;
 	}
 
 	uint32 mesh::get_vertex_size() const {
-		if (m_data) return m_data->vboSize;
-		return 0;
+		return m_vboSize;
 	}
 
 	uint32 mesh::get_indicies_size() const {
-		if (m_data) return m_data->eboSize;
-		return 0;
+		return m_eboSize;
 	}
 
 }

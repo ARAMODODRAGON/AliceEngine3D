@@ -22,10 +22,9 @@ void main() {
 out vec4 fragColor;
 
 in vec2 v_uv;
-in vec3 v_normal;
 
 void main() {
-	fragColor = vec4(colordelta, colordelta, colordelta, 1.0f);
+	fragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 )"";

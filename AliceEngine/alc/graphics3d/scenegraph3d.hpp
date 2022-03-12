@@ -15,23 +15,23 @@ namespace alc {
 			ALC_STATIC_CLASS(scenegraph3d);
 
 			struct mesh_group final {
-				mesh usedMesh;
+				mesh_ref usedMesh;
 				std::vector<mesh_component*> dynamicMeshes;
-				mesh_group(mesh m) : usedMesh(m) { }
+				mesh_group(mesh_ref m) : usedMesh(m) { }
 			};
 
 			struct shader_group final {
-				shader usedShader;
+				shader_ref usedShader;
 				std::vector<mesh_group> dynamicMeshGroups;
-				shader_group(shader shad) : usedShader(shad) { }
+				shader_group(shader_ref shad) : usedShader(shad) { }
 			};
 
 			static inline std::vector<camera3d*> s_cameras;
 			static inline std::vector<shader_group> s_shaderGroups;
-			static inline shader s_defaultShader;
+			static inline shader_ref s_defaultShader;
 
-			static shader_group* get_shader_group(shader s);
-			static mesh_group* get_mesh_group(shader_group* group, mesh m);
+			static shader_group* get_shader_group(shader_ref s);
+			static mesh_group* get_mesh_group(shader_group* group, mesh_ref m);
 			 
 		public:
 			static void __init(const engine_settings* set);

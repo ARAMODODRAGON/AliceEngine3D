@@ -23,10 +23,10 @@ namespace alc {
 		void set_enabled(bool enabled);
 
 		// returns the texture
-		texture get_texture() const;
+		texture_ref get_texture() const;
 
 		// sets the texture
-		void set_texture(texture tex);
+		void set_texture(texture_ref tex);
 
 		// gets the layer
 		uint32 get_layer() const;
@@ -41,7 +41,7 @@ namespace alc {
 		bool m_enabled : 1;
 		world_object* m_parentEntity;
 
-		texture m_texture;
+		texture_ref m_texture;
 		uint32 m_layer;
 	};
 

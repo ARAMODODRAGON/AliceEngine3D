@@ -12,7 +12,7 @@ namespace alc {
 	/// glm::mat4 m_lockedTransform;
 
 	mesh_component::mesh_component()
-		: m_isStatic(false), m_isEnabled(false), m_lockedTransform(1.0f) { }
+		: m_mesh(nullptr), m_isStatic(false), m_isEnabled(false), m_lockedTransform(1.0f) { }
 
 	mesh_component::~mesh_component() { }
 
@@ -49,11 +49,11 @@ namespace alc {
 		if (m_isEnabled) gfx3d::scenegraph3d::__add(this);
 	}
 
-	mesh mesh_component::get_mesh() const {
+	mesh_ref mesh_component::get_mesh() const {
 		return m_mesh;
 	}
 
-	void mesh_component::set_mesh(const mesh& m) {
+	void mesh_component::set_mesh(mesh_ref m) {
 		if (m_isEnabled) gfx3d::scenegraph3d::__remove(this);
 		m_mesh = m;
 		if (m_isEnabled) gfx3d::scenegraph3d::__add(this);
@@ -69,11 +69,11 @@ namespace alc {
 		if (m_isEnabled) gfx3d::scenegraph3d::__add(this);
 	}
 
-	shader mesh_component::get_shader() const {
+	shader_ref mesh_component::get_shader() const {
 		return m_shader;
 	}
 
-	void mesh_component::set_shader(const shader& s) {
+	void mesh_component::set_shader(shader_ref s) {
 		if (m_isEnabled) gfx3d::scenegraph3d::__remove(this);
 		m_shader = s;
 		if (m_isEnabled) gfx3d::scenegraph3d::__add(this);

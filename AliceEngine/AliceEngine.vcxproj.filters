@@ -111,9 +111,6 @@
     <ClInclude Include="alc\objects\singleton.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\content\model.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="alc\content\material.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -186,9 +183,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="alc\content\content_manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="alc\content\model.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="alc\content\mesh.cpp">

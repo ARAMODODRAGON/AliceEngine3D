@@ -10,19 +10,19 @@ namespace alc {
 	// 'vertex', 'fragment', 'geometry', and 'compute' shader types
 	class shader {
 	public:
-
-		// loads a shader file
-		static shader load(const std::string& filepath);
-
-		// loads a shader from source
-		static shader loadsource(const std::string& source);
-
-		// deletes the shader
-		static bool unload(shader& shader_);
-
+		using loadset = bool;
+		static constexpr loadset IS_FILE = 0;
+		static constexpr loadset IS_SOURCE = 1;
 
 		// invalid shader
 		shader(std::nullptr_t = nullptr);
+
+		// loads a shader 
+		// loadset determines if the str is a filepath or sourcecode
+		shader(const std::string& str, loadset set = IS_FILE);
+
+		// deletes the shader
+		~shader();
 
 		// checks if this is a valid shader
 		bool is_valid() const;
@@ -36,25 +36,13 @@ namespace alc {
 		// returns the id
 		uint32 get_id() const;
 
-		// compares this to another shader
-		bool operator==(const shader& other) const;
-
-		// compares this to another shader
-		bool operator!=(const shader& other) const;
-
 		// gets the uniform id
 		uint32 get_uniform(const std::string& str) const;
 
-		// gets the number of shared instances of this shader
-		long get_shared_count() const;
-
 	private:
-		struct data_t {
-			data_t(uint32 id) : id(id) { }
-			~data_t();
-			uint32 id;
-		};
-		std::shared_ptr<data_t> m_data;
+		uint32 m_id;
+		void loadfile(const std::string& filepath);
+		void loadsrc(const std::string& source);
 	};
 
 }

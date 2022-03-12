@@ -95,6 +95,9 @@ namespace alc {
 			// swap buffers
 			s_window->swap_buffers();
 
+			// clean up
+			if (content_manager_enabled) content_manager::__step();
+
 			// wait for end of frame
 			if (s_targetFramerate != 0) {
 				double length = duration(clock::now() - thistime).count();

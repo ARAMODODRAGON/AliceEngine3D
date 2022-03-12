@@ -32,27 +32,20 @@ namespace alc {
 	class texture final {
 	public:
 
-		// loads a texture using default texture options seen in textureopts struct
-		static texture load(const std::string& filepath);
-
-		// loads a texture 
-		static texture load(const std::string& filepath, const textureopts& options);
-
-		// deletes a texture
-		static bool unload(texture& tex);
-
-
 		// null texture object
 		texture(std::nullptr_t = nullptr);
+
+		// loads a texture 
+		texture(const std::string& filepath, const textureopts& options = textureopts());
+
+		// deletes a texture
+		~texture();
 
 		// checks if this is a valid texture
 		bool is_valid() const;
 
 		// checks if this is a valid texture
 		operator bool() const;
-
-		// returns the texture ID
-		operator uint32() const;
 
 		// returns the texture ID
 		uint32 get_id() const;
@@ -69,26 +62,12 @@ namespace alc {
 		// returns the filter of the texture
 		texturefilter get_filter() const;
 
-		// compare the textures
-		bool operator==(const texture& other) const;
-
-		// compare the textures
-		bool operator!=(const texture& other) const;
-
-		// gets the number of shared instances of this texture
-		long get_shared_count() const;
-
 	private:
-		struct data_t final {
-			uint32 id;
-			glm::uvec2 size;
-			textureformat format;
-			texturewrap wrap;
-			texturefilter filter;
-			data_t() = default;
-			~data_t();
-		};
-		std::shared_ptr<data_t> m_data;
+		uint32 m_id;
+		glm::uvec2 m_size;
+		textureformat m_format;
+		texturewrap m_wrap;
+		texturefilter m_filter;
 	};
 
 }
