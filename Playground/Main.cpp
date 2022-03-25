@@ -3,37 +3,19 @@
 #include <alc\core\alice_events.hpp>
 #include <alc\objects\singleton.hpp>
 #include <alc\jobs\job_queue.hpp>
-#include <alc\content\model.hpp>
 #include <alc\objects\world_object.hpp>
 #include <alc\graphics3d\mesh_component.hpp>
 #include <alc\graphics3d\camera3d.hpp>
-
-class Playground : public alc::game {
-public:
-
-	void init() override {
-		alc::scene_manager::load_scene(0);
-
-	}
-
-	void exit() override {
-
-	}
-
-	void update(alc::timestep ts) override {
-
-	}
-
-};
+#include <alc\content\obj_loader.hpp>
 
 class DunesTerrain : public alc::world_object {
 public:
 
 	DunesTerrain() {
-		set_should_update(true);
+		alc::alice_events::onUpdate += alc::make_function<&DunesTerrain::on_update>(this);
 	}
 	~DunesTerrain() {
-
+		alc::alice_events::onUpdate -= alc::make_function<&DunesTerrain::on_update>(this);
 	}
 
 	struct DesertTerrainVertex {
@@ -49,70 +31,67 @@ public:
 	const float MAX_Z_RANGE = 30.0f;
 
 	void create_mesh() {
-		alc::mesh_info info;
-		info.vertexSize = sizeof(DesertTerrainVertex);
-		info.attributes.emplace_back(alc::attribute_type::type_float, 3, (void*)offsetof(DesertTerrainVertex, position));
-		info.attributes.emplace_back(alc::attribute_type::type_float, 3, (void*)offsetof(DesertTerrainVertex, normal));
-		info.attributes.emplace_back(alc::attribute_type::type_float, 2, (void*)offsetof(DesertTerrainVertex, uv));
-
-		// define and reserve our vectors
-		std::vector<DesertTerrainVertex> verticies;
-		verticies.reserve(X_SIZE * Z_SIZE);
-		std::vector<alc::uint32> indices;
-		indices.reserve((X_SIZE - 1) * (Z_SIZE - 1) * 6);
-
-		// vertex
-		DesertTerrainVertex vert;
-		vert.normal = glm::vec3(0.0f, 1.0f, 0.0f);
-
-		// define verticies
-		for (size_t x = 0; x < X_SIZE; x++) {
-			const float xScale = float(x) / (X_SIZE - 1);
-
-			for (size_t z = 0; z < Z_SIZE; z++) {
-				const float zScale = float(z) / (Z_SIZE - 1);
-
-				vert.position.x = glm::mix(MIN_X_RANGE, MAX_X_RANGE, xScale);
-				vert.position.y = 0.0f;
-				vert.position.z = glm::mix(MIN_Z_RANGE, MAX_Z_RANGE, zScale);
-				vert.uv.x = xScale;
-				vert.uv.y = zScale;
-
-				verticies.push_back(vert);
-			}
-		}
-
-		// define indices
-		for (size_t x = 0; x < (X_SIZE - 1); x++) {
-			for (size_t z = 0; z < (Z_SIZE - 1); z++) {
-				// define indices for the four corners
-				const size_t topLeft = x + (z * Z_SIZE);
-				const size_t topRight = (x + 1) + (z * Z_SIZE);
-				const size_t bottomLeft = x + ((z + 1) * Z_SIZE);
-				const size_t bottomRight = (x + 1) + ((z + 1) * Z_SIZE);
-
-				// upper left triangle
-				indices.emplace_back(bottomLeft);
-				indices.emplace_back(topRight);
-				indices.emplace_back(topLeft);
-				// lower right triangle
-				indices.emplace_back(bottomLeft);
-				indices.emplace_back(bottomRight);
-				indices.emplace_back(topRight);
-			}
-		}
-		 
-		m_desertMesh.reset(new alc::mesh(verticies.data(), verticies.size(), indices.data(), indices.size(), info));
-
-		//DesertTerrainVertex vert;
-		//vert.position = glm::vec3(-0.5f, -0.3f, 0.0f);
-		//verticies.push_back(vert);
-		//vert.position = glm::vec3(0.0f, 0.5f, 0.0f);
-		//verticies.push_back(vert);
-		//vert.position = glm::vec3(0.5f, -0.3f, 0.0f);
-		//verticies.push_back(vert);
+		//alc::mesh_info info;
+		//info.vertexSize = sizeof(DesertTerrainVertex);
+		//info.attributes.emplace_back(alc::attribute_type::type_float, 3, (void*)offsetof(DesertTerrainVertex, position));
+		//info.attributes.emplace_back(alc::attribute_type::type_float, 3, (void*)offsetof(DesertTerrainVertex, normal));
+		//info.attributes.emplace_back(alc::attribute_type::type_float, 2, (void*)offsetof(DesertTerrainVertex, uv));
 		//
-		//m_desertMesh = alc::mesh::create(verticies.data(), verticies.size(), nullptr, 0, info);
+		//// define and reserve our vectors
+		//std::vector<DesertTerrainVertex> verticies;
+		//verticies.reserve(X_SIZE * Z_SIZE);
+		//std::vector<alc::uint32> indices;
+		//indices.reserve((X_SIZE - 1) * (Z_SIZE - 1) * 6);
+		//
+		//// vertex
+		//DesertTerrainVertex vert;
+		//vert.normal = glm::vec3(0.0f, 1.0f, 0.0f);
+		//
+		//// define verticies
+		//for (size_t x = 0; x < X_SIZE; x++) {
+		//	const float xScale = float(x) / (X_SIZE - 1);
+		//
+		//	for (size_t z = 0; z < Z_SIZE; z++) {
+		//		const float zScale = float(z) / (Z_SIZE - 1);
+		//
+		//		vert.position.x = glm::mix(MIN_X_RANGE, MAX_X_RANGE, xScale);
+		//		vert.position.y = 0.0f;
+		//		vert.position.z = glm::mix(MIN_Z_RANGE, MAX_Z_RANGE, zScale);
+		//		vert.uv.x = xScale;
+		//		vert.uv.y = zScale;
+		//
+		//		verticies.push_back(vert);
+		//	}
+		//}
+		//
+		//// define indices
+		//for (size_t x = 0; x < (X_SIZE - 1); x++) {
+		//	for (size_t z = 0; z < (Z_SIZE - 1); z++) {
+		//		// define indices for the four corners
+		//		const size_t topLeft = x + (z * Z_SIZE);
+		//		const size_t topRight = (x + 1) + (z * Z_SIZE);
+		//		const size_t bottomLeft = x + ((z + 1) * Z_SIZE);
+		//		const size_t bottomRight = (x + 1) + ((z + 1) * Z_SIZE);
+		//
+		//		// upper left triangle
+		//		indices.emplace_back(bottomLeft);
+		//		indices.emplace_back(topRight);
+		//		indices.emplace_back(topLeft);
+		//		// lower right triangle
+		//		indices.emplace_back(bottomLeft);
+		//		indices.emplace_back(bottomRight);
+		//		indices.emplace_back(topRight);
+		//	}
+		//}
+		// 
+		//m_desertMesh.reset(new alc::mesh(verticies.data(), verticies.size(), indices.data(), indices.size(), info));
+
+		std::vector<std::pair<alc::mesh_ref, alc::material>> meshes;
+		if (alc::tools::load_obj("cube.obj", meshes)) {
+			m_desertMesh = meshes[0].first;
+			m_material = meshes[0].second;
+		}
+
 	}
 
 	void on_create() override {
@@ -121,7 +100,7 @@ public:
 		m_meshComponent->set_mesh(m_desertMesh);
 	}
 
-	void on_update(alc::timestep ts) override {
+	void on_update(alc::timestep ts) {
 		if (alc::keyboard::get_key(alc::keycode::key_f)) {
 			set_position(get_position() + glm::vec3(0.0f, ts, 0.0f));
 		}
@@ -131,18 +110,22 @@ public:
 
 private:
 	alc::mesh_ref m_desertMesh;
+	alc::material m_material;
 	alc::mesh_component* m_meshComponent;
 };
 
-class Level final : public alc::scene {
+class Level final : public alc::object {
 public:
 
 	Level()
-		: m_yaw(180.0f), m_pitch(0.0f), m_zoom(1.0f) { }
-	~Level() { }
+		: m_yaw(180.0f), m_pitch(0.0f), m_zoom(1.0f) {
+		alc::alice_events::onUpdate += alc::make_function<&Level::on_update>(this);
+	}
+	~Level() {
+		alc::alice_events::onUpdate -= alc::make_function<&Level::on_update>(this);
+	}
 
 	void on_create() override {
-		set_should_update(true);
 
 		// create camera
 		m_cameraBoom = create_object<alc::world_object>("Camera Boom");
@@ -157,7 +140,7 @@ public:
 
 	void on_destroy() override { }
 
-	void on_update(alc::timestep ts) override {
+	void on_update(alc::timestep ts) {
 		const bool left = alc::keyboard::get_key(alc::keycode::arrow_left);
 		const bool right = alc::keyboard::get_key(alc::keycode::arrow_right);
 		const bool up = alc::keyboard::get_key(alc::keycode::arrow_up);
@@ -186,16 +169,29 @@ public:
 		m_camera->set_relative_position(dir * length);
 	}
 
-	void on_init_scene(const std::string& args) override { }
-
-	void on_destroy_scene() override { }
-
 private:
 
 	float m_yaw, m_pitch, m_zoom;
 	alc::world_object* m_cameraBoom;
 	alc::camera3d* m_camera;
 	DunesTerrain* m_terrain;
+
+};
+
+class Playground : public alc::game {
+public:
+
+	void on_create() override {
+		alc::world::create<Level>();
+	}
+
+	void on_destroy() override {
+
+	}
+
+	void on_update(alc::timestep ts) override {
+
+	}
 
 };
 
@@ -206,10 +202,6 @@ static const alc::engine_settings GetSettings() {
 	set.window.size = glm::uvec2(1280u, 720u);
 
 	set.gameBinding = alc::bind_game<Playground>();
-
-	set.objects.scenemanager.scenebindings = {
-		alc::bind_scene<Level>("Level0")
-	};
 
 	set.renderer2d.enabled = false;
 	//set.renderer2d.layerInfo = {

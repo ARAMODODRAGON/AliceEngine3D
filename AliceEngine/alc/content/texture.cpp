@@ -4,6 +4,7 @@
 #define STBI_NO_GIF // we dont want any gif loading
 #define STB_IMAGE_IMPLEMENTATION
 #include "..\dependencies\stb_image.h"
+#include "content_manager.hpp"
 
 namespace alc {
 
@@ -11,6 +12,8 @@ namespace alc {
 		: m_id(0), m_size(0u) { }
 
 	texture::texture(const std::string& filepath, const textureopts& options) {
+		std::string realFilepath = content_manager::get_full_path(filepath);
+
 		// set format type
 		int tryformat = STBI_default;
 
@@ -24,7 +27,7 @@ namespace alc {
 
 		// load the texture data
 		int width, height, channels;
-		stbi_uc* pixels = stbi_load(filepath.c_str(), &width, &height, &channels, tryformat);
+		stbi_uc* pixels = stbi_load(realFilepath.c_str(), &width, &height, &channels, tryformat);
 
 		if (pixels == nullptr) {
 			ALC_DEBUG_LOG("invalid filepath '" + filepath + "'");

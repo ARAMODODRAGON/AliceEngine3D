@@ -143,9 +143,14 @@ namespace alc {
 	//	s_meshList.push_back(meshRef);
 	//}
 
-	void content_manager::__init(uint32 rate) {
+	std::string content_manager::get_full_path(const std::string& contentPath) {
+		return s_resourcePath + contentPath;
+	}
+
+	void content_manager::__init(uint32 rate, const std::string& resourcePath) {
 		s_framecounter = 0;
 		s_removalRate = rate;
+		s_resourcePath = resourcePath;
 	}
 
 	void content_manager::__exit() {

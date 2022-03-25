@@ -1,7 +1,6 @@
 #ifndef ALC_CORE_ENGINE_HPP
 #define ALC_CORE_ENGINE_HPP
 #include "debug.hpp"
-#include "scene_manager.hpp"
 #include "game.hpp"
 #include "window.hpp"
 #include "../graphics2d/scenegraph2d.hpp"
@@ -64,29 +63,10 @@ namespace alc {
 			// rate is in frames, default will check every 10th frame
 			int removalRate = 10;
 
+			// the path that all content is contained at
+			std::string contentPath = "Resources/";
+
 		} content;
-
-		// world/groups/gameobjects -- optional
-		struct {
-			// enable the world 
-			bool enabled = true;
-
-			// use scene manager to handle scenes as objects -- optional
-			struct {
-				bool enabled = true;
-
-				// the scenes that can be loaded
-				std::vector<scene_binding> scenebindings;
-
-				// load a scene by its index
-				uint32 initialSceneIndex = -1; // optional (priority)
-
-				// load a scene by its name
-				std::string initialSceneStr = ""; // optional
-
-			} scenemanager;
-
-		} objects;
 
 		// game class setup -- optional
 		game_binding gameBinding = nullptr;

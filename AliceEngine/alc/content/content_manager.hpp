@@ -1,7 +1,6 @@
 #ifndef ALC_CONTENT_CONTENT_MANAGER_HPP
 #define ALC_CONTENT_CONTENT_MANAGER_HPP
 #include "../common.hpp"
-#include "material.hpp"
 #include "shader.hpp"
 #include "texture.hpp"
 #include "mesh.hpp"
@@ -84,11 +83,27 @@ namespace alc {
 	using shader_ref = content_ref<shader>;
 	using mesh_ref = content_ref<mesh>;
 
+
+	// struct representing a material
+	struct material final {
+		texture_ref diffuseTexture;
+
+
+		float shinyness = 0.0f;
+		float transparency = 0.0f;
+		glm::vec3 ambient = glm::vec3(1.0f);
+		glm::vec3 diffuse = glm::vec3(1.0f);
+		glm::vec3 specular = glm::vec3(0.0f);
+	};
+
 	// loads and manages all content in the game
 	// generally preferred to use if you have content used across multiple objects
 	class content_manager final {
 		ALC_STATIC_CLASS(content_manager);
 	public:
+
+		// returns the full path of the given content filepath
+		static std::string get_full_path(const std::string& contentPath);
 
 		// creates content of type and manages that content
 		template<typename Ty, typename... Args>
@@ -115,9 +130,10 @@ namespace alc {
 		static inline std::unordered_map<typehash, std::unique_ptr<imanaged_content>> s_content;
 		static inline int32 s_removalRate;
 		static inline int32 s_framecounter;
+		static inline std::string s_resourcePath;
 		template<typename Ty> static managed_content<Ty>* __getcontent();
 	public:
-		static void __init(uint32 rate);
+		static void __init(uint32 rate, const std::string& resourcePath);
 		static void __exit();
 		static void __step();
 		template<typename Ty>
@@ -263,12 +279,12 @@ namespace alc {
 	template<typename Ty, typename ...Args>
 	inline content_ref<Ty> content_manager::create(const std::string& identifier, Args && ...args) {
 		auto* manager = __getcontent<Ty>();
-		if (auto it = manager->find(identifier); it != manager->end()) {
+		if (auto it = manager->map.find(identifier); it != manager->map.end()) {
 			ALC_DEBUG_ERROR("Could not create content with preexisting identifier " + identifier);
 			return content_ref<Ty>();
 		}
 		content_ref<Ty> content(new Ty(std::forward(args)...), static_cast<detail::ignore_manager>(1));
-		manager->emplace(identifier, content);
+		manager->map.emplace(identifier, content);
 		return content;
 	}
 
@@ -321,10 +337,12 @@ namespace alc {
 				it = map.erase(it);
 			}
 		}
-		for (auto it = list.begin(); it != list.end(); it++) {
-			if (it->use_count() == 1) {
-				it->reset();
-				it = list.erase(it);
+		if (list.size()) {
+			for (auto it = list.begin(); it != list.end(); it++) {
+				if (it->use_count() == 1) {
+					it->reset();
+					it = list.erase(it);
+				}
 			}
 		}
 	}

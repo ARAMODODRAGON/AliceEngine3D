@@ -12,7 +12,7 @@ namespace alc {
 
 	world_object* world_object::get_parent_world_object() const {
 		if (!m_checkedParent) {
-			m_parentWorldObject = dynamic_cast<world_object*>(get_parent());
+			m_parentWorldObject = get_ancestor<world_object>();
 			m_checkedParent = true;
 		}
 		return m_parentWorldObject;
@@ -107,21 +107,6 @@ namespace alc {
 		// **untested**
 		if (parent) return parent->get_transform() * m_transform;
 		return m_transform;
-	}
-
-	///////////////////////////////////////////////////////////////////////////////////////////
-
-	world_component::world_component()
-		: m_checkedParent(false), m_parentWorldObject(nullptr) { }
-
-	world_component::~world_component() { }
-
-	world_object* world_component::get_world_object() const {
-		if (!m_checkedParent) {
-			m_parentWorldObject = dynamic_cast<world_object*>(get_object());
-			m_checkedParent = true;
-		}
-		return m_parentWorldObject;
 	}
 
 }

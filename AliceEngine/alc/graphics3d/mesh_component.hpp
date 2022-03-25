@@ -6,7 +6,7 @@
 
 namespace alc {
 
-	class mesh_component : public world_component {
+	class mesh_component : public component {
 	public:
 
 		mesh_component();
@@ -61,6 +61,8 @@ namespace alc {
 		bool m_isStatic : 1;
 		bool m_isEnabled : 1;
 		glm::mat4 m_lockedTransform;
+
+		world_object* m_worldObject;
 	};
 
 }

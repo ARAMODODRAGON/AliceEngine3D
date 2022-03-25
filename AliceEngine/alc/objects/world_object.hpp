@@ -69,22 +69,6 @@ namespace alc {
 
 	};
 
-	// a type of component that has a relative position to its parent world_object
-	class world_component : public component {
-	public:
-
-		world_component();
-		~world_component();
-
-		// returns the attached object if it's a world_object
-		world_object* get_world_object() const;
-
-
-	private:
-		mutable bool m_checkedParent : 1;
-		mutable world_object* m_parentWorldObject;
-	};
-
 }
 
 #endif // !ALC_OBJECTS_ENTITY_HPP

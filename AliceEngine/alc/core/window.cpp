@@ -15,7 +15,7 @@ namespace alc {
 		#pragma region SDL & Window initialization
 
 		// initialize sdl and mixer
-		if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) < 0) {
+		if (SDL_Init(SDL_INIT_VIDEO) < 0) {
 			ALC_DEBUG_FATAL_ERROR("Failed to init SDL");
 			throw std::runtime_error("Failed to init SDL");
 		}
@@ -52,6 +52,9 @@ namespace alc {
 		// create context
 		m_glContext = SDL_GL_CreateContext(m_window);
 
+		// setup
+		SDL_GL_SetAttribute(SDL_GL_DEPTH_SIZE, 32);
+
 		// check if it was created
 		GLenum error = glewInit();
 		if (error != GLEW_OK) {
@@ -60,10 +63,13 @@ namespace alc {
 		}
 
 		// enable this shit
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glEnable(GL_CULL_FACE);
-		glCullFace(GL_FRONT);
+		//glEnable(GL_BLEND);
+		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		//glEnable(GL_CULL_FACE);
+		//glFrontFace(GL_CCW);
+		//glCullFace(GL_BACK);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(GL_EQUAL);
 
 		// print graphics card and opengl version
 		ALC_DEBUG_LOG("Graphics card: " + std::string(reinterpret_cast<const char*>(glGetString(GL_RENDERER))));
@@ -84,7 +90,7 @@ namespace alc {
 	void window::clear_screen(const glm::vec4& color) {
 		// clear screen
 		glClearColor(color.r, color.g, color.b, color.a);
-		glClear(GL_COLOR_BUFFER_BIT);
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
 
 	void window::swap_buffers() {

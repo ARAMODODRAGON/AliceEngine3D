@@ -42,6 +42,11 @@ namespace alc {
 				s_defaultShader.reset(new shader(c_basic_mesh_shader, shader::IS_SOURCE));
 
 			s_shaderGroups.emplace_back(s_defaultShader);
+
+			//int a = glGetAttribLocation(s_defaultShader->get_id(), "a_position");
+			//int b = glGetAttribLocation(s_defaultShader->get_id(), "a_normal");
+			//int c = glGetAttribLocation(s_defaultShader->get_id(), "a_uv");
+			//
 		}
 
 		void scenegraph3d::__exit() {
@@ -63,7 +68,7 @@ namespace alc {
 				// loop through shader groups
 				for (auto& shaderGroup : s_shaderGroups) {
 					// bind shader
-					glUseProgram(shaderGroup.usedShader);
+					glUseProgram(shaderGroup.usedShader->get_id());
 
 					// get common shader uniforms
 					uint32 uView = shaderGroup.usedShader->get_uniform("u_view");
@@ -75,7 +80,7 @@ namespace alc {
 
 					// loop through meshes
 					for (auto& meshGroups : shaderGroup.dynamicMeshGroups) {
-						bool useElements = meshGroups.usedMesh->get_ebo() != -1;
+						bool useElements = meshGroups.usedMesh->get_ebo() != 0;
 
 						// bind vao/vbo/ebo
 						glBindVertexArray(meshGroups.usedMesh->get_vao());
@@ -109,7 +114,7 @@ namespace alc {
 		}
 
 		void scenegraph3d::__add(mesh_component* mc) {
-			if (!mc  || !mc->get_mesh() || !mc->get_mesh()->is_valid()) return;
+			if (!mc || !mc->get_mesh() || !mc->get_mesh()->is_valid()) return;
 
 			// get matching groups
 			shader_group* shaderGroup = get_shader_group(mc->get_shader());

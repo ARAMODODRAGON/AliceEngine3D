@@ -50,7 +50,7 @@ namespace alc {
 		const mesh_info& info
 	) : mesh() {
 		// create variabls
-		uint32 vao = -1, vbo = -1, ebo = -1;
+		uint32 vao = 0, vbo = 0, ebo = 0;
 
 		// create vao 
 		glGenVertexArrays(1, &vao);

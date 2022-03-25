@@ -11,8 +11,13 @@ uniform mat4 u_projection;
 uniform mat4 u_model;
 
 out vec2 v_uv;
+out float v_dot;
+
+const vec3 pointLight = vec3(10.0f, 9.0f, 5.0f);
 
 void main() {
+	vec3 dir = normalize(a_position - pointLight);
+	v_dot = dot(dir, a_normal);
 	v_uv = a_uv;
 	gl_Position = u_projection * u_view * u_model * vec4(a_position, 1.0f);
 }
@@ -22,9 +27,13 @@ void main() {
 out vec4 fragColor;
 
 in vec2 v_uv;
+in float v_dot;
 
 void main() {
-	fragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
+	fragColor = mix(vec4(1.0f, 0.0f, 0.0f, 1.0f), vec4(0.0f, 0.0f, 1.0f, 1.0f), (v_dot + 1.0f) * 0.5f);
+	//float dot_ = dot(v_normal, normalize(vec3(1.0f, 0.0f, 1.0f)));
+	//fragColor = mix(vec4(1.0f, 0.0f, 0.0f, 1.0f), vec4(0.0f, 0.0f, 1.0f, 1.0f), (dot_ + 1.0f) * 0.5f);
+	//fragColor = vec4(1.0f, 1.0f, 1.0f, 1.0f);
 }
 
 )"";

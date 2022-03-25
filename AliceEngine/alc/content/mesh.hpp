@@ -65,7 +65,7 @@ namespace alc {
 		// default constructs an invalid mesh
 		mesh();
 
-		// deletes a mesh
+		// deletes the mesh
 		~mesh();
 
 		// checks if this is a valid mesh

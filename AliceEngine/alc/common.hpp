@@ -27,6 +27,11 @@ namespace alc {
 	using uint64 = uint64_t;
 
 	using size_t = std::size_t;
+
+	template<typename T> using unique = std::unique_ptr<T>;
+	template<typename T> using shared = std::shared_ptr<T>;
+	template<typename T> using weak = std::weak_ptr<T>;
+
 }
 
 #define ALC_NO_COPY(Type)				\

@@ -90,9 +90,6 @@
     <ClInclude Include="alc\content\mesh.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\content\detail\content_storage.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="alc\content\shader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -102,16 +99,7 @@
     <ClInclude Include="alc\objects\world.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\objects\component_info.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="alc\core\scene_manager.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="alc\objects\singleton.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="alc\content\material.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alc\datatypes\bounds3d.hpp">
@@ -142,6 +130,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alc\graphics3d\scenegraph3d.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\content\obj_loader.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -176,12 +167,6 @@
     <ClCompile Include="alc\objects\world.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alc\core\scene_manager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="alc\objects\object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="alc\content\content_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -207,6 +192,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="alc\graphics3d\camera3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\content\obj_loader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

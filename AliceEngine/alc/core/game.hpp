@@ -9,9 +9,9 @@ namespace alc {
 	public:
 		virtual ~game() = 0 { }
 
-		virtual void init() = 0;
-		virtual void exit() = 0;
-		virtual void update(timestep ts) = 0;
+		virtual void on_create() = 0;
+		virtual void on_destroy() = 0;
+		virtual void on_update(timestep ts) = 0;
 	};
 
 	using game_binding = game * (*)();

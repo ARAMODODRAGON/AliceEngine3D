@@ -35,7 +35,7 @@ namespace alc {
 
 		// enable content_manager
 		const bool content_manager_enabled = set->content.enableManager;
-		if (content_manager_enabled) content_manager::__init(set->content.removalRate);
+		if (content_manager_enabled) content_manager::__init(set->content.removalRate, set->content.contentPath);
 
 		// enable scenegraph2d
 		const bool scenegraph2d_enabled = set->renderer2d.enabled;
@@ -50,22 +50,18 @@ namespace alc {
 		if (jobs_enabled) job_queue::__init(set->jobs.maxthreads);
 
 		// enable world
-		const bool world_enabled = set->objects.enabled;
+		const bool world_enabled = true;
 		if (world_enabled) world::__init();
-
-		// enable scene_manager
-		const bool scenes_enabled = 
-			set->objects.scenemanager.enabled && 
-			set->objects.scenemanager.scenebindings.size() != 0;
-		if (scenes_enabled) scene_manager::__init(set);
 
 		// create game
 		if (set->gameBinding) {
 			s_game = set->gameBinding();
-			s_game->init();
+			s_game->on_create();
 		}
 
 		// game loop //////////////////////////////////////////////////
+
+		alice_events::onEngineStart();
 
 		while (s_isRunning && !s_shouldQuit) {
 
@@ -78,10 +74,9 @@ namespace alc {
 			timestep ts(duration(thistime - lasttime).count());
 
 			// update
-			if (s_game) s_game->update(ts);
+			if (s_game) s_game->on_update(ts);
 			alice_events::onUpdate(ts);
-			if (scenes_enabled) scene_manager::__update(ts);
-			if (world_enabled) world::__update(ts);
+			if (world_enabled) world::__update();
 			// post update
 			alice_events::onPostUpdate(ts);
 
@@ -107,14 +102,11 @@ namespace alc {
 
 		// destroy ////////////////////////////////////////////////////
 
-		// delete scenes 
-		if (scenes_enabled) scene_manager::__exit();
-
 		if (world_enabled) world::__exit();
 
 		// delete game
 		if (s_game) {
-			s_game->exit();
+			s_game->on_destroy();
 			delete s_game, s_game = nullptr;
 		}
 

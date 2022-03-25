@@ -3,6 +3,7 @@
 #include <fstream>
 #include <glew.h>
 #include <unordered_map>
+#include "content_manager.hpp"
 
 namespace alc {
 
@@ -44,7 +45,9 @@ namespace alc {
 	}
 
 	void shader::loadfile(const std::string& filepath) {
-		std::ifstream file(filepath);
+		std::string realFilepath = content_manager::get_full_path(filepath);
+
+		std::ifstream file(realFilepath);
 		if (!file.is_open()) {
 			ALC_DEBUG_ERROR("Shader path was invalid: " + filepath);
 			return;
