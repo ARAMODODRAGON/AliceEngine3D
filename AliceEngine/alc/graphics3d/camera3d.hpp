@@ -32,10 +32,10 @@ namespace alc {
 
 		// sets the near and far planes
 		// both always positive
-		void set_near_far(const glm::vec2& nearFar);
+		//void set_near_far(const glm::vec2& nearFar);
 
 		// gets the near and far planes
-		glm::vec2 get_near_far() const;
+		//glm::vec2 get_near_far() const;
 
 		// gets the projection matrix
 		glm::mat4 get_projection() const;
@@ -53,7 +53,6 @@ namespace alc {
 	private:
 		float m_fov;
 		float m_ratio;
-		glm::vec2 m_nearFar;
 		bool m_isEnabled : 1;
 		mutable bool m_projIsDirty : 1;
 		mutable glm::mat4 m_projection;

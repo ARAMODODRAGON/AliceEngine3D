@@ -87,7 +87,7 @@ public:
 		//m_desertMesh.reset(new alc::mesh(verticies.data(), verticies.size(), indices.data(), indices.size(), info));
 
 		std::vector<std::pair<alc::mesh_ref, alc::material>> meshes;
-		if (alc::tools::load_obj("cube.obj", meshes)) {
+		if (alc::tools::load_obj("icosahedron.obj", meshes)) {
 			m_desertMesh = meshes[0].first;
 			m_material = meshes[0].second;
 		}
@@ -131,7 +131,7 @@ public:
 		m_cameraBoom = create_object<alc::world_object>("Camera Boom");
 		m_cameraBoom->set_position(glm::vec3(0.0f)); // position at center of the world
 		m_camera = m_cameraBoom->create_object<alc::camera3d>("Camera");
-		m_camera->set_relative_position(glm::vec3(0.0f, 1.0f, 3.0f));
+		m_camera->set_relative_position(glm::normalize(glm::vec3(0.0f, 1.0f, 3.0f)) * 100.0f);
 		m_camera->look_at(glm::vec3(0.0f));
 
 		// create terrain
@@ -146,7 +146,7 @@ public:
 		const bool up = alc::keyboard::get_key(alc::keycode::arrow_up);
 		const bool down = alc::keyboard::get_key(alc::keycode::arrow_down);
 		constexpr float speed = 4.0f;
-		constexpr float zoomspeed = 20.0f;
+		constexpr float zoomspeed = 40.0f;
 
 		auto rotation = m_cameraBoom->get_rotation();
 
@@ -163,7 +163,7 @@ public:
 		if (up != down) {
 			if (up) length -= zoomspeed * ts;
 			if (down) length += zoomspeed * ts;
-			length = glm::clamp(length, 1.0f, 100.0f);
+			length = glm::clamp(length, 1.0f, 200.0f);
 		}
 
 		m_camera->set_relative_position(dir * length);
@@ -204,11 +204,6 @@ static const alc::engine_settings GetSettings() {
 	set.gameBinding = alc::bind_game<Playground>();
 
 	set.renderer2d.enabled = false;
-	//set.renderer2d.layerInfo = {
-	//	alc::bind_layer("Layer 0"),
-	//	alc::bind_layer("Layer 1"),
-	//	alc::bind_layer("Layer 2")
-	//};
 
 	//set.jobs.enabled = true;
 	//set.jobs.maxthreads = 4;

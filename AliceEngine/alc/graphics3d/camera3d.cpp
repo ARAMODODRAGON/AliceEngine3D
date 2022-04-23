@@ -4,7 +4,7 @@
 namespace alc {
 
 	camera3d::camera3d()
-		: m_fov(60.0f), m_ratio(1920.0f / 1080.0f), m_nearFar(0.000000000000001f, 100.0f)
+		: m_fov(60.0f), m_ratio(1920.0f / 1080.0f)
 		, m_isEnabled(true), m_projIsDirty(true), m_projection(1.0f) {
 		gfx3d::scenegraph3d::__add(this);
 	}
@@ -43,19 +43,19 @@ namespace alc {
 		return m_ratio;
 	}
 
-	void camera3d::set_near_far(const glm::vec2& nearFar) {
-		m_projIsDirty = true;
-		m_nearFar = nearFar;
-	}
-
-	glm::vec2 camera3d::get_near_far() const {
-		return m_nearFar;
-	}
+	//void camera3d::set_near_far(const glm::vec2& nearFar) {
+	//	m_projIsDirty = true;
+	//	m_nearFar = nearFar;
+	//}
+	//
+	//glm::vec2 camera3d::get_near_far() const {
+	//	return m_nearFar;
+	//}
 
 	glm::mat4 camera3d::get_projection() const {
 		if (m_projIsDirty) {
 			m_projIsDirty = false;
-			m_projection = glm::perspective(glm::radians(m_fov), m_ratio, m_nearFar.x, m_nearFar.y);
+			m_projection = glm::infinitePerspective(glm::radians(m_fov), m_ratio, 1.0f);
 		}
 		return m_projection;
 	}

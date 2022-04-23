@@ -103,6 +103,8 @@ namespace alc {
 							else
 								glDrawArrays(GL_TRIANGLES, 0, meshGroups.usedMesh->get_vertex_size());
 
+							int err = glGetError();
+
 						} // mesh components
 					} // mesh groups
 				} // shader groups

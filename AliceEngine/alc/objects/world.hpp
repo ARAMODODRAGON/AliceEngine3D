@@ -149,16 +149,16 @@ namespace alc {
 		/// search functions
 
 		//// finds an object of type
-		//template<typename T> T* find_object_of_type(bool mustBeGlobal = false);
+		//template<typename T> T* find_object_of_type(bool recursive = false);
 		//
 		//// finds objects of type
-		//template<typename T> size_t find_objects_of_type(std::vector<T*>& out, bool mustBeGlobal = false);
+		//template<typename T> size_t find_objects_of_type(std::vector<T*>& out, bool recursive = false);
 		//
 		//// finds an object with name
-		//object* find_object_with_name(bool mustBeGlobal = false);
+		//object* find_object_with_name(bool recursive = false);
 		//
 		//// finds objects with name
-		//size_t find_objects_with_name(std::vector<object*>& out, bool mustBeGlobal = false);
+		//size_t find_objects_with_name(std::vector<object*>& out, bool recursive = false);
 
 	private:
 

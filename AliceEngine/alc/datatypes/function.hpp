@@ -122,7 +122,7 @@ namespace alc {
 			m_function = Function;
 		}
 
-		template<typename T>
+		template<typename T> 
 		void bind(T lambda) {
 			m_instance = nullptr;
 			m_memberbinding = nullptr;

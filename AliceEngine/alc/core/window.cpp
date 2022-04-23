@@ -62,6 +62,8 @@ namespace alc {
 			throw std::runtime_error("Failed to initialize GLEW");
 		}
 
+		int err = glGetError();
+
 		// enable this shit
 		//glEnable(GL_BLEND);
 		//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -69,7 +71,7 @@ namespace alc {
 		//glFrontFace(GL_CCW);
 		//glCullFace(GL_BACK);
 		glEnable(GL_DEPTH_TEST);
-		glDepthFunc(GL_EQUAL);
+		//glDepthFunc(GL_GREATER);
 
 		// print graphics card and opengl version
 		ALC_DEBUG_LOG("Graphics card: " + std::string(reinterpret_cast<const char*>(glGetString(GL_RENDERER))));

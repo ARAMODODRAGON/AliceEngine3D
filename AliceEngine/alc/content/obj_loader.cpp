@@ -45,11 +45,19 @@ namespace alc {
 
 				// start assembling the shape data into vectors which stores the verticies and indicies
 				for (size_t i = 0; i < shape.mesh.indices.size(); i++) {
-					auto [vertIndex, normIndex, texIndex] = shape.mesh.indices[i];
+					int vertIndex = shape.mesh.indices[i].vertex_index;
+					int normIndex = shape.mesh.indices[i].normal_index;
+					int texIndex = shape.mesh.indices[i].texcoord_index;
 					if (vertIndex == -1) {
 						ALC_DEBUG_WARNING("failed load vertex");
 						continue;
 					}
+
+					if (normIndex == -1 && attributes.normals.size())
+						normIndex = vertIndex;
+
+					if (texIndex == -1 && attributes.texcoords.size())
+						texIndex = vertIndex;
 
 					// assign data
 					// ignore index if it is -1
@@ -75,6 +83,19 @@ namespace alc {
 					verticies.push_back(vert);
 
 				} // indicies loop
+
+				// if there are no normals, generate them
+				if (attributes.normals.size() == 0) {
+					for (size_t i = 0; i < verticies.size(); i += 3) {
+						glm::vec3 normal = glm::normalize(glm::cross(
+							verticies[i + 1].position - verticies[i].position,
+							verticies[i + 2].position - verticies[i].position
+						));
+						verticies[i + 0].normal = normal;
+						verticies[i + 1].normal = normal;
+						verticies[i + 2].normal = normal;
+					}
+				}
 
 				// finished assembling the verticies
 				// now load as mesh
