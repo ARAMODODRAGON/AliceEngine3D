@@ -11,9 +11,9 @@ public:
 	~Level0();
 
 	// events
-	void on_create() override;
-	void on_update(alc::timestep ts) override;
-	void SetupLevel() override;
+	void on_create() final;
+	void on_update(alc::timestep ts) final;
+	void SetupLevel() final;
 
 private:
 	alc::object3d* m_meshPivot;

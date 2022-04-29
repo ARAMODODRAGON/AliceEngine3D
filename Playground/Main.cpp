@@ -9,8 +9,6 @@ static const alc::engine_settings GetSettings() {
 
 	set.gameBinding = alc::bind_game<Playground>();
 
-	set.renderer2d.enabled = false;
-
 	//set.jobs.enabled = true;
 	//set.jobs.maxthreads = 4;
 

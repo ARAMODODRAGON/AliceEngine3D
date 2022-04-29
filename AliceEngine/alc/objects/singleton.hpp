@@ -1,6 +1,6 @@
 #ifndef ALC_OBJECTS_SINGLETON_HPP
 #define ALC_OBJECTS_SINGLETON_HPP
-#include "world.hpp"
+#include "object.hpp"
 
 namespace alc {
 

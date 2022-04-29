@@ -14,7 +14,7 @@ namespace alc {
 		~object3d();
 
 		// returns the parent object if it's a object3d
-		object3d* get_parent_world_object() const;
+		object3d* get_parent_object3d() const;
 
 		// returns the position
 		glm::vec3 get_position() const;

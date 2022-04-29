@@ -85,7 +85,7 @@ namespace alc {
 
 			// render
 			if (scenegraph3d_enabled) gfx3d::scenegraph3d::__draw();
-			if (scenegraph2d_enabled) gfx2d::scenegraph2d::__draw();
+			//if (scenegraph2d_enabled) gfx2d::scenegraph2d::__draw();
 
 			// swap buffers
 			s_window->swap_buffers();

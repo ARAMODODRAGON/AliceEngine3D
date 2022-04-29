@@ -10,7 +10,7 @@ namespace alc {
 
 	object3d::~object3d() { }
 
-	object3d* object3d::get_parent_world_object() const {
+	object3d* object3d::get_parent_object3d() const {
 		if (!m_checkedParent) {
 			m_parentWorldObject = get_ancestor<object3d>();
 			m_checkedParent = true;
@@ -19,9 +19,9 @@ namespace alc {
 	}
 
 	glm::vec3 object3d::get_position() const {
-		auto* parent = get_parent_world_object();
+		auto* parent = get_parent_object3d();
 		if (parent) return parent->get_position() 
-			+ parent->get_rotation() * m_position;
+			+ (parent->get_rotation() * m_position);
 		return m_position;
 	}
 
@@ -30,7 +30,7 @@ namespace alc {
 	}
 
 	void object3d::set_position(const glm::vec3& position) {
-		auto* parent = get_parent_world_object();
+		auto* parent = get_parent_object3d();
 		m_transformIsDirty = true;
 		if (parent)
 			m_position = position * parent->get_rotation() - parent->get_position();
@@ -44,7 +44,7 @@ namespace alc {
 	}
 
 	glm::quat object3d::get_rotation() const {
-		auto* parent = get_parent_world_object();
+		auto* parent = get_parent_object3d();
 		if (parent) return parent->get_rotation() * m_rotation;
 		return m_rotation;
 	}
@@ -54,7 +54,7 @@ namespace alc {
 	}
 
 	void object3d::set_rotation(const glm::quat& rotation) {
-		auto* parent = get_parent_world_object();
+		auto* parent = get_parent_object3d();
 		m_transformIsDirty = true;
 		if (parent)
 			// this should *reverse* the rotation to effectively subtract the rotation
@@ -70,7 +70,7 @@ namespace alc {
 	}
 
 	glm::vec3 object3d::get_scale() const {
-		auto* parent = get_parent_world_object();
+		auto* parent = get_parent_object3d();
 		if (parent) return parent->get_scale() * m_scale;
 		return m_scale;
 	}
@@ -80,7 +80,7 @@ namespace alc {
 	}
 
 	void object3d::set_scale(const glm::vec3& scale) {
-		auto* parent = get_parent_world_object();
+		auto* parent = get_parent_object3d();
 		m_transformIsDirty = true;
 		if (parent)
 			m_scale = scale / parent->get_scale();
@@ -94,18 +94,16 @@ namespace alc {
 	}
 
 	glm::mat4 object3d::get_transform() const {
-		auto* parent = get_parent_world_object();
+		auto* parent = get_parent_object3d();
 		if (m_transformIsDirty) {
 			m_transformIsDirty = false;
 
 			m_transform = glm::mat4(1.0f);
-			m_transform = glm::scale(m_transform, m_scale);
+			m_transform = glm::translate(m_transform, m_position);
 			m_transform = m_transform * glm::mat4_cast(m_rotation);
-			m_transform = glm::translate(m_transform, get_position());
+			m_transform = glm::scale(m_transform, m_scale);
 		}
-		// this should combine the parents transform with this one,
-		// **untested**
-		if (parent) return parent->get_transform() * m_transform;
+		if (get_parent_object3d()) return get_parent_object3d()->get_transform() * m_transform;
 		return m_transform;
 	}
 

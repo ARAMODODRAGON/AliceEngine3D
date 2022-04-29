@@ -1,6 +1,6 @@
 #ifndef ALC_PHYSICS3D_BODY3D_HPP
 #define ALC_PHYSICS3D_BODY3D_HPP
-#include "../objects/world_object.hpp"
+#include "../objects/object3d.hpp"
 
 namespace alc {
 
