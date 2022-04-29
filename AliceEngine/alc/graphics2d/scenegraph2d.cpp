@@ -1,6 +1,6 @@
 #include "scenegraph2d.hpp"
 #include "detail\basic_sprite_shader.hpp"
-#include "spriterenderer.hpp"
+#include "sprite_renderer.hpp"
 #include "../core/engine.hpp"
 
 namespace alc {
@@ -48,7 +48,7 @@ namespace alc {
 			s_cameras.remove_if([cam](auto other) { return other == cam; });
 		}
 
-		bool scenegraph2d::__add_sprite(spriterenderer* spr, uint32 layerID, texture_ref tex) {
+		bool scenegraph2d::__add_sprite(sprite_renderer* spr, uint32 layerID, texture_ref tex) {
 			if (spr == nullptr) return false;
 			if (layerID >= s_layers.size()) {
 				ALC_DEBUG_WARNING("Invalid layer ID: " + VTOS(layerID));
@@ -72,7 +72,7 @@ namespace alc {
 			return true;
 		}
 
-		void scenegraph2d::__remove_sprite(const spriterenderer* spr, uint32 layerID, texture_ref tex) {
+		void scenegraph2d::__remove_sprite(const sprite_renderer* spr, uint32 layerID, texture_ref tex) {
 			// get layer
 			auto& layer = s_layers[layerID];
 			// remove

@@ -1,20 +1,17 @@
 #ifndef ALC_GRAPHICS_2D_SPRITERENDERER_HPP
 #define ALC_GRAPHICS_2D_SPRITERENDERER_HPP
-#include "../objects/world_object.hpp"
+#include "../objects/object3d.hpp"
 #include "scenegraph2d.hpp"
 
 namespace alc {
 
 	// used to render a sprite in the world
 	// requires the object or its parent it's attached to to be an world_object
-	class spriterenderer final : alc::component {
+	class sprite_renderer final : public object3d {
 	public:
 
-		spriterenderer();
-		~spriterenderer();
-
-		// returns the parent if its an world_object
-		world_object* get_world_object() const;
+		sprite_renderer();
+		~sprite_renderer();
 
 		// returns if this sprite is enabled for rendering
 		bool get_enabled() const;
@@ -39,7 +36,6 @@ namespace alc {
 		void on_destroy() override;
 
 		bool m_enabled : 1;
-		world_object* m_parentEntity;
 
 		texture_ref m_texture;
 		uint32 m_layer;

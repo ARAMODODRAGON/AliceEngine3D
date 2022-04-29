@@ -1,6 +1,6 @@
 #ifndef ALC_GRAPHICS_2D_CAMERA2D_HPP
 #define ALC_GRAPHICS_2D_CAMERA2D_HPP
-#include "../objects/world.hpp"
+#include "../objects/object.hpp"
 //#include "../datatypes/bounds2d.hpp"
 
 namespace alc {

@@ -1,35 +1,35 @@
-#include "world_object.hpp"
+#include "object3d.hpp"
 #include <glm\gtc\matrix_transform.hpp>
 
 namespace alc {
 
-	world_object::world_object()
+	object3d::object3d()
 		: m_position(0.0f), m_rotation(), m_scale(1.0f)
 		, m_checkedParent(false), m_parentWorldObject(nullptr)
 		, m_transform(1.0f), m_transformIsDirty(true) { }
 
-	world_object::~world_object() { }
+	object3d::~object3d() { }
 
-	world_object* world_object::get_parent_world_object() const {
+	object3d* object3d::get_parent_world_object() const {
 		if (!m_checkedParent) {
-			m_parentWorldObject = get_ancestor<world_object>();
+			m_parentWorldObject = get_ancestor<object3d>();
 			m_checkedParent = true;
 		}
 		return m_parentWorldObject;
 	}
 
-	glm::vec3 world_object::get_position() const {
+	glm::vec3 object3d::get_position() const {
 		auto* parent = get_parent_world_object();
 		if (parent) return parent->get_position() 
 			+ parent->get_rotation() * m_position;
 		return m_position;
 	}
 
-	glm::vec3 world_object::get_relative_position() const {
+	glm::vec3 object3d::get_relative_position() const {
 		return m_position;
 	}
 
-	void world_object::set_position(const glm::vec3& position) {
+	void object3d::set_position(const glm::vec3& position) {
 		auto* parent = get_parent_world_object();
 		m_transformIsDirty = true;
 		if (parent)
@@ -38,22 +38,22 @@ namespace alc {
 			m_position = position;
 	}
 
-	void world_object::set_relative_position(const glm::vec3& position) {
+	void object3d::set_relative_position(const glm::vec3& position) {
 		m_transformIsDirty = true;
 		m_position = position;
 	}
 
-	glm::quat world_object::get_rotation() const {
+	glm::quat object3d::get_rotation() const {
 		auto* parent = get_parent_world_object();
 		if (parent) return parent->get_rotation() * m_rotation;
 		return m_rotation;
 	}
 
-	glm::quat world_object::get_relative_rotation() const {
+	glm::quat object3d::get_relative_rotation() const {
 		return m_rotation;
 	}
 
-	void world_object::set_rotation(const glm::quat& rotation) {
+	void object3d::set_rotation(const glm::quat& rotation) {
 		auto* parent = get_parent_world_object();
 		m_transformIsDirty = true;
 		if (parent)
@@ -64,22 +64,22 @@ namespace alc {
 			m_rotation = rotation;
 	}
 
-	void world_object::set_relative_rotation(const glm::quat& rotation) {
+	void object3d::set_relative_rotation(const glm::quat& rotation) {
 		m_transformIsDirty = true;
 		m_rotation = rotation;
 	}
 
-	glm::vec3 world_object::get_scale() const {
+	glm::vec3 object3d::get_scale() const {
 		auto* parent = get_parent_world_object();
 		if (parent) return parent->get_scale() * m_scale;
 		return m_scale;
 	}
 
-	glm::vec3 world_object::get_relative_scale() const {
+	glm::vec3 object3d::get_relative_scale() const {
 		return m_scale;
 	}
 
-	void world_object::set_scale(const glm::vec3& scale) {
+	void object3d::set_scale(const glm::vec3& scale) {
 		auto* parent = get_parent_world_object();
 		m_transformIsDirty = true;
 		if (parent)
@@ -88,12 +88,12 @@ namespace alc {
 			m_scale = scale;
 	}
 
-	void world_object::set_relative_scale(const glm::vec3& scale) {
+	void object3d::set_relative_scale(const glm::vec3& scale) {
 		m_transformIsDirty = true;
 		m_scale = scale;
 	}
 
-	glm::mat4 world_object::get_transform() const {
+	glm::mat4 object3d::get_transform() const {
 		auto* parent = get_parent_world_object();
 		if (m_transformIsDirty) {
 			m_transformIsDirty = false;

@@ -2,7 +2,7 @@
 #define ALC_GRAPHICS_3D_SCENEGRAPH3D_HPP
 #include "../common.hpp"
 #include "../core/engine.hpp"
-#include "mesh_component.hpp"
+#include "mesh_renderer.hpp"
 
 namespace alc {
 
@@ -16,7 +16,7 @@ namespace alc {
 
 			struct mesh_group final {
 				mesh_ref usedMesh;
-				std::vector<mesh_component*> dynamicMeshes;
+				std::vector<mesh_renderer*> dynamicMeshes;
 				mesh_group(mesh_ref m) : usedMesh(m) { }
 			};
 
@@ -37,8 +37,8 @@ namespace alc {
 			static void __init(const engine_settings* set);
 			static void __exit();
 			static void __draw();
-			static void __add(mesh_component* mc);
-			static void __remove(const mesh_component* mc);
+			static void __add(mesh_renderer* mc);
+			static void __remove(const mesh_renderer* mc);
 			static void __add(camera3d* cam);
 			static void __remove(const camera3d* cam);
 		};

@@ -115,14 +115,14 @@ namespace alc {
 			glBindVertexArray(0);
 		}
 
-		void scenegraph3d::__add(mesh_component* mc) {
+		void scenegraph3d::__add(mesh_renderer* mc) {
 			if (!mc || !mc->get_mesh() || !mc->get_mesh()->is_valid()) return;
 
 			// get matching groups
 			shader_group* shaderGroup = get_shader_group(mc->get_shader());
 			mesh_group* meshGroup = get_mesh_group(shaderGroup, mc->get_mesh());
 
-			// add mesh_component into the mesh_group ordered by material
+			// add mesh_renderer into the mesh_group ordered by material
 			for (auto it = meshGroup->dynamicMeshes.begin(); it != meshGroup->dynamicMeshes.end(); it++) {
 				// TEMPORARY: check for texture instead of the entire material
 				if ((*it)->get_material().diffuseTexture == mc->get_material().diffuseTexture) {
@@ -134,14 +134,14 @@ namespace alc {
 			meshGroup->dynamicMeshes.push_back(mc);
 		}
 
-		void scenegraph3d::__remove(const mesh_component* mc) {
+		void scenegraph3d::__remove(const mesh_renderer* mc) {
 			if (!mc || ~mc->get_mesh() || !mc->get_mesh()->is_valid()) return;
 
 			// get matching groups
 			shader_group* shaderGroup = get_shader_group(mc->get_shader());
 			mesh_group* meshGroup = get_mesh_group(shaderGroup, mc->get_mesh());
 
-			// find and remove mesh_component
+			// find and remove mesh_renderer
 			for (auto it = meshGroup->dynamicMeshes.begin(); it != meshGroup->dynamicMeshes.end(); it++) {
 				if ((*it) == mc) {
 					meshGroup->dynamicMeshes.erase(it);

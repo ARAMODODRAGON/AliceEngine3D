@@ -1,11 +1,11 @@
 #ifndef ALC_GRAPHICS3D_CAMERA_HPP
 #define ALC_GRAPHICS3D_CAMERA_HPP
 #include "../common.hpp"
-#include "../objects/world_object.hpp"
+#include "../objects/object3d.hpp"
 
 namespace alc {
 
-	class camera3d : public world_object {
+	class camera3d : public object3d {
 	public:
 
 		camera3d();

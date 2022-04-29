@@ -16,8 +16,9 @@ out float v_dot;
 const vec3 pointLight = vec3(10.0f, 9.0f, 5.0f);
 
 void main() {
+	vec3 norm = (u_model * vec4(a_normal, 1.0f)).xyz;
 	vec3 dir = normalize(a_position - pointLight);
-	v_dot = dot(dir, a_normal);
+	v_dot = dot(dir, norm);
 	v_uv = a_uv;
 	gl_Position = u_projection * u_view * u_model * vec4(a_position, 1.0f);
 }

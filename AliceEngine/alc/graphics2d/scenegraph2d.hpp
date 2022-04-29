@@ -5,7 +5,7 @@
 
 namespace alc {
 
-	class spriterenderer;
+	class sprite_renderer;
 	class camera2d;
 	struct engine_settings;
 
@@ -28,7 +28,7 @@ namespace alc {
 
 			struct layer final {
 				std::string name;
-				std::list<spriterenderer*> sprites;
+				std::list<sprite_renderer*> sprites;
 				shader spriteShader;
 				// TODO: add renderer2ds as a seperate thing to render in this layer
 			};
@@ -46,8 +46,8 @@ namespace alc {
 			static void __draw();
 			static void __add_camera(camera2d* cam);
 			static void __remove_camera(const camera2d* cam);
-			static bool __add_sprite(spriterenderer* spr, uint32 layerID, texture_ref tex);
-			static void __remove_sprite(const spriterenderer* spr, uint32 layerID, texture_ref tex);
+			static bool __add_sprite(sprite_renderer* spr, uint32 layerID, texture_ref tex);
+			static void __remove_sprite(const sprite_renderer* spr, uint32 layerID, texture_ref tex);
 		};
 
 	}

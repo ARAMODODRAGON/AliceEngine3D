@@ -3,7 +3,7 @@
 #include "../input/keyboard.hpp"
 #include "../input/mouse.hpp"
 #include "../jobs/job_queue.hpp"
-#include "../objects/world.hpp"
+#include "../objects/object.hpp"
 #include "../content/content_manager.hpp"
 #include "../graphics2d/scenegraph2d.hpp"
 #include "../graphics3d/scenegraph3d.hpp"

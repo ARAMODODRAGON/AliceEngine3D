@@ -12,39 +12,6 @@ namespace alc {
 	// a tag type to allow easy searching of objects
 	enum object_tag : uint64 { };
 
-	class object;
-
-	// add data and logic to gameobjects
-	class component {
-	public:
-
-		component();
-		virtual ~component() = 0 { }
-
-		// virtual functions
-
-		virtual void on_create() { }
-		virtual void on_destroy() { }
-
-		// returns the attached object
-		object* get_object() const;
-
-		// returns the closest ancestor of type
-		// slow function
-		template<typename T> T* get_ancestor() const;
-
-		// returns the topmost ancestor
-		object* get_first_ancestor();
-
-		// deletes this component
-		bool destroy();
-
-	private:
-		object* m_object;
-	public:
-		void __set_object(object* object);
-	};
-
 	// objects can be anything from a scene to a player or even a singleton
 	class object {
 	public:
@@ -54,6 +21,7 @@ namespace alc {
 
 		virtual void on_create() { }
 		virtual void on_destroy() { }
+		virtual void on_update(alc::timestep ts) { }
 
 		// returns the parent object
 		object* get_parent() const;
@@ -67,6 +35,12 @@ namespace alc {
 
 		// returns the topmost ancestor
 		object* get_first_ancestor();
+
+		// returns if update is enabled
+		bool get_update() const;
+
+		// sets if update is enabled
+		void set_update(bool set);
 
 		// returns the name of this object
 		std::string get_name() const;
@@ -90,19 +64,6 @@ namespace alc {
 		bool destroy();
 
 
-		//// components
-
-		// creates a component of type attached to this object
-		template<class T> T* create_component();
-
-		// gets a component of type attached to this object
-		template<class T> T* get_component();
-
-		// gets multiple components of type attached to this object
-		// returns the size of the out vector
-		template<class T> size_t get_components(std::vector<T*>& outComponents);
-
-
 		/// events
 
 		// called when the parent of this object changes
@@ -111,18 +72,18 @@ namespace alc {
 
 	private:
 
+		bool m_shouldUpdate;
+
 		object* m_parent;
 
 		std::string m_name;
 		object_tag m_tag;
 
-		std::vector<component*> m_components;
 		std::vector<object*> m_children;
 
 	public:
 		void __set_parent(object* parent);
 		void __remove_child(object* o);
-		void __remove_component(component* c);
 	};
 
 	// contains and manages all objects
@@ -139,9 +100,6 @@ namespace alc {
 
 		// marks an object to be destroyed
 		static bool destroy(object* o);
-
-		// marks a component to be destroyed
-		static bool destroy(component* c);
 
 		// gets number of global objects
 		static size_t globals_size();
@@ -165,7 +123,6 @@ namespace alc {
 		static inline std::vector<object*> s_globalObjects;
 
 		static inline std::vector<object*> s_objectsToDelete;
-		static inline std::vector<component*> s_componentsToDelete;
 
 	public:
 		static void __init();
@@ -176,16 +133,6 @@ namespace alc {
 	};
 
 	// template implementation
-
-	template<typename T>
-	inline T* component::get_ancestor() const {
-		if (m_object) {
-			if (T* t = dynamic_cast<T*>(m_object))
-				return t;
-			return m_object->get_ancestor<T>();
-		}
-		return nullptr;
-	}
 
 	template<typename T>
 	inline T* object::get_ancestor() const {
@@ -200,36 +147,6 @@ namespace alc {
 	template<class T>
 	inline T* object::create_object(const std::string& name) {
 		return world::create<T>(name, this);
-	}
-
-	template<class T>
-	inline T* object::create_component() {
-		if constexpr (std::is_base_of_v<component, T>) {
-			T* c = new T();
-			c->__set_object(this);
-			m_components.push_back(c);
-			c->on_create();
-			return c;
-		}
-		return nullptr;
-	}
-
-	template<class T>
-	inline T* object::get_component() {
-		if constexpr (std::is_base_of_v<component, T>)
-			for (size_t i = 0; i < m_components.size(); i++)
-				if (T* t = dynamic_cast<T*>(m_components[i]))
-					return t;
-		return nullptr;
-	}
-
-	template<class T>
-	inline size_t object::get_components(std::vector<T*>& outComponents) {
-		if constexpr (std::is_base_of_v<component, T>)
-			for (size_t i = 0; i < m_components.size(); i++)
-				if (T* t = dynamic_cast<T*>(m_components[i]))
-					outComponents.push_back(t);
-		return outComponents.size();
 	}
 
 	template<class T>

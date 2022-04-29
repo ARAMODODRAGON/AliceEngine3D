@@ -96,19 +96,10 @@
     <ClInclude Include="alc\content\texture.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\objects\world.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="alc\objects\singleton.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alc\datatypes\bounds3d.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="alc\objects\world_object.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="alc\graphics3d\mesh_component.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alc\graphics3d\detail\basic_mesh_shader.hpp">
@@ -123,9 +114,6 @@
     <ClInclude Include="alc\graphics2d\scenegraph2d.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="alc\graphics2d\spriterenderer.hpp">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="alc\graphics3d\camera3d.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -133,6 +121,27 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="alc\content\obj_loader.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\physics3d\collider3d.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\physics3d\body3d.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\physics3d\physics3d.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\graphics3d\mesh_renderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\graphics2d\sprite_renderer.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\objects\object3d.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="alc\objects\object.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -164,19 +173,10 @@
     <ClCompile Include="alc\content\texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alc\objects\world.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="alc\content\content_manager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="alc\content\mesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="alc\objects\world_object.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="alc\graphics3d\mesh_component.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="alc\graphics3d\scenegraph3d.cpp">
@@ -188,13 +188,22 @@
     <ClCompile Include="alc\graphics2d\scenegraph2d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="alc\graphics2d\spriterenderer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="alc\graphics3d\camera3d.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="alc\content\obj_loader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\graphics3d\mesh_renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\graphics2d\sprite_renderer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\objects\object3d.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="alc\objects\object.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

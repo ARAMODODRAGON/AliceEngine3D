@@ -42,10 +42,10 @@
     <ClInclude Include="alc\graphics2d\camera2d.hpp" />
     <ClInclude Include="alc\graphics2d\detail\basic_sprite_shader.hpp" />
     <ClInclude Include="alc\graphics2d\scenegraph2d.hpp" />
-    <ClInclude Include="alc\graphics2d\spriterenderer.hpp" />
+    <ClInclude Include="alc\graphics2d\sprite_renderer.hpp" />
     <ClInclude Include="alc\graphics3d\camera3d.hpp" />
     <ClInclude Include="alc\graphics3d\detail\basic_mesh_shader.hpp" />
-    <ClInclude Include="alc\graphics3d\mesh_component.hpp" />
+    <ClInclude Include="alc\graphics3d\mesh_renderer.hpp" />
     <ClInclude Include="alc\graphics3d\scenegraph3d.hpp" />
     <ClInclude Include="alc\jobs\cjs\cjs.hpp" />
     <ClInclude Include="alc\jobs\cjs\context.hpp" />
@@ -54,9 +54,12 @@
     <ClInclude Include="alc\jobs\job_queue.hpp" />
     <ClInclude Include="alc\input\keyboard.hpp" />
     <ClInclude Include="alc\input\mouse.hpp" />
-    <ClInclude Include="alc\objects\world_object.hpp" />
+    <ClInclude Include="alc\objects\object3d.hpp" />
     <ClInclude Include="alc\objects\singleton.hpp" />
-    <ClInclude Include="alc\objects\world.hpp" />
+    <ClInclude Include="alc\objects\object.hpp" />
+    <ClInclude Include="alc\physics3d\body3d.hpp" />
+    <ClInclude Include="alc\physics3d\collider3d.hpp" />
+    <ClInclude Include="alc\physics3d\physics3d.hpp" />
     <ClInclude Include="alc\reflection\type.hpp" />
     <ClInclude Include="alc\reflection\typehash.hpp" />
   </ItemGroup>
@@ -71,15 +74,15 @@
     <ClCompile Include="alc\core\window.cpp" />
     <ClCompile Include="alc\graphics2d\camera2d.cpp" />
     <ClCompile Include="alc\graphics2d\scenegraph2d.cpp" />
-    <ClCompile Include="alc\graphics2d\spriterenderer.cpp" />
+    <ClCompile Include="alc\graphics2d\sprite_renderer.cpp" />
     <ClCompile Include="alc\graphics3d\camera3d.cpp" />
-    <ClCompile Include="alc\graphics3d\mesh_component.cpp" />
+    <ClCompile Include="alc\graphics3d\mesh_renderer.cpp" />
     <ClCompile Include="alc\graphics3d\scenegraph3d.cpp" />
     <ClCompile Include="alc\jobs\job_queue.cpp" />
     <ClCompile Include="alc\input\keyboard.cpp" />
     <ClCompile Include="alc\input\mouse.cpp" />
-    <ClCompile Include="alc\objects\world_object.cpp" />
-    <ClCompile Include="alc\objects\world.cpp" />
+    <ClCompile Include="alc\objects\object3d.cpp" />
+    <ClCompile Include="alc\objects\object.cpp" />
     <ClCompile Include="alc\reflection\type.cpp" />
   </ItemGroup>
   <ItemGroup>

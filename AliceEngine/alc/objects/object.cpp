@@ -1,44 +1,18 @@
-#include "world.hpp"
+#include "object.hpp"
 
 namespace alc {
 
-	///////////////////////////////////////////////////////////////////////////////// 
-
-	component::component()
-		: m_object(nullptr) { }
-
-	object* component::get_object() const {
-		return m_object;
-	}
-
-	object* component::get_first_ancestor() {
-		return m_object->get_first_ancestor();
-	}
-
-	bool component::destroy() {
-		return world::destroy(this);
-	}
-
-	void component::__set_object(object* object) {
-		m_object = object;
-	}
-
-	///////////////////////////////////////////////////////////////////////////////// 
-
-	object::object() { }
+	object::object() : m_shouldUpdate(false), m_parent(nullptr), m_name(""), m_tag((object_tag)0) { }
 
 	object::~object() {
-		for (auto* c : m_components) {
-			c->on_destroy();
-			delete c;
-		}
-		m_components.clear();
-
 		for (auto* o : m_children) {
 			o->on_destroy();
 			delete o;
 		}
 		m_children.clear();
+
+		// remove
+		if (m_shouldUpdate) alice_events::onUpdate -= make_function<&object::on_update>(this);
 	}
 
 	object* object::get_parent() const {
@@ -53,6 +27,7 @@ namespace alc {
 			if (parent) m_parent->m_children.push_back(this);
 			else world::__add_global(this);
 
+			onParentChanged(m_parent, parent);
 			m_parent = parent;
 		}
 	}
@@ -60,6 +35,22 @@ namespace alc {
 	object* object::get_first_ancestor() {
 		if (m_parent) return m_parent->get_first_ancestor();
 		return this;
+	}
+
+	bool object::get_update() const {
+		return m_shouldUpdate;
+	}
+
+	void object::set_update(bool set) { 
+		if (set != m_shouldUpdate) {
+			// enabled
+			if (set) 
+				alice_events::onUpdate += make_function<&object::on_update>(this);
+			// disable
+			else 
+				alice_events::onUpdate -= make_function<&object::on_update>(this);
+			m_shouldUpdate = set;
+		}
 	}
 
 	std::string object::get_name() const {
@@ -95,15 +86,6 @@ namespace alc {
 		}
 	}
 
-	void object::__remove_component(component* c) {
-		for (auto it = m_components.begin(); it != m_components.end(); it++) {
-			if ((*it) == c) {
-				m_components.erase(it);
-				return;
-			}
-		}
-	}
-
 	///////////////////////////////////////////////////////////////////////////////// 
 
 	bool world::destroy(object* o) {
@@ -119,19 +101,6 @@ namespace alc {
 		return true;
 	}
 
-	bool world::destroy(component* c) {
-		#ifdef _DEBUG
-		for (size_t i = 0; i < s_objectsToDelete.size(); i++) {
-			if (s_componentsToDelete[i] == c) {
-				ALC_DEBUG_ERROR("Cannot delete component since it has already been marked deleted");
-				return false;
-			}
-		}
-		#endif
-		s_componentsToDelete.push_back(c);
-		return true;
-	}
-
 	size_t world::globals_size() {
 		return s_globalObjects.size();
 	}
@@ -139,12 +108,10 @@ namespace alc {
 	void world::__init() {
 		s_globalObjects.clear();
 		s_objectsToDelete.clear();
-		s_componentsToDelete.clear();
 	}
 
 	void world::__exit() {
 		s_objectsToDelete.clear();
-		s_componentsToDelete.clear();
 
 		for (auto* o : s_globalObjects) {
 			o->on_destroy();
@@ -168,18 +135,6 @@ namespace alc {
 			delete s_objectsToDelete[i];
 		}
 		s_objectsToDelete.clear();
-
-		for (size_t i = 0; i < s_componentsToDelete.size(); i++) {
-			// call on destroy
-			s_componentsToDelete[i]->on_destroy();
-
-			// remove
-			s_componentsToDelete[i]->get_object()->__remove_component(s_componentsToDelete[i]);
-
-			// delete
-			delete s_objectsToDelete[i];
-		}
-		s_componentsToDelete.clear();
 
 	}
 

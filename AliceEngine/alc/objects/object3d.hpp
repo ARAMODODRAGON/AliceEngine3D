@@ -1,20 +1,20 @@
 #ifndef ALC_OBJECTS_ENTITY_HPP
 #define ALC_OBJECTS_ENTITY_HPP
-#include "world.hpp"
+#include "object.hpp"
 
 namespace alc {
 
 	// type of object that can exist physically in the world,
 	// with a position, rotation, scale, and transform
-	// some components require the parent type to be an world_object
-	class world_object : public object {
+	// some components require the parent type to be an object3d
+	class object3d : public object {
 	public:
 
-		world_object();
-		~world_object();
+		object3d();
+		~object3d();
 
-		// returns the parent object if it's a world_object
-		world_object* get_parent_world_object() const;
+		// returns the parent object if it's a object3d
+		object3d* get_parent_world_object() const;
 
 		// returns the position
 		glm::vec3 get_position() const;
@@ -65,7 +65,7 @@ namespace alc {
 		mutable bool m_transformIsDirty : 1;
 
 		mutable bool m_checkedParent : 1;
-		mutable world_object* m_parentWorldObject;
+		mutable object3d* m_parentWorldObject;
 
 	};
 

@@ -1,24 +1,24 @@
 #ifndef ALC_GRAPHICS_3D_MESH_COMPONENT_HPP
 #define ALC_GRAPHICS_3D_MESH_COMPONENT_HPP
-#include "../objects/world_object.hpp"
+#include "../objects/object3d.hpp"
 #include "../content/content_manager.hpp"
 #include "../datatypes/bounds3d.hpp"
 
 namespace alc {
 
-	class mesh_component : public component {
+	class mesh_renderer : public object3d {
 	public:
 
-		mesh_component();
-		~mesh_component();
+		mesh_renderer();
+		~mesh_renderer();
 		void on_create() override;
 
 		// checks if this is enabled
-		// is disabled by default if there is no attached world_object
+		// is disabled by default if there is no attached object3d
 		bool get_enabled() const;
 
 		// sets if enabled
-		// cannot set if there is no attached world_object
+		// cannot set if there is no attached object3d
 		void set_enabled(bool enabled);
 
 		// checks if this mesh component is static
@@ -29,8 +29,8 @@ namespace alc {
 		// and calling this function is required to refresh the transform
 		void set_static(bool stat);
 
-		// calculates and returns the bounds3d
-		//bounds3d get_bounds() const;
+		// calculates and returns the alignedbounds3d
+		//alignedbounds3d get_bounds() const;
 
 		// get the mesh
 		mesh_ref get_mesh() const;
@@ -62,7 +62,6 @@ namespace alc {
 		bool m_isEnabled : 1;
 		glm::mat4 m_lockedTransform;
 
-		world_object* m_worldObject;
 	};
 
 }
