@@ -9,6 +9,15 @@
 
 namespace alc {
 
+	class object;
+
+	class iscript {
+	public:
+		virtual ~iscript() = 0 { }
+		virtual bool load(const std::string& filepath) = 0;
+		virtual void message(object* self, const std::string& function) = 0; // TODO: add arguments
+	};
+
 	// a tag type to allow easy searching of objects
 	enum object_tag : uint64 { };
 
@@ -64,6 +73,21 @@ namespace alc {
 		bool destroy();
 
 
+		/// scripts
+
+		// creates a new script and attaches it to this object
+		// deletes any preexisting script before loading new script
+		template<typename T>
+		T* load_script(const std::string& path);
+
+		// deletes the current script
+		bool close_script();
+
+		// sends a message to the script on this object
+		// TODO: add 'args'
+		void message(const std::string& function, uint32 recursiveDepth = 0);
+
+
 		/// events
 
 		// called when the parent of this object changes
@@ -80,6 +104,7 @@ namespace alc {
 		object_tag m_tag;
 
 		std::vector<object*> m_children;
+		std::unique_ptr<iscript> m_script;
 
 	public:
 		void __set_parent(object* parent);
@@ -147,6 +172,19 @@ namespace alc {
 	template<class T>
 	inline T* object::create_object(const std::string& name) {
 		return world::create<T>(name, this);
+	}
+
+	template<typename T>
+	inline T* object::load_script(const std::string& path) {
+		if constexpr (std::is_base_of_v<iscript, T>) {
+			T* script = new T();
+			if (script->load(path)) {
+				m_script.reset(script);
+				return script;
+			}
+			delete script;
+		}
+		return nullptr;
 	}
 
 	template<class T>

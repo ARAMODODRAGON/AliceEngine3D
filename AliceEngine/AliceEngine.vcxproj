@@ -54,11 +54,11 @@
     <ClInclude Include="alc\jobs\job_queue.hpp" />
     <ClInclude Include="alc\input\keyboard.hpp" />
     <ClInclude Include="alc\input\mouse.hpp" />
+    <ClInclude Include="alc\objects\luascript.hpp" />
     <ClInclude Include="alc\objects\object3d.hpp" />
     <ClInclude Include="alc\objects\singleton.hpp" />
     <ClInclude Include="alc\objects\object.hpp" />
     <ClInclude Include="alc\physics3d\body3d.hpp" />
-    <ClInclude Include="alc\physics3d\collider3d.hpp" />
     <ClInclude Include="alc\physics3d\physics3d.hpp" />
     <ClInclude Include="alc\reflection\type.hpp" />
     <ClInclude Include="alc\reflection\typehash.hpp" />
@@ -81,6 +81,7 @@
     <ClCompile Include="alc\jobs\job_queue.cpp" />
     <ClCompile Include="alc\input\keyboard.cpp" />
     <ClCompile Include="alc\input\mouse.cpp" />
+    <ClCompile Include="alc\objects\luascript.cpp" />
     <ClCompile Include="alc\objects\object3d.cpp" />
     <ClCompile Include="alc\objects\object.cpp" />
     <ClCompile Include="alc\reflection\type.cpp" />
@@ -141,8 +142,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\GameDev\FreeType\include;C:\GameDev\nlohmann-json\include;C:\GameDev\OpenGL\include;C:\GameDev\SDL\include;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\GameDev\FreeType\win32;C:\GameDev\OpenGL\lib;C:\GameDev\SDL\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\GameDev\FreeType\include;C:\GameDev\nlohmann-json\include;C:\GameDev\OpenGL\include;C:\GameDev\SDL\include;C:\GameDev\lua-5.4.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GameDev\FreeType\win32;C:\GameDev\OpenGL\lib;C:\GameDev\SDL\lib;C:\GameDev\lua-5.4.4\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>

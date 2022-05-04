@@ -1,5 +1,6 @@
 #include "Level0.hpp"
 #include <alc\content\obj_loader.hpp>
+#include <alc\objects\luascript.hpp>
 
 Level0::Level0() { }
 
@@ -9,6 +10,9 @@ void Level0::on_create() {
 	LevelBase::on_create();
 
 	m_meshPivot = create_object<alc::object3d>("Mesh Pivot");
+	if (!m_meshPivot->load_script<alc::luascript>("Lua/TestScript.lua")) {
+		ALC_DEBUG_ERROR("Failed to load script Lua/TestScript.lua");
+	}
 
 	m_meshRenderer = m_meshPivot->create_object<alc::mesh_renderer>("Mesh");
 	m_meshRenderer->set_relative_position(glm::vec3(-0.5f));

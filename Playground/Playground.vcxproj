@@ -72,8 +72,8 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\GameDev\FreeType\include;C:\GameDev\OpenGL\include;C:\GameDev\SDL\include;$(SolutionDir)AliceEngine\;$(IncludePath)</IncludePath>
-    <LibraryPath>C:\GameDev\FreeType\win32;C:\GameDev\OpenGL\lib;C:\GameDev\SDL\lib;$(LibraryPath)</LibraryPath>
+    <IncludePath>C:\GameDev\FreeType\include;C:\GameDev\OpenGL\include;C:\GameDev\SDL\include;$(SolutionDir)AliceEngine\;C:\GameDev\lua-5.4.4\include;$(IncludePath)</IncludePath>
+    <LibraryPath>C:\GameDev\FreeType\win32;C:\GameDev\OpenGL\lib;C:\GameDev\SDL\lib;C:\GameDev\lua-5.4.4\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
@@ -97,7 +97,7 @@
     <Link>
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;freetype.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>opengl32.lib;SDL2.lib;SDL2main.lib;glew32.lib;glew32s.lib;freetype.lib;lua-5.4.4.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
@@ -162,6 +162,9 @@
     <ClInclude Include="Playground\LevelBase.hpp" />
     <ClInclude Include="Playground\Playground.hpp" />
     <ClInclude Include="TypeSystemDemo.hpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Lua\TestScript.lua" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

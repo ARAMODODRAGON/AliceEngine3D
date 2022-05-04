@@ -41,13 +41,13 @@ namespace alc {
 		return m_shouldUpdate;
 	}
 
-	void object::set_update(bool set) { 
+	void object::set_update(bool set) {
 		if (set != m_shouldUpdate) {
 			// enabled
-			if (set) 
+			if (set)
 				alice_events::onUpdate += make_function<&object::on_update>(this);
 			// disable
-			else 
+			else
 				alice_events::onUpdate -= make_function<&object::on_update>(this);
 			m_shouldUpdate = set;
 		}
@@ -73,7 +73,26 @@ namespace alc {
 		return world::destroy(this);
 	}
 
-	void object::__set_parent(object* parent) { 
+	bool object::close_script() {
+		bool isThereAScript = m_script.get() != nullptr;
+		m_script.reset();
+		return isThereAScript;
+	}
+
+	void object::message(const std::string& function, uint32 recursiveDepth) {
+		// send message this script
+		if (m_script.get())
+			m_script->message(this, function);
+
+		// check if recursive and send to all children
+		if (recursiveDepth--) {
+			for (auto o : m_children) {
+				o->message(function, recursiveDepth);
+			}
+		}
+	}
+
+	void object::__set_parent(object* parent) {
 		m_parent = parent;
 	}
 
